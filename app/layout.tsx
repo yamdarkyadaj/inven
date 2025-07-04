@@ -36,10 +36,10 @@ export default function RootLayout({
     <html suppressHydrationWarning lang="en">
       <head />
       <body
-        className={clsx(
+        // className={clsx(
          
-          fontSans.variable,
-        )}
+        //   fontSans.variable,
+        // )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
           <div >

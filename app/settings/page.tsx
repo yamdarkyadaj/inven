@@ -77,7 +77,7 @@ export default function SettingsPage() {
             <h1 className="text-2xl font-semibold text-blue-600">Application Settings</h1>
           </div>
 
-          <Tabs defaultValue="company" className="w-full">
+          <Tabs defaultValue="company" className="w-full sm:grid">
             <TabsList className="grid w-full grid-cols-6">
               <TabsTrigger value="company">Company</TabsTrigger>
               <TabsTrigger value="system">System</TabsTrigger>

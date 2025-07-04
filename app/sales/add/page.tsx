@@ -22,6 +22,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { ShoppingCart, Plus, Trash2, Calculator, Printer } from "lucide-react"
 import { usePrintReceipt } from "@/hooks/use-print-receipt"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { getProducts } from "@/hooks/get-products"
 
 // Sample data
 const customers = [
@@ -30,13 +31,7 @@ const customers = [
   { id: "CUST-003", name: "Mike Johnson", email: "mike@example.com", phone: "+1234567892" },
 ]
 
-const products = [
-  { id: "PRD-001", name: "iPhone 15 Pro", code: "IPH15PRO", price: 999.0, stock: 25 },
-  { id: "PRD-002", name: "Samsung Galaxy S24", code: "SGS24", price: 849.0, stock: 15 },
-  { id: "PRD-003", name: "MacBook Air M3", code: "MBAM3", price: 1299.0, stock: 8 },
-  { id: "PRD-004", name: "iPad Pro 12.9", code: "IPADPRO129", price: 1099.0, stock: 3 },
-  { id: "PRD-005", name: "AirPods Pro", code: "AIRPODSPRO", price: 249.0, stock: 0 },
-]
+const products = getProducts()
 
 interface SaleItem {
   id: string
@@ -55,7 +50,7 @@ export default function AddSalePage() {
   const [selectedProduct, setSelectedProduct] = useState("")
   const [quantity, setQuantity] = useState(1)
   const [discount, setDiscount] = useState(0)
-  const [taxRate, setTaxRate] = useState(10)
+  const [taxRate, setTaxRate] = useState(0)
   const [paymentMethod, setPaymentMethod] = useState("")
   const [notes, setNotes] = useState("")
   const [amountPaid, setAmountPaid] = useState("")
