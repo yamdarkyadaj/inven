@@ -13,7 +13,6 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-
 model SmaSettings {
   setting_id           Int       @id
   logo                 String    @db.VarChar(255)
