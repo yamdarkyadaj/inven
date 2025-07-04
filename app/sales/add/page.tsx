@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -19,19 +19,118 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Textarea } from "@/components/ui/textarea"
-import { ShoppingCart, Plus, Trash2, Calculator, Printer } from "lucide-react"
+import { ShoppingCart, Plus, Trash2, Calculator, Printer, Search, Package, Barcode, X, Check } from "lucide-react"
 import { usePrintReceipt } from "@/hooks/use-print-receipt"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { getProducts } from "@/hooks/get-products"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
 // Sample data
 const customers = [
   { id: "CUST-001", name: "John Doe", email: "john@example.com", phone: "+1234567890" },
   { id: "CUST-002", name: "Jane Smith", email: "jane@example.com", phone: "+1234567891" },
   { id: "CUST-003", name: "Mike Johnson", email: "mike@example.com", phone: "+1234567892" },
+  { id: "WALK-IN", name: "Walk-in Customer", email: "", phone: "" },
 ]
 
-const products = getProducts()
+const products = [
+  {
+    id: "PRD-001",
+    name: "iPhone 15 Pro",
+    code: "IPH15PRO",
+    barcode: "123456789012",
+    price: 999.0,
+    cost: 750.0,
+    stock: 25,
+    category: "Electronics",
+    brand: "Apple",
+    description: "Latest iPhone with advanced features",
+  },
+  {
+    id: "PRD-002",
+    name: "Samsung Galaxy S24",
+    code: "SGS24",
+    barcode: "123456789013",
+    price: 849.0,
+    cost: 650.0,
+    stock: 15,
+    category: "Electronics",
+    brand: "Samsung",
+    description: "Samsung flagship smartphone",
+  },
+  {
+    id: "PRD-003",
+    name: "MacBook Air M3",
+    code: "MBAM3",
+    barcode: "123456789014",
+    price: 1299.0,
+    cost: 1000.0,
+    stock: 8,
+    category: "Computers",
+    brand: "Apple",
+    description: "Apple MacBook Air with M3 chip",
+  },
+  {
+    id: "PRD-004",
+    name: "iPad Pro 12.9",
+    code: "IPADPRO129",
+    barcode: "123456789015",
+    price: 1099.0,
+    cost: 850.0,
+    stock: 3,
+    category: "Tablets",
+    brand: "Apple",
+    description: "iPad Pro with 12.9 inch display",
+  },
+  {
+    id: "PRD-005",
+    name: "AirPods Pro",
+    code: "AIRPODSPRO",
+    barcode: "123456789016",
+    price: 249.0,
+    cost: 180.0,
+    stock: 0,
+    category: "Audio",
+    brand: "Apple",
+    description: "Apple AirPods Pro with noise cancellation",
+  },
+  {
+    id: "PRD-006",
+    name: "Dell XPS 13",
+    code: "DELLXPS13",
+    barcode: "123456789017",
+    price: 1199.0,
+    cost: 900.0,
+    stock: 12,
+    category: "Computers",
+    brand: "Dell",
+    description: "Dell XPS 13 ultrabook",
+  },
+  {
+    id: "PRD-007",
+    name: "Sony WH-1000XM5",
+    code: "SONYWH1000XM5",
+    barcode: "123456789018",
+    price: 399.0,
+    cost: 280.0,
+    stock: 20,
+    category: "Audio",
+    brand: "Sony",
+    description: "Premium noise-canceling headphones",
+  },
+  {
+    id: "PRD-008",
+    name: "Microsoft Surface Pro",
+    code: "MSSURFACEPRO",
+    barcode: "123456789019",
+    price: 1299.0,
+    cost: 950.0,
+    stock: 6,
+    category: "Tablets",
+    brand: "Microsoft",
+    description: "2-in-1 laptop and tablet",
+  },
+]
 
 interface SaleItem {
   id: string
@@ -47,39 +146,98 @@ interface SaleItem {
 export default function AddSalePage() {
   const [saleItems, setSaleItems] = useState<SaleItem[]>([])
   const [selectedCustomer, setSelectedCustomer] = useState("")
-  const [selectedProduct, setSelectedProduct] = useState("")
+  const [productSearch, setProductSearch] = useState("")
+  const [barcodeInput, setBarcodeInput] = useState("")
+  const [selectedProduct, setSelectedProduct] = useState<(typeof products)[0] | null>(null)
   const [quantity, setQuantity] = useState(1)
   const [discount, setDiscount] = useState(0)
-  const [taxRate, setTaxRate] = useState(0)
+  const [taxRate, setTaxRate] = useState(10)
   const [paymentMethod, setPaymentMethod] = useState("")
   const [notes, setNotes] = useState("")
   const [amountPaid, setAmountPaid] = useState("")
   const [referenceNumber, setReferenceNumber] = useState("")
+  const [open, setOpen] = useState(false)
+  const [filteredProducts, setFilteredProducts] = useState(products)
 
   const { printReceipt } = usePrintReceipt()
+
+  // Filter products based on search
+  useEffect(() => {
+    if (!productSearch) {
+      setFilteredProducts(products)
+      return
+    }
+
+    const filtered = products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(productSearch.toLowerCase()) ||
+        product.code.toLowerCase().includes(productSearch.toLowerCase()) ||
+        product.barcode.includes(productSearch) ||
+        product.brand.toLowerCase().includes(productSearch.toLowerCase()) ||
+        product.category.toLowerCase().includes(productSearch.toLowerCase()),
+    )
+    setFilteredProducts(filtered)
+  }, [productSearch])
+
+  // Handle barcode scanning/input
+  useEffect(() => {
+    if (barcodeInput.length >= 8) {
+      const product = products.find((p) => p.barcode === barcodeInput)
+      if (product) {
+        setSelectedProduct(product)
+        setBarcodeInput("")
+        setQuantity(1)
+        setDiscount(0)
+      }
+    }
+  }, [barcodeInput])
+
+  const selectProduct = (product: (typeof products)[0]) => {
+    setSelectedProduct(product)
+    setProductSearch("")
+    setOpen(false)
+    setQuantity(1)
+    setDiscount(0)
+  }
+
+  const clearProductSelection = () => {
+    setSelectedProduct(null)
+    setProductSearch("")
+    setQuantity(1)
+    setDiscount(0)
+  }
 
   const addProductToSale = () => {
     if (!selectedProduct) return
 
-    const product = products.find((p) => p.id === selectedProduct)
-    if (!product) return
+    // Check if product already exists in sale
+    const existingItemIndex = saleItems.findIndex((item) => item.productId === selectedProduct.id)
 
-    const itemTotal = product.price * quantity - discount
-    const newItem: SaleItem = {
-      id: `ITEM-${Date.now()}`,
-      productId: product.id,
-      productName: product.name,
-      productCode: product.code,
-      price: product.price,
-      quantity,
-      discount,
-      total: itemTotal,
+    if (existingItemIndex >= 0) {
+      // Update existing item
+      const updatedItems = [...saleItems]
+      const existingItem = updatedItems[existingItemIndex]
+      existingItem.quantity += quantity
+      existingItem.discount += discount
+      existingItem.total = existingItem.price * existingItem.quantity - existingItem.discount
+      setSaleItems(updatedItems)
+    } else {
+      // Add new item
+      const itemTotal = selectedProduct.price * quantity - discount
+      const newItem: SaleItem = {
+        id: `ITEM-${Date.now()}`,
+        productId: selectedProduct.id,
+        productName: selectedProduct.name,
+        productCode: selectedProduct.code,
+        price: selectedProduct.price,
+        quantity,
+        discount,
+        total: itemTotal,
+      }
+      setSaleItems([...saleItems, newItem])
     }
 
-    setSaleItems([...saleItems, newItem])
-    setSelectedProduct("")
-    setQuantity(1)
-    setDiscount(0)
+    clearProductSelection()
   }
 
   const removeItem = (itemId: string) => {
@@ -108,6 +266,12 @@ export default function AddSalePage() {
         return item
       }),
     )
+  }
+
+  const getStockStatus = (stock: number) => {
+    if (stock === 0) return { color: "text-red-600", text: "Out of Stock" }
+    if (stock <= 5) return { color: "text-yellow-600", text: "Low Stock" }
+    return { color: "text-green-600", text: "In Stock" }
   }
 
   const subtotal = saleItems.reduce((sum, item) => sum + item.total, 0)
@@ -209,7 +373,7 @@ export default function AddSalePage() {
                         <SelectContent>
                           {customers.map((customer) => (
                             <SelectItem key={customer.id} value={customer.id}>
-                              {customer.name} - {customer.email}
+                              {customer.name} {customer.email && `- ${customer.email}`}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -223,55 +387,180 @@ export default function AddSalePage() {
                 </CardContent>
               </Card>
 
-              {/* Add Products */}
+              {/* Enhanced Product Search */}
               <Card>
                 <CardHeader>
                   <CardTitle>Add Products</CardTitle>
+                  <CardDescription>Search by name, code, barcode, brand, or category</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid gap-4 md:grid-cols-5">
-                    <div className="md:col-span-2 space-y-2">
-                      <Label htmlFor="product">Product</Label>
-                      <Select value={selectedProduct} onValueChange={setSelectedProduct}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select product" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {products.map((product) => (
-                            <SelectItem key={product.id} value={product.id}>
-                              {product.name} - ${product.price} (Stock: {product.stock})
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="quantity">Quantity</Label>
+                  {/* Barcode Scanner Input */}
+                  <div className="space-y-2">
+                    <Label htmlFor="barcode">Barcode Scanner</Label>
+                    <div className="relative">
+                      <Barcode className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                       <Input
-                        id="quantity"
-                        type="number"
-                        min="1"
-                        value={quantity}
-                        onChange={(e) => setQuantity(Number.parseInt(e.target.value) || 1)}
+                        id="barcode"
+                        placeholder="Scan or enter barcode..."
+                        value={barcodeInput}
+                        onChange={(e) => setBarcodeInput(e.target.value)}
+                        className="pl-8"
                       />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="discount">Discount ($)</Label>
-                      <Input
-                        id="discount"
-                        type="number"
-                        min="0"
-                        value={discount}
-                        onChange={(e) => setDiscount(Number.parseFloat(e.target.value) || 0)}
-                      />
-                    </div>
-                    <div className="flex items-end">
-                      <Button onClick={addProductToSale} className="w-full">
-                        <Plus className="mr-2 h-4 w-4" />
-                        Add
-                      </Button>
                     </div>
                   </div>
+
+                  {/* Product Search with Combobox */}
+                  <div className="space-y-2">
+                    <Label>Search Products</Label>
+                    <Popover open={open} onOpenChange={setOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={open}
+                          className="w-full justify-between bg-transparent"
+                        >
+                          {selectedProduct ? (
+                            <div className="flex items-center gap-2">
+                              <Package className="h-4 w-4" />
+                              <span>
+                                {selectedProduct.name} - ${selectedProduct.price}
+                              </span>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <Search className="h-4 w-4" />
+                              <span>Search products...</span>
+                            </div>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-full p-0" align="start">
+                        <Command>
+                          <CommandInput
+                            placeholder="Search products..."
+                            value={productSearch}
+                            onValueChange={setProductSearch}
+                          />
+                          <CommandList>
+                            <CommandEmpty>No products found.</CommandEmpty>
+                            <CommandGroup>
+                              {filteredProducts.map((product) => {
+                                const stockStatus = getStockStatus(product.stock)
+                                return (
+                                  <CommandItem
+                                    key={product.id}
+                                    value={product.id}
+                                    onSelect={() => selectProduct(product)}
+                                    className="flex flex-col items-start gap-1 p-3"
+                                  >
+                                    <div className="flex items-center justify-between w-full">
+                                      <div className="flex items-center gap-2">
+                                        <Package className="h-4 w-4" />
+                                        <span className="font-medium">{product.name}</span>
+                                      </div>
+                                      <span className="font-semibold">${product.price}</span>
+                                    </div>
+                                    <div className="flex items-center gap-4 text-xs text-muted-foreground w-full">
+                                      <span>Code: {product.code}</span>
+                                      <span>Brand: {product.brand}</span>
+                                      <span>Category: {product.category}</span>
+                                    </div>
+                                    <div className="flex items-center justify-between w-full">
+                                      <span className="text-xs text-muted-foreground">Barcode: {product.barcode}</span>
+                                      <span className={`text-xs font-medium ${stockStatus.color}`}>
+                                        {stockStatus.text} ({product.stock})
+                                      </span>
+                                    </div>
+                                  </CommandItem>
+                                )
+                              })}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+
+                  {/* Selected Product Details */}
+                  {selectedProduct && (
+                    <Card className="border-blue-200 bg-blue-50">
+                      <CardContent className="p-4">
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-blue-900">{selectedProduct.name}</h4>
+                            <p className="text-sm text-blue-700">{selectedProduct.description}</p>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={clearProductSelection}
+                            className="text-blue-600 hover:text-blue-800"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4 text-sm mb-4">
+                          <div>
+                            <span className="text-blue-600">Code:</span> {selectedProduct.code}
+                          </div>
+                          <div>
+                            <span className="text-blue-600">Brand:</span> {selectedProduct.brand}
+                          </div>
+                          <div>
+                            <span className="text-blue-600">Category:</span> {selectedProduct.category}
+                          </div>
+                          <div className={getStockStatus(selectedProduct.stock).color}>
+                            <span className="text-blue-600">Stock:</span> {selectedProduct.stock} units
+                          </div>
+                        </div>
+
+                        <div className="grid gap-4 md:grid-cols-3">
+                          <div className="space-y-2">
+                            <Label htmlFor="quantity">Quantity</Label>
+                            <Input
+                              id="quantity"
+                              type="number"
+                              min="1"
+                              max={selectedProduct.stock}
+                              value={quantity}
+                              onChange={(e) => setQuantity(Number.parseInt(e.target.value) || 1)}
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="discount">Discount ($)</Label>
+                            <Input
+                              id="discount"
+                              type="number"
+                              min="0"
+                              value={discount}
+                              onChange={(e) => setDiscount(Number.parseFloat(e.target.value) || 0)}
+                            />
+                          </div>
+                          <div className="flex items-end">
+                            <Button
+                              onClick={addProductToSale}
+                              className="w-full"
+                              disabled={selectedProduct.stock === 0 || quantity > selectedProduct.stock}
+                            >
+                              <Plus className="mr-2 h-4 w-4" />
+                              Add to Sale
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div className="mt-3 p-2 bg-white rounded border">
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm font-medium">Item Total:</span>
+                            <span className="font-semibold">
+                              ${(selectedProduct.price * quantity - discount).toFixed(2)}
+                            </span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
                 </CardContent>
               </Card>
 
@@ -285,7 +574,7 @@ export default function AddSalePage() {
                   {saleItems.length === 0 ? (
                     <div className="text-center py-8 text-muted-foreground">
                       <ShoppingCart className="mx-auto h-12 w-12 mb-4" />
-                      <p>No items added yet. Select products above to add them to the sale.</p>
+                      <p>No items added yet. Search and select products above to add them to the sale.</p>
                     </div>
                   ) : (
                     <Table>
@@ -483,7 +772,10 @@ export default function AddSalePage() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Button disabled={saleItems.length === 0 || !selectedCustomer || !paymentMethod}>Complete Sale</Button>
+            <Button disabled={saleItems.length === 0 || !selectedCustomer || !paymentMethod}>
+              <Check className="mr-2 h-4 w-4" />
+              Complete Sale
+            </Button>
           </div>
         </div>
       </SidebarInset>

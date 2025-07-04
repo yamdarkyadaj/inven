@@ -18,6 +18,7 @@ import {
   Building2,
   UserCheck,
   Eye,
+  Warehouse,
   type LucideIcon,
 } from "lucide-react"
 
@@ -59,6 +60,22 @@ const navigationData = {
         {
           title: "View Products",
           url: "/products/list",
+          icon: Eye,
+        },
+      ],
+    },
+    {
+      title: "Warehouses",
+      icon: Warehouse,
+      items: [
+        {
+          title: "Add Warehouse",
+          url: "/warehouses/add",
+          icon: Plus,
+        },
+        {
+          title: "View Warehouses",
+          url: "/warehouses/list",
           icon: Eye,
         },
       ],
