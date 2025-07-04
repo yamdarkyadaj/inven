@@ -1,0 +1,1301 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Naz {
+  id       BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  myTables String?   @db.VarChar(100)
+  sync     DateTime  @db.DateTime(0)
+
+  @@map("naz")
+}
+
+model Nazdel {
+  id      BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  delID   BigInt?   @db.BigInt
+  myTables String?   @db.VarChar(100)
+  sync    DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@unique([delID, myTables], name: "unique_index")
+  @@map("nazdel")
+}
+
+model SmaAddresses {
+  id          Int      @id @default(autoincrement())
+  company_id  Int
+  line1       String   @db.VarChar(50)
+  line2       String?  @db.VarChar(50)
+  city        String   @db.VarChar(25)
+  postal_code String?  @db.VarChar(20)
+  state       String   @db.VarChar(25)
+  country     String   @db.VarChar(50)
+  phone       String?  @db.VarChar(50)
+  updated_at  DateTime @default(now()) @updatedAt @db.Timestamp(0)
+  sync        DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([company_id], map: "company_id")
+  @@map("sma_addresses")
+}
+
+model SmaAdjustments {
+  id           Int       @id @default(autoincrement())
+  date         DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+  reference_no String    @db.VarChar(55)
+  warehouse_id Int
+  note         String?   @db.Text
+  attachment   String?   @db.VarChar(55)
+  created_by   Int
+  updated_by   Int?
+  updated_at   DateTime? @db.DateTime(0)
+  count_id     Int?
+  sync         DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([warehouse_id], map: "warehouse_id")
+  @@map("sma_adjustments")
+}
+
+model SmaAdjustmentItems {
+  id            Int      @id @default(autoincrement())
+  adjustment_id Int
+  product_id    Int
+  option_id     Int?
+  quantity      Decimal  @db.Decimal(15, 4)
+  warehouse_id  Int
+  serial_no     String?  @db.VarChar(255)
+  type          String   @db.VarChar(20)
+  sync          DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([adjustment_id], map: "adjustment_id")
+  @@map("sma_adjustment_items")
+}
+
+model SmaBrands {
+  id    Int      @id @default(autoincrement())
+  code  String?  @db.VarChar(20)
+  name  String   @db.VarChar(50)
+  image String?  @db.VarChar(50)
+  sync  DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([name], map: "name")
+  @@map("sma_brands")
+}
+
+model SmaCalendar {
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(55)
+  description String?   @db.VarChar(255)
+  start       DateTime  @db.DateTime(0)
+  end         DateTime? @db.DateTime(0)
+  color       String    @db.VarChar(7)
+  user_id     Int?
+  sync        DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_calendar")
+}
+
+model SmaCaptcha {
+  captcha_id   BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  captcha_time Int      @db.UnsignedInt
+  ip_address   String   @default("0") @db.VarChar(16)
+  word         String   @db.VarChar(20)
+  sync         DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([word], map: "word")
+  @@map("sma_captcha")
+}
+
+model SmaCategories {
+  id        Int      @id @default(autoincrement())
+  code      String   @db.VarChar(55)
+  name      String   @db.VarChar(55)
+  image     String?  @db.VarChar(55)
+  parent_id Int?
+  sync      DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_categories")
+}
+
+model SmaComboItems {
+  id         Int      @id @default(autoincrement())
+  product_id Int
+  item_code  String   @db.VarChar(20)
+  quantity   Decimal  @db.Decimal(12, 4)
+  unit_price Decimal? @db.Decimal(25, 4)
+  sync       DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_combo_items")
+}
+
+model SmaCompanies {
+  id                  Int      @id @default(autoincrement())
+  group_id            Int?     @db.UnsignedInt
+  group_name          String   @db.VarChar(20)
+  customer_group_id   Int?
+  customer_group_name String?  @db.VarChar(100)
+  name                String   @db.VarChar(55)
+  company             String   @db.VarChar(255)
+  vat_no              String?  @db.VarChar(100)
+  address             String   @db.VarChar(255)
+  city                String   @db.VarChar(55)
+  state               String?  @db.VarChar(55)
+  postal_code         String?  @db.VarChar(8)
+  country             String?  @db.VarChar(100)
+  phone               String   @db.VarChar(20)
+  email               String   @db.VarChar(100)
+  cf1                 String?  @db.VarChar(100)
+  cf2                 String?  @db.VarChar(100)
+  cf3                 String?  @db.VarChar(100)
+  cf4                 String?  @db.VarChar(100)
+  cf5                 String?  @db.VarChar(100)
+  cf6                 String?  @db.VarChar(100)
+  invoice_footer      String?  @db.Text
+  payment_term        Int?     @default(0)
+  logo                String?  @default("logo.png") @db.VarChar(255)
+  award_points        Int?     @default(0)
+  deposit_amount      Decimal? @db.Decimal(25, 4)
+  credit_limit        Decimal  @db.Decimal(25, 4)
+  price_group_id      Int?
+  price_group_name    String?  @db.VarChar(50)
+  sync                DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([group_id], map: "group_id")
+  @@index([group_id], map: "group_id_2")
+  @@map("sma_companies")
+}
+
+model SmaCosting {
+  id                     Int       @id @default(autoincrement())
+  date                   DateTime  @db.Date
+  product_id             Int?
+  sale_item_id           Int
+  sale_id                Int?
+  purchase_item_id       Int?
+  quantity               Decimal   @db.Decimal(15, 4)
+  purchase_net_unit_cost Decimal?  @db.Decimal(25, 4)
+  purchase_unit_cost     Decimal?  @db.Decimal(25, 4)
+  sale_net_unit_price    Decimal   @db.Decimal(25, 4)
+  sale_unit_price        Decimal   @db.Decimal(25, 4)
+  quantity_balance       Decimal?  @db.Decimal(15, 4)
+  inventory              Boolean?  @default(false)
+  overselling            Boolean?  @default(false)
+  option_id              Int?
+  sync                   DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_costing")
+}
+
+model SmaCurrencies {
+  id          Int      @id @default(autoincrement())
+  code        String   @db.VarChar(5)
+  name        String   @db.VarChar(55)
+  rate        Decimal  @db.Decimal(12, 4)
+  auto_update Boolean  @default(false)
+  sync        DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_currencies")
+}
+
+model SmaCustomerGroups {
+  id      Int      @id @default(autoincrement())
+  name    String   @db.VarChar(100)
+  percent Decimal  @db.Decimal(5, 2)
+  sync    DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_customer_groups")
+}
+
+model SmaDateFormat {
+  id   Int      @id @default(autoincrement())
+  js   String   @db.VarChar(20)
+  php  String   @db.VarChar(20)
+  sql  String?  @db.VarChar(20)
+  sync DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_date_format")
+}
+
+model SmaDeliveries {
+  id                Int       @id @default(autoincrement())
+  date              DateTime  @default(now()) @db.Timestamp(0)
+  sale_id           Int
+  do_reference_no   String    @db.VarChar(50)
+  sale_reference_no String    @db.VarChar(50)
+  customer          String    @db.VarChar(55)
+  address           String    @db.VarChar(1000)
+  note              String?   @db.VarChar(1000)
+  status            String?   @db.VarChar(15)
+  attachment        String?   @db.VarChar(50)
+  delivered_by      String?   @db.VarChar(50)
+  received_by       String?   @db.VarChar(50)
+  created_by        Int?
+  updated_by        Int?
+  updated_at        DateTime? @db.Timestamp(0)
+  sync              DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_deliveries")
+}
+
+model SmaDeposits {
+  id         Int       @id @default(autoincrement())
+  date       DateTime  @default(now()) @db.Timestamp(0)
+  company_id Int
+  amount     Decimal   @db.Decimal(25, 4)
+  paid_by    String?   @db.VarChar(50)
+  note       String?   @db.VarChar(255)
+  created_by Int
+  updated_by Int
+  updated_at DateTime? @db.DateTime(0)
+  sync       DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_deposits")
+}
+
+model SmaExpenses {
+  id          Int      @id @default(autoincrement())
+  date        DateTime @default(now()) @db.Timestamp(0)
+  reference   String   @db.VarChar(50)
+  amount      Decimal  @db.Decimal(25, 4)
+  note        String?  @db.VarChar(1000)
+  created_by  String   @db.VarChar(55)
+  attachment  String?  @db.VarChar(55)
+  category_id Int?
+  warehouse_id Int?
+  sync        DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_expenses")
+}
+
+model SmaExpenseCategories {
+  id   Int      @id @default(autoincrement())
+  code String   @db.VarChar(55)
+  name String   @db.VarChar(55)
+  sync DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_expense_categories")
+}
+
+model SmaGiftCards {
+  id          Int      @id @default(autoincrement())
+  date        DateTime @default(now()) @db.Timestamp(0)
+  card_no     String   @unique @db.VarChar(20)
+  value       Decimal  @db.Decimal(25, 4)
+  customer_id Int?
+  customer    String?  @db.VarChar(255)
+  balance     Decimal  @db.Decimal(25, 4)
+  expiry      DateTime? @db.Date
+  created_by  String   @db.VarChar(55)
+  sync        DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_gift_cards")
+}
+
+model SmaGiftCardTopups {
+  id         Int      @id @default(autoincrement())
+  date       DateTime @default(now()) @updatedAt @db.Timestamp(0)
+  card_id    Int
+  amount     Decimal  @db.Decimal(15, 4)
+  created_by Int
+  sync       DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([card_id], map: "card_id")
+  @@map("sma_gift_card_topups")
+}
+
+model SmaGroups {
+  id          Int      @id @default(autoincrement()) @db.MediumInt
+  name        String   @db.VarChar(20)
+  description String   @db.VarChar(100)
+  sync        DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_groups")
+}
+
+model SmaLoginAttempts {
+  id         Int      @id @default(autoincrement()) @db.MediumInt
+  ip_address Bytes    @db.VarBinary(16)
+  login      String   @db.VarChar(100)
+  time       Int?     @db.UnsignedInt
+  sync       DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_login_attempts")
+}
+
+model SmaMigrations {
+  id        Int       @id @default(autoincrement())
+  version BigInt   @db.BigInt
+  sync    DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_migrations")
+}
+
+model SmaNotifications {
+  id        Int       @id @default(autoincrement())
+  comment   String    @db.Text
+  date      DateTime  @default(now()) @db.Timestamp(0)
+  from_date DateTime? @db.DateTime(0)
+  till_date DateTime? @db.DateTime(0)
+  scope     Boolean   @default(true)
+  sync      DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_notifications")
+}
+
+model SmaOrderRef {
+  ref_id Int      @id @default(autoincrement())
+  date   DateTime @db.Date
+  so     Int      @default(1)
+  qu     Int      @default(1)
+  po     Int      @default(1)
+  to     Int      @default(1)
+  pos    Int      @default(1)
+  do     Int      @default(1)
+  pay    Int      @default(1)
+  re     Int      @default(1)
+  rep    Int      @default(1)
+  ex     Int      @default(1)
+  ppay   Int      @default(1)
+  qa     Int?     @default(1)
+  sync   DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_order_ref")
+}
+
+model SmaPayments {
+  id             Int       @id @default(autoincrement())
+  date           DateTime? @default(now()) @db.Timestamp(0)
+  sale_id        Int?
+  return_id      Int?
+  purchase_id    Int?
+  reference_no   String    @db.VarChar(50)
+  transaction_id String?   @db.VarChar(50)
+  paid_by        String    @db.VarChar(20)
+  cheque_no      String?   @db.VarChar(20)
+  cc_no          String?   @db.VarChar(20)
+  cc_holder      String?   @db.VarChar(25)
+  cc_month       String?   @db.VarChar(2)
+  cc_year        String?   @db.VarChar(4)
+  cc_type        String?   @db.VarChar(20)
+  amount         Decimal   @db.Decimal(25, 4)
+  currency       String?   @db.VarChar(3)
+  created_by     Int
+  attachment     String?   @db.VarChar(55)
+  type           String    @db.VarChar(20)
+  note           String?   @db.VarChar(1000)
+  pos_paid       Decimal?  @default(0.0000) @db.Decimal(25, 4)
+  pos_balance    Decimal?  @default(0.0000) @db.Decimal(25, 4)
+  approval_code  String?   @db.VarChar(50)
+  sync           DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_payments")
+}
+
+model SmaPaypal {
+  id                  Int      @id @default(autoincrement())
+  active              Boolean
+  account_email       String   @db.VarChar(255)
+  paypal_currency     String   @default("USD") @db.VarChar(3)
+  fixed_charges       Decimal  @default(2.0000) @db.Decimal(25, 4)
+  extra_charges_my    Decimal  @default(3.9000) @db.Decimal(25, 4)
+  extra_charges_other Decimal  @default(4.4000) @db.Decimal(25, 4)
+  sync                DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_paypal")
+}
+
+model SmaPermissions {
+  id                         Int      @id @default(autoincrement())
+  group_id                   Int
+  products_index             Boolean? @default(false)
+  products_add               Boolean? @default(false)
+  products_edit              Boolean? @default(false)
+  products_delete            Boolean? @default(false)
+  products_cost              Boolean? @default(false)
+  products_price             Boolean? @default(false)
+  quotes_index               Boolean? @default(false)
+  quotes_add                 Boolean? @default(false)
+  quotes_edit                Boolean? @default(false)
+  quotes_pdf                 Boolean? @default(false)
+  quotes_email               Boolean? @default(false)
+  quotes_delete              Boolean? @default(false)
+  sales_index                Boolean? @default(false)
+  sales_add                  Boolean? @default(false)
+  sales_edit                 Boolean? @default(false)
+  sales_pdf                  Boolean? @default(false)
+  sales_email                Boolean? @default(false)
+  sales_delete               Boolean? @default(false)
+  purchases_index            Boolean? @default(false)
+  purchases_add              Boolean? @default(false)
+  purchases_edit             Boolean? @default(false)
+  purchases_pdf              Boolean? @default(false)
+  purchases_email            Boolean? @default(false)
+  purchases_delete           Boolean? @default(false)
+  transfers_index            Boolean? @default(false)
+  transfers_add              Boolean? @default(false)
+  transfers_edit             Boolean? @default(false)
+  transfers_pdf              Boolean? @default(false)
+  transfers_email            Boolean? @default(false)
+  transfers_delete           Boolean? @default(false)
+  customers_index            Boolean? @default(false)
+  customers_add              Boolean? @default(false)
+  customers_edit             Boolean? @default(false)
+  customers_delete           Boolean? @default(false)
+  suppliers_index            Boolean? @default(false)
+  suppliers_add              Boolean? @default(false)
+  suppliers_edit             Boolean? @default(false)
+  suppliers_delete           Boolean? @default(false)
+  sales_deliveries           Boolean? @default(false)
+  sales_add_delivery         Boolean? @default(false)
+  sales_edit_delivery        Boolean? @default(false)
+  sales_delete_delivery      Boolean? @default(false)
+  sales_email_delivery       Boolean? @default(false)
+  sales_pdf_delivery         Boolean? @default(false)
+  sales_gift_cards           Boolean? @default(false)
+  sales_add_gift_card        Boolean? @default(false)
+  sales_edit_gift_card       Boolean? @default(false)
+  sales_delete_gift_card     Boolean? @default(false)
+  pos_index                  Boolean? @default(false)
+  sales_return_sales         Boolean? @default(false)
+  reports_index              Boolean? @default(false)
+  reports_warehouse_stock    Boolean? @default(false)
+  reports_quantity_alerts    Boolean? @default(false)
+  reports_expiry_alerts      Boolean? @default(false)
+  reports_products           Boolean? @default(false)
+  reports_daily_sales        Boolean? @default(false)
+  reports_monthly_sales      Boolean? @default(false)
+  reports_sales              Boolean? @default(false)
+  reports_payments           Boolean? @default(false)
+  reports_purchases          Boolean? @default(false)
+  reports_profit_loss        Boolean? @default(false)
+  reports_customers          Boolean? @default(false)
+  reports_suppliers          Boolean? @default(false)
+  reports_staff              Boolean? @default(false)
+  reports_register           Boolean? @default(false)
+  sales_payments             Boolean? @default(false)
+  purchases_payments         Boolean? @default(false)
+  purchases_expenses         Boolean? @default(false)
+  products_adjustments       Boolean  @default(false)
+  bulk_actions               Boolean  @default(false)
+  customers_deposits         Boolean  @default(false)
+  customers_delete_deposit   Boolean  @default(false)
+  products_barcode           Boolean  @default(false)
+  purchases_return_purchases Boolean  @default(false)
+  reports_expenses           Boolean  @default(false)
+  reports_daily_purchases    Boolean? @default(false)
+  reports_monthly_purchases  Boolean? @default(false)
+  products_stock_count       Boolean? @default(false)
+  edit_price                 Boolean? @default(false)
+  sync                       DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_permissions")
+}
+
+model SmaPosRegister {
+  id                        Int       @id @default(autoincrement())
+  date                      DateTime  @default(now()) @db.Timestamp(0)
+  user_id                   Int
+  cash_in_hand              Decimal   @db.Decimal(25, 4)
+  status                    String    @db.VarChar(10)
+  total_cash                Decimal?  @db.Decimal(25, 4)
+  total_cheques             Int?
+  total_cc_slips            Int?
+  total_cash_submitted      Decimal?  @db.Decimal(25, 4)
+  total_cheques_submitted   Int?
+  total_cc_slips_submitted  Int?
+  note                      String?   @db.Text
+  closed_at                 DateTime? @db.Timestamp(0)
+  transfer_opened_bills     String?   @db.VarChar(50)
+  closed_by                 Int?
+  sync                      DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_pos_register")
+}
+
+model SmaPosSettings {
+  pos_id                    Int      @id
+  cat_limit                 Int
+  pro_limit                 Int
+  default_category          Int
+  default_customer          Int
+  default_biller            Int
+  display_time              String   @default("yes") @db.VarChar(3)
+  cf_title1                 String?  @db.VarChar(255)
+  cf_title2                 String?  @db.VarChar(255)
+  cf_value1                 String?  @db.VarChar(255)
+  cf_value2                 String?  @db.VarChar(255)
+  receipt_printer           String?  @db.VarChar(55)
+  cash_drawer_codes         String?  @db.VarChar(55)
+  focus_add_item            String?  @db.VarChar(55)
+  add_manual_product        String?  @db.VarChar(55)
+  customer_selection        String?  @db.VarChar(55)
+  add_customer              String?  @db.VarChar(55)
+  toggle_category_slider    String?  @db.VarChar(55)
+  toggle_subcategory_slider String?  @db.VarChar(55)
+  cancel_sale               String?  @db.VarChar(55)
+  suspend_sale              String?  @db.VarChar(55)
+  print_items_list          String?  @db.VarChar(55)
+  finalize_sale             String?  @db.VarChar(55)
+  today_sale                String?  @db.VarChar(55)
+  open_hold_bills           String?  @db.VarChar(55)
+  close_register            String?  @db.VarChar(55)
+  keyboard                  Boolean
+  pos_printers              String?  @db.VarChar(255)
+  java_applet               Boolean
+  product_button_color      String   @default("default") @db.VarChar(20)
+  tooltips                  Boolean? @default(true)
+  paypal_pro                Boolean? @default(false)
+  stripe                    Boolean? @default(false)
+  rounding                  Boolean? @default(false)
+  char_per_line             Int?     @default(42) @db.TinyInt
+  pin_code                  String?  @db.VarChar(20)
+  purchase_code             String?  @default("purchase_code") @db.VarChar(100)
+  envato_username           String?  @default("envato_username") @db.VarChar(50)
+  version                   String?  @default("3.0.2.24") @db.VarChar(10)
+  after_sale_page           Boolean? @default(false)
+  item_order                Boolean? @default(false)
+  authorize                 Boolean? @default(false)
+  toggle_brands_slider      String?  @db.VarChar(55)
+  remote_printing           Boolean? @default(true)
+  printer                   Int?
+  order_printers            String?  @db.VarChar(55)
+  auto_print                Boolean? @default(false)
+  customer_details          Boolean?
+  sync                      DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_pos_settings")
+}
+
+model SmaPriceGroups {
+  id   Int      @id @default(autoincrement())
+  name String   @db.VarChar(50)
+  sync DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([name], map: "name")
+  @@map("sma_price_groups")
+}
+
+model SmaPrinters {
+  id            Int     @id @default(autoincrement())
+  title         String  @db.VarChar(55)
+  type          String  @db.VarChar(25)
+  profile       String  @db.VarChar(25)
+  char_per_line Int?    @db.UnsignedTinyInt
+  path          String? @db.VarChar(255)
+  ip_address    Bytes?  @db.VarBinary(45)
+  port          String? @db.VarChar(10)
+  sync          DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_printers")
+}
+
+model SmaProducts {
+  id                Int       @id @default(autoincrement())
+  code              String    @unique @db.VarChar(50)
+  name              String    @db.Char(255)
+  unit              Int?
+  cost              Decimal?  @db.Decimal(25, 4)
+  price             Decimal   @db.Decimal(25, 4)
+  percent_price     Int
+  alert_quantity    Decimal?  @default(20.0000) @db.Decimal(15, 4)
+  image             String?   @default("no_image.png") @db.VarChar(255)
+  category_id       Int
+  subcategory_id    Int?
+  cf1               String?   @db.VarChar(255)
+  cf2               String?   @db.VarChar(255)
+  cf3               String?   @db.VarChar(255)
+  cf4               String?   @db.VarChar(255)
+  cf5               String?   @db.VarChar(255)
+  cf6               String?   @db.VarChar(255)
+  quantity          Decimal?  @default(0.0000) @db.Decimal(15, 4)
+  tax_rate          Int?
+  track_quantity    Boolean?  @default(true)
+  details           String?   @db.VarChar(1000)
+  warehouse         Int?
+  barcode_symbology String    @default("code128") @db.VarChar(55)
+  file              String?   @db.VarChar(100)
+  product_details   String?   @db.Text
+  tax_method        Boolean?  @default(false)
+  type              String    @default("standard") @db.VarChar(55)
+  supplier1         Int?
+  supplier1price    Decimal?  @db.Decimal(25, 4)
+  supplier2         Int?
+  supplier2price    Decimal?  @db.Decimal(25, 4)
+  supplier3         Int?
+  supplier3price    Decimal?  @db.Decimal(25, 4)
+  supplier4         Int?
+  supplier4price    Decimal?  @db.Decimal(25, 4)
+  supplier5         Int?
+  supplier5price    Decimal?  @db.Decimal(25, 4)
+  promotion         Boolean?  @default(false)
+  promo_price       Decimal?  @db.Decimal(25, 4)
+  start_date        DateTime? @db.Date
+  end_date          DateTime? @db.Date
+  supplier1_part_no String?   @db.VarChar(50)
+  supplier2_part_no String?   @db.VarChar(50)
+  supplier3_part_no String?   @db.VarChar(50)
+  supplier4_part_no String?   @db.VarChar(50)
+  supplier5_part_no String?   @db.VarChar(50)
+  sale_unit         Int?
+  purchase_unit     Int?
+  brand             Int?
+  sync              DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([category_id], map: "category_id")
+  @@index([category_id], map: "category_id_2")
+  @@index([unit], map: "unit")
+  @@index([brand], map: "brand")
+  @@map("sma_products")
+}
+
+model SmaProductPhotos {
+  id         Int      @id @default(autoincrement())
+  product_id Int
+  photo      String   @db.VarChar(100)
+  sync       DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_product_photos")
+}
+
+model SmaProductPrices {
+  id             Int      @id @default(autoincrement())
+  product_id     Int
+  price_group_id Int
+  price          Decimal  @db.Decimal(25, 4)
+  sync           DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([product_id], map: "product_id")
+  @@index([price_group_id], map: "price_group_id")
+  @@map("sma_product_prices")
+}
+
+model SmaProductVariants {
+  id         Int      @id @default(autoincrement())
+  product_id Int
+  name       String   @db.VarChar(55)
+  cost       Decimal? @db.Decimal(25, 4)
+  price      Decimal? @db.Decimal(25, 4)
+  quantity   Decimal? @db.Decimal(15, 4)
+  sync       DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_product_variants")
+}
+
+model SmaPurchases {
+  id                     Int       @id @default(autoincrement())
+  reference_no           String    @db.VarChar(55)
+  date                   DateTime  @default(now()) @db.Timestamp(0)
+  supplier_id            Int
+  supplier               String    @db.VarChar(55)
+  warehouse_id           Int
+  note                   String    @db.VarChar(1000)
+  total                  Decimal?  @db.Decimal(25, 4)
+  product_discount       Decimal?  @db.Decimal(25, 4)
+  order_discount_id      String?   @db.VarChar(20)
+  order_discount         Decimal?  @db.Decimal(25, 4)
+  total_discount         Decimal?  @db.Decimal(25, 4)
+  product_tax            Decimal?  @db.Decimal(25, 4)
+  order_tax_id           Int?
+  order_tax              Decimal?  @db.Decimal(25, 4)
+  total_tax              Decimal?  @default(0.0000) @db.Decimal(25, 4)
+  shipping               Decimal?  @default(0.0000) @db.Decimal(25, 4)
+  grand_total            Decimal   @db.Decimal(25, 4)
+  paid                   Decimal   @default(0.0000) @db.Decimal(25, 4)
+  status                 String?   @default("") @db.VarChar(55)
+  payment_status         String?   @default("pending") @db.VarChar(20)
+  created_by             Int?
+  updated_by             Int?
+  updated_at             DateTime? @db.Timestamp(0)
+  attachment             String?   @db.VarChar(55)
+  payment_term           Int?      @db.TinyInt
+  due_date               DateTime? @db.Date
+  return_id              Int?
+  surcharge              Decimal   @default(0.0000) @db.Decimal(25, 4)
+  return_purchase_ref    String?   @db.VarChar(55)
+  purchase_id            Int?
+  return_purchase_total  Decimal   @default(0.0000) @db.Decimal(25, 4)
+  sync                   DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_purchases")
+}
+
+model SmaPurchaseItems {
+  id                Int       @id @default(autoincrement())
+  purchase_id       Int?
+  transfer_id       Int?
+  product_id        Int
+  product_code      String    @db.VarChar(50)
+  product_name      String    @db.VarChar(255)
+  option_id         Int?
+  net_unit_cost     Decimal   @db.Decimal(25, 4)
+  quantity          Decimal   @db.Decimal(15, 4)
+  warehouse_id      Int
+  item_tax          Decimal?  @db.Decimal(25, 4)
+  tax_rate_id       Int?
+  tax               String?   @db.VarChar(20)
+  discount          String?   @db.VarChar(20)
+  item_discount     Decimal?  @db.Decimal(25, 4)
+  expiry            DateTime? @db.Date
+  subtotal          Decimal   @db.Decimal(25, 4)
+  quantity_balance  Decimal?  @default(0.0000) @db.Decimal(15, 4)
+  date              DateTime  @db.Date
+  status            String    @db.VarChar(50)
+  unit_cost         Decimal?  @db.Decimal(25, 4)
+  real_unit_cost    Decimal?  @db.Decimal(25, 4)
+  quantity_received Decimal?  @db.Decimal(15, 4)
+  supplier_part_no  String?   @db.VarChar(50)
+  purchase_item_id  Int?
+  product_unit_id   Int?
+  product_unit_code String?   @db.VarChar(10)
+  unit_quantity     Decimal   @db.Decimal(15, 4)
+  sync              DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([purchase_id], map: "purchase_id")
+  @@index([product_id], map: "product_id")
+  @@map("sma_purchase_items")
+}
+
+model SmaQuotes {
+  id               Int       @id @default(autoincrement())
+  date             DateTime  @default(now()) @db.Timestamp(0)
+  reference_no     String    @db.VarChar(55)
+  customer_id      Int
+  customer         String    @db.VarChar(55)
+  warehouse_id     Int?
+  biller_id        Int
+  biller           String    @db.VarChar(55)
+  note             String?   @db.VarChar(1000)
+  internal_note    String?   @db.VarChar(1000)
+  total            Decimal   @db.Decimal(25, 4)
+  product_discount Decimal?  @default(0.0000) @db.Decimal(25, 4)
+  order_discount   Decimal?  @db.Decimal(25, 4)
+  order_discount_id String?   @db.VarChar(20)
+  total_discount   Decimal?  @default(0.0000) @db.Decimal(25, 4)
+  product_tax      Decimal?  @default(0.0000) @db.Decimal(25, 4)
+  order_tax_id     Int?
+  order_tax        Decimal?  @db.Decimal(25, 4)
+  total_tax        Decimal?  @db.Decimal(25, 4)
+  shipping         Decimal?  @default(0.0000) @db.Decimal(25, 4)
+  grand_total      Decimal   @db.Decimal(25, 4)
+  status           String?   @db.VarChar(20)
+  created_by       Int?
+  updated_by       Int?
+  updated_at       DateTime? @db.Timestamp(0)
+  attachment       String?   @db.VarChar(55)
+  supplier_id      Int?
+  supplier         String?   @db.VarChar(55)
+  sync             DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_quotes")
+}
+
+model SmaQuoteItems {
+  id                Int      @id @default(autoincrement())
+  quote_id          Int
+  product_id        Int
+  product_code      String   @db.VarChar(55)
+  product_name      String   @db.VarChar(255)
+  product_type      String?  @db.VarChar(20)
+  option_id         Int?
+  net_unit_price    Decimal  @db.Decimal(25, 4)
+  unit_price        Decimal? @db.Decimal(25, 4)
+  quantity          Decimal  @db.Decimal(15, 4)
+  warehouse_id      Int?
+  item_tax          Decimal? @db.Decimal(25, 4)
+  tax_rate_id       Int?
+  tax               String?  @db.VarChar(55)
+  discount          String?  @db.VarChar(55)
+  item_discount     Decimal? @db.Decimal(25, 4)
+  subtotal          Decimal  @db.Decimal(25, 4)
+  serial_no         String?  @db.VarChar(255)
+  real_unit_price   Decimal? @db.Decimal(25, 4)
+  product_unit_id   Int?
+  product_unit_code String?  @db.VarChar(10)
+  unit_quantity     Decimal  @db.Decimal(15, 4)
+  sync              DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([quote_id], map: "quote_id")
+  @@index([product_id], map: "product_id")
+  @@map("sma_quote_items")
+}
+
+model SmaSales {
+  id                Int       @id @default(autoincrement())
+  date              DateTime  @default(now()) @db.Timestamp(0)
+  reference_no      String    @db.VarChar(55)
+  customer_id       Int
+  customer          String    @db.VarChar(55)
+  biller_id         Int
+  biller            String    @db.VarChar(55)
+  warehouse_id      Int?
+  note              String?   @db.VarChar(1000)
+  staff_note        String?   @db.VarChar(1000)
+  total             Decimal   @db.Decimal(25, 4)
+  product_discount  Decimal?  @default(0.0000) @db.Decimal(25, 4)
+  order_discount_id String?   @db.VarChar(20)
+  total_discount    Decimal?  @default(0.0000) @db.Decimal(25, 4)
+  order_discount    Decimal?  @default(0.0000) @db.Decimal(25, 4)
+  product_tax       Decimal?  @default(0.0000) @db.Decimal(25, 4)
+  order_tax_id      Int?
+  order_tax         Decimal?  @default(0.0000) @db.Decimal(25, 4)
+  total_tax         Decimal?  @default(0.0000) @db.Decimal(25, 4)
+  shipping          Decimal?  @default(0.0000) @db.Decimal(25, 4)
+  grand_total       Decimal   @db.Decimal(25, 4)
+  sale_status       String?   @db.VarChar(20)
+  payment_status    String?   @db.VarChar(20)
+  payment_term      Int?      @db.TinyInt
+  due_date          DateTime? @db.Date
+  created_by        Int?
+  updated_by        Int?
+  updated_at        DateTime? @db.Timestamp(0)
+  total_items       Int?      @db.TinyInt
+  pos               Boolean   @default(false)
+  paid              Decimal?  @default(0.0000) @db.Decimal(25, 4)
+  return_id         Int?
+  surcharge         Decimal   @default(0.0000) @db.Decimal(25, 4)
+  attachment        String?   @db.VarChar(55)
+  return_sale_ref   String?   @db.VarChar(55)
+  sale_id           Int?
+  return_sale_total Decimal   @default(0.0000) @db.Decimal(25, 4)
+  rounding          Decimal?  @db.Decimal(10, 4)
+  suspend_note      String?   @db.VarChar(255)
+  sync              DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_sales")
+}
+
+model SmaSaleItems {
+  id                Int      @id @default(autoincrement())
+  sale_id           Int      @db.UnsignedInt
+  product_id        Int      @db.UnsignedInt
+  product_code      String   @db.VarChar(55)
+  product_name      String   @db.VarChar(255)
+  product_type      String?  @db.VarChar(20)
+  option_id         Int?
+  net_unit_price    Decimal  @db.Decimal(25, 4)
+  unit_price        Decimal? @db.Decimal(25, 4)
+  quantity          Decimal  @db.Decimal(15, 4)
+  warehouse_id      Int?
+  item_tax          Decimal? @db.Decimal(25, 4)
+  tax_rate_id       Int?
+  tax               String?  @db.VarChar(55)
+  discount          String?  @db.VarChar(55)
+  item_discount     Decimal? @db.Decimal(25, 4)
+  subtotal          Decimal  @db.Decimal(25, 4)
+  serial_no         String?  @db.VarChar(255)
+  real_unit_price   Decimal? @db.Decimal(25, 4)
+  sale_item_id      Int?
+  product_unit_id   Int?
+  product_unit_code String?  @db.VarChar(10)
+  unit_quantity     Decimal  @db.Decimal(15, 4)
+  comment           String?  @db.VarChar(255)
+  sync              DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([sale_id], map: "sale_id")
+  @@index([product_id], map: "product_id")
+  @@index([product_id, sale_id], map: "product_id_2")
+  @@index([sale_id, product_id], map: "sale_id_2")
+  @@map("sma_sale_items")
+}
+
+model SmaSessions {
+  id         String   @id @db.VarChar(40)
+  ip_address String   @db.VarChar(45)
+  timestamp  Int      @default(0) @db.UnsignedInt
+  data       Bytes    @db.Blob
+  sync       DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([timestamp], map: "ci_sessions_timestamp")
+  @@map("sma_sessions")
+}
+
+model SmaSettings {
+  setting_id           Int       @id
+  logo                 String    @db.VarChar(255)
+  logo2                String    @db.VarChar(255)
+  site_name            String    @db.VarChar(55)
+  language             String    @db.VarChar(20)
+  default_warehouse    Int
+  accounting_method    Int       @default(0) @db.TinyInt
+  default_currency     String    @db.VarChar(3)
+  default_tax_rate     Int
+  rows_per_page        Int
+  version              String    @default("1.0") @db.VarChar(10)
+  default_tax_rate2    Int       @default(0)
+  dateformat           Int
+  sales_prefix         String?   @db.VarChar(20)
+  quote_prefix         String?   @db.VarChar(20)
+  purchase_prefix      String?   @db.VarChar(20)
+  transfer_prefix      String?   @db.VarChar(20)
+  delivery_prefix      String?   @db.VarChar(20)
+  payment_prefix       String?   @db.VarChar(20)
+  return_prefix        String?   @db.VarChar(20)
+  returnp_prefix       String?   @db.VarChar(20)
+  expense_prefix       String?   @db.VarChar(20)
+  item_addition        Boolean   @default(false)
+  theme                String    @db.VarChar(20)
+  product_serial       Int       @db.TinyInt
+  default_discount     Int
+  product_discount     Boolean   @default(false)
+  discount_method      Int       @db.TinyInt
+  tax1                 Int       @db.TinyInt
+  tax2                 Int       @db.TinyInt
+  overselling          Boolean   @default(false)
+  restrict_user        Int       @default(0) @db.TinyInt
+  restrict_calendar    Int       @default(0) @db.TinyInt
+  timezone             String?   @db.VarChar(100)
+  iwidth               Int       @default(0)
+  iheight              Int
+  twidth               Int
+  theight              Int
+  watermark            Boolean?
+  reg_ver              Boolean?
+  allow_reg            Boolean?
+  reg_notification     Boolean?
+  auto_reg             Boolean?
+  protocol             String    @default("mail") @db.VarChar(20)
+  mailpath             String?   @default("/usr/sbin/sendmail") @db.VarChar(55)
+  smtp_host            String?   @db.VarChar(100)
+  smtp_user            String?   @db.VarChar(100)
+  smtp_pass            String?   @db.VarChar(255)
+  smtp_port            String?   @default("25") @db.VarChar(10)
+  smtp_crypto          String?   @db.VarChar(10)
+  corn                 DateTime? @db.DateTime(0)
+  customer_group       Int
+  default_email        String    @db.VarChar(100)
+  mmode                Boolean
+  bc_fix               Int       @default(0) @db.TinyInt
+  auto_detect_barcode  Boolean   @default(false)
+  captcha              Boolean   @default(true)
+  reference_format     Boolean   @default(true)
+  racks                Boolean?  @default(false)
+  attributes           Boolean   @default(false)
+  product_expiry       Boolean   @default(false)
+  decimals             Int       @default(2) @db.TinyInt
+  qty_decimals         Int       @default(2) @db.TinyInt
+  decimals_sep         String    @default(".") @db.VarChar(2)
+  thousands_sep        String    @default(",") @db.VarChar(2)
+  invoice_view         Boolean?  @default(false)
+  default_biller       Int?
+  envato_username      String?   @db.VarChar(50)
+  purchase_code        String?   @db.VarChar(100)
+  rtl                  Boolean?  @default(false)
+  each_spent           Decimal?  @db.Decimal(15, 4)
+  ca_point             Int?      @db.TinyInt
+  each_sale            Decimal?  @db.Decimal(15, 4)
+  sa_point             Int?      @db.TinyInt
+  update               Boolean?  @default(false)
+  sac                  Boolean?  @default(false)
+  display_all_products Boolean?  @default(false)
+  display_symbol       Boolean?
+  symbol               String?   @db.VarChar(50)
+  remove_expired       Boolean?  @default(false)
+  barcode_separator    String    @default("_") @db.VarChar(2)
+  set_focus            Boolean   @default(false)
+  price_group          Int?
+  barcode_img          Boolean   @default(true)
+  ppayment_prefix      String?   @default("POP") @db.VarChar(20)
+  disable_editing      Int?      @default(90) @db.SmallInt
+  qa_prefix            String?   @db.VarChar(55)
+  update_cost          Boolean?
+  profit_percent       Int
+  sync                 DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_settings")
+}
+
+model SmaSkrill {
+  id                  Int      @id @default(autoincrement())
+  active              Boolean
+  account_email       String   @default("testaccount2@tests.com") @db.VarChar(255)
+  secret_word         String   @default("mbtest") @db.VarChar(20)
+  skrill_currency     String   @default("USD") @db.VarChar(3)
+  fixed_charges       Decimal  @default(0.0000) @db.Decimal(25, 4)
+  extra_charges_my    Decimal  @default(0.0000) @db.Decimal(25, 4)
+  extra_charges_other Decimal  @default(0.0000) @db.Decimal(25, 4)
+  sync                DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_skrill")
+}
+
+model SmaStockCounts {
+  id             Int       @id @default(autoincrement())
+  date           DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+  reference_no   String    @db.VarChar(55)
+  warehouse_id   Int
+  type           String    @db.VarChar(10)
+  initial_file   String    @db.VarChar(50)
+  final_file     String?   @db.VarChar(50)
+  brands         String?   @db.VarChar(50)
+  brand_names    String?   @db.VarChar(100)
+  categories     String?   @db.VarChar(50)
+  category_names String?   @db.VarChar(100)
+  note           String?   @db.Text
+  products       Int?
+  rows           Int?
+  differences    Int?
+  matches        Int?
+  missing        Int?
+  created_by     Int
+  updated_by     Int?
+  updated_at     DateTime? @db.DateTime(0)
+  finalized      Boolean?
+  sync           DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([warehouse_id], map: "warehouse_id")
+  @@map("sma_stock_counts")
+}
+
+model SmaStockCountItems {
+  id                 Int      @id @default(autoincrement())
+  stock_count_id     Int
+  product_id         Int
+  product_code       String?  @db.VarChar(50)
+  product_name       String?  @db.VarChar(255)
+  product_variant    String?  @db.VarChar(55)
+  product_variant_id Int?
+  expected           Decimal  @db.Decimal(15, 4)
+  counted            Decimal  @db.Decimal(15, 4)
+  cost               Decimal  @db.Decimal(25, 4)
+  sync               DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([stock_count_id], map: "stock_count_id")
+  @@index([product_id], map: "product_id")
+  @@map("sma_stock_count_items")
+}
+
+model SmaSuspendedBills {
+  id                Int      @id @default(autoincrement())
+  date              DateTime @default(now()) @db.Timestamp(0)
+  customer_id       Int
+  customer          String?  @db.VarChar(55)
+  count             Int
+  order_discount_id String?  @db.VarChar(20)
+  order_tax_id      Int?
+  total             Decimal  @db.Decimal(25, 4)
+  biller_id         Int?
+  warehouse_id      Int?
+  created_by        Int
+  suspend_note      String?  @db.VarChar(255)
+  shipping          Decimal? @default(0.0000) @db.Decimal(15, 4)
+  sync              DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_suspended_bills")
+}
+
+model SmaSuspendedItems {
+  id                Int      @id @default(autoincrement())
+  suspend_id        Int      @db.UnsignedInt
+  product_id        Int      @db.UnsignedInt
+  product_code      String   @db.VarChar(55)
+  product_name      String   @db.VarChar(255)
+  net_unit_price    Decimal  @db.Decimal(25, 4)
+  unit_price        Decimal  @db.Decimal(25, 4)
+  quantity          Decimal? @default(0.0000) @db.Decimal(15, 4)
+  warehouse_id      Int?
+  item_tax          Decimal? @db.Decimal(25, 4)
+  tax_rate_id       Int?
+  tax               String?  @db.VarChar(55)
+  discount          String?  @db.VarChar(55)
+  item_discount     Decimal? @db.Decimal(25, 4)
+  subtotal          Decimal  @db.Decimal(25, 4)
+  serial_no         String?  @db.VarChar(255)
+  option_id         Int?
+  product_type      String?  @db.VarChar(20)
+  real_unit_price   Decimal? @db.Decimal(25, 4)
+  product_unit_id   Int?
+  product_unit_code String?  @db.VarChar(10)
+  unit_quantity     Decimal  @db.Decimal(15, 4)
+  comment           String?  @db.VarChar(255)
+  sync              DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_suspended_items")
+}
+
+model SmaTaxRates {
+  id   Int      @id @default(autoincrement())
+  name String   @db.VarChar(55)
+  code String?  @db.VarChar(10)
+  rate Decimal  @db.Decimal(12, 4)
+  type String   @db.VarChar(50)
+  sync DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_tax_rates")
+}
+
+model SmaTransfers {
+  id                  Int      @id @default(autoincrement())
+  transfer_no         String   @db.VarChar(55)
+  date                DateTime @default(now()) @db.Timestamp(0)
+  from_warehouse_id   Int
+  from_warehouse_code String   @db.VarChar(55)
+  from_warehouse_name String   @db.VarChar(55)
+  to_warehouse_id     Int
+  to_warehouse_code   String   @db.VarChar(55)
+  to_warehouse_name   String   @db.VarChar(55)
+  note                String?  @db.VarChar(1000)
+  total               Decimal? @db.Decimal(25, 4)
+  total_tax           Decimal? @db.Decimal(25, 4)
+  grand_total         Decimal? @db.Decimal(25, 4)
+  created_by          String?  @db.VarChar(255)
+  status              String   @default("pending") @db.VarChar(55)
+  shipping            Decimal  @default(0.0000) @db.Decimal(25, 4)
+  attachment          String?  @db.VarChar(55)
+  sync                DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_transfers")
+}
+
+model SmaTransferItems {
+  id                Int       @id @default(autoincrement())
+  transfer_id       Int
+  product_id        Int
+  product_code      String    @db.VarChar(55)
+  product_name      String    @db.VarChar(255)
+  option_id         Int?
+  expiry            DateTime? @db.Date
+  quantity          Decimal   @db.Decimal(15, 4)
+  tax_rate_id       Int?
+  tax               String?   @db.VarChar(55)
+  item_tax          Decimal?  @db.Decimal(25, 4)
+  net_unit_cost     Decimal?  @db.Decimal(25, 4)
+  subtotal          Decimal?  @db.Decimal(25, 4)
+  quantity_balance  Decimal   @db.Decimal(15, 4)
+  unit_cost         Decimal?  @db.Decimal(25, 4)
+  real_unit_cost    Decimal?  @db.Decimal(25, 4)
+  date              DateTime? @db.Date
+  warehouse_id      Int?
+  product_unit_id   Int?
+  product_unit_code String?   @db.VarChar(10)
+  unit_quantity     Decimal   @db.Decimal(15, 4)
+  sync              DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([transfer_id], map: "transfer_id")
+  @@index([product_id], map: "product_id")
+  @@map("sma_transfer_items")
+}
+
+model SmaUnits {
+  id              Int      @id @default(autoincrement())
+  code            String   @db.VarChar(10)
+  name            String   @db.VarChar(55)
+  base_unit       Int?
+  operator        String?  @db.VarChar(1)
+  unit_value      String?  @db.VarChar(55)
+  operation_value String?  @db.VarChar(55)
+  sync            DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([base_unit], map: "base_unit")
+  @@map("sma_units")
+}
+
+model SmaUsers {
+  id                      Int       @id @default(autoincrement()) @db.UnsignedInt
+  last_ip_address         Bytes?    @db.VarBinary(45)
+  ip_address              Bytes     @db.VarBinary(45)
+  username                String    @db.VarChar(100)
+  password                String    @db.VarChar(40)
+  salt                    String?   @db.VarChar(40)
+  email                   String    @db.VarChar(100)
+  activation_code         String?   @db.VarChar(40)
+  forgotten_password_code String?   @db.VarChar(40)
+  forgotten_password_time Int?      @db.UnsignedInt
+  remember_code           String?   @db.VarChar(40)
+  created_on              Int       @db.UnsignedInt
+  last_login              Int?      @db.UnsignedInt
+  active                  Boolean?
+  first_name              String?   @db.VarChar(50)
+  last_name               String?   @db.VarChar(50)
+  company                 String?   @db.VarChar(100)
+  phone                   String?   @db.VarChar(20)
+  avatar                  String?   @db.VarChar(55)
+  gender                  String?   @db.VarChar(20)
+  group_id                Int       @db.UnsignedInt
+  warehouse_id            Int?      @db.UnsignedInt
+  biller_id               Int?      @db.UnsignedInt
+  company_id              Int?
+  show_cost               Boolean?  @default(false)
+  show_price              Boolean?  @default(false)
+  award_points            Int?      @default(0)
+  view_right              Boolean   @default(false)
+  edit_right              Boolean   @default(false)
+  allow_discount          Boolean?  @default(false)
+  sync                    DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([group_id, warehouse_id, biller_id], map: "group_id")
+  @@index([group_id, company_id], map: "group_id_2")
+  @@map("sma_users")
+}
+
+model SmaUserLogins {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  company_id Int?
+  ip_address Bytes    @db.VarBinary(16)
+  login      String   @db.VarChar(100)
+  time       DateTime? @default(now()) @db.Timestamp(0)
+  sync       DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_user_logins")
+}
+
+model SmaVariants {
+  id   Int      @id @default(autoincrement())
+  name String   @db.VarChar(55)
+  sync DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_variants")
+}
+
+model SmaWarehouses {
+  id             Int      @id @default(autoincrement())
+  code           String   @db.VarChar(50)
+  name           String   @db.VarChar(255)
+  address        String   @db.VarChar(255)
+  map            String?  @db.VarChar(255)
+  phone          String?  @db.VarChar(55)
+  email          String?  @db.VarChar(55)
+  price_group_id Int?
+  sync           DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@map("sma_warehouses")
+}
+
+model SmaWarehousesProducts {
+  id           Int      @id @default(autoincrement())
+  product_id   Int
+  warehouse_id Int
+  quantity     Decimal  @db.Decimal(15, 4)
+  rack         String?  @db.VarChar(55)
+  avg_cost     Decimal  @db.Decimal(25, 4)
+  sync         DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([product_id], map: "product_id")
+  @@index([warehouse_id], map: "warehouse_id")
+  @@map("sma_warehouses_products")
+}
+
+model SmaWarehousesProductsVariants {
+  id           Int      @id @default(autoincrement())
+  option_id    Int
+  product_id   Int
+  warehouse_id Int
+  quantity     Decimal  @db.Decimal(15, 4)
+  rack         String?  @db.VarChar(55)
+  sync         DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  @@index([option_id], map: "option_id")
+  @@index([product_id], map: "product_id")
+  @@index([warehouse_id], map: "warehouse_id")
+  @@map("sma_warehouses_products_variants")
+}
