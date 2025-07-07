@@ -409,7 +409,7 @@ export default function WarehouseDetailsPage() {
                 </Card>
 
                 {/* Product Categories */}
-                <Card>
+                {/* <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <PieChartIcon className="h-5 w-5" />
@@ -435,7 +435,7 @@ export default function WarehouseDetailsPage() {
                     </ResponsiveContainer>
                     
                   </CardContent>
-                </Card>
+                </Card> */}
               </div>
 
               {/* Warehouse Information */}
