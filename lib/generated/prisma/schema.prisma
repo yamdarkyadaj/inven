@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum mode {
+  dark
+  light
+}
+
+enum role {
+  admin
+  sales
+  purchase
+}
+
+model superAdmin {
+  id       String @id @default(uuid())
+  userName String
+  email    String @unique
+  password String
+  role     String
+}
+
+model users {
+  id           String      @id @default(uuid())
+  email        String
+  userName     String      @unique
+  phoneNumber  String
+  password     String
+  role         role
+  warehouses   warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
+  warehousesId String?
+  lastLogin    DateTime
+}
+
+model settings {
+  setting_id      Int    @id
+  companyName     String
+  companyEmail    String
+  phoneNumber     String
+  websiteURL      String
+  address         String
+  logoUrl         String
+  defaultCurrency String
+  taxRate         Int
+  mode            mode
+  itermsPerPage   Int
+
+  @@map("sma_settings")
+}
+
+model warehouses {
+  id            String  @id @default(uuid())
+  warehouseCode String  @unique
+  name          String
+  phoneNumber   String
+  email         String
+  description   String?
+  address       String
+  users         users[]
+}
