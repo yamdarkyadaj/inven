@@ -39,112 +39,33 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import fetchData from "@/hooks/fetch-data"
-import { useConnectionCheck } from "@/hooks/useConnectionCheck"
+import { NavbarItem } from "@heroui/navbar"
+import { Button } from "@heroui/button"
+import { signOut } from "next-auth/react"
 
 // Navigation data for inventory management system
 const navigationData = {
   main: [
     {
       title: "Dashboard",
-      url: "/dashboard",
+      url: "/sup-admin/dashboard",
       icon: Home,
     },
   ],
   inventory: [
-    {
-      title: "Products",
-      icon: Package,
-      items: [
-        {
-          title: "Add Product",
-          url: "/products/add",
-          icon: Plus,
-        },
-        {
-          title: "View Products",
-          url: "/products/list",
-          icon: Eye,
-        },
-      ],
-    },
+
     {
       title: "Warehouses",
       icon: Warehouse,
       items: [
         {
           title: "Add Warehouse",
-          url: "/warehouses/add",
+          url: "/sup-admin/warehouses/add",
           icon: Plus,
         },
         {
           title: "View Warehouses",
-          url: "/warehouses/list",
-          icon: Eye,
-        },
-      ],
-    },
-  ],
-  transactions: [
-    {
-      title: "Sales",
-      icon: ShoppingCart,
-      items: [
-        {
-          title: "Add Sale",
-          url: "/sales/add",
-          icon: Plus,
-        },
-        {
-          title: "View Sales",
-          url: "/sales/list",
-          icon: Eye,
-        },
-      ],
-    },
-    {
-      title: "Quotations",
-      icon: FileText,
-      items: [
-        {
-          title: "Add Quotation",
-          url: "/quotations/add",
-          icon: Plus,
-        },
-        {
-          title: "View Quotations",
-          url: "/quotations/list",
-          icon: Eye,
-        },
-      ],
-    },
-    {
-      title: "Purchases",
-      icon: Truck,
-      items: [
-        {
-          title: "Add Purchase",
-          url: "/purchases/add",
-          icon: Plus,
-        },
-        {
-          title: "View Purchases",
-          url: "/purchases/list",
-          icon: Eye,
-        },
-      ],
-    },
-    {
-      title: "Transfers",
-      icon: ArrowLeftRight,
-      items: [
-        {
-          title: "Add Transfer",
-          url: "/transfers/add",
-          icon: Plus,
-        },
-        {
-          title: "View Transfers",
-          url: "/transfers/list",
+          url: "/sup-admin/warehouses/list",
           icon: Eye,
         },
       ],
@@ -157,17 +78,17 @@ const navigationData = {
       items: [
         {
           title: "Users",
-          url: "/people/users",
+          url: "/sup-admin/people/users",
           icon: User,
         },
         {
           title: "Customers",
-          url: "/people/customers",
+          url: "/sup-admin/people/customers",
           icon: UserCheck,
         },
         {
           title: "Suppliers",
-          url: "/people/suppliers",
+          url: "/sup-admin/people/suppliers",
           icon: Building2,
         },
       ],
@@ -239,6 +160,7 @@ function NavSection({
                         </SidebarMenuSubItem>
                       ))}
                     </SidebarMenuSub>
+                    
                   </CollapsibleContent>
                 </SidebarMenuItem>
               </Collapsible>
@@ -254,6 +176,7 @@ function NavSection({
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
+            
           )
         })}
       </SidebarMenu>
@@ -261,7 +184,7 @@ function NavSection({
   )
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   
   const {data,loading,error} = fetchData("/api/settings")
 
@@ -281,7 +204,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{data?.companyName}</span>
-                  <span className="truncate text-xs">Management System</span>
+                  <span className="truncate text-xs">Super Admin Management System</span>
                   {/* {isOnline ? "online" : "ofline"} */}
                 </div>
               </a>
@@ -292,9 +215,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavSection title="Overview" items={navigationData.main} />
         <NavSection title="Inventory" items={navigationData.inventory} />
-        <NavSection title="Transactions" items={navigationData.transactions} />
         <NavSection title="People" items={navigationData.people} />
         <NavSection title="System" items={navigationData.system} />
+        <Button onClick={()=>signOut()} className="bg-red-500 m-2">Logout</Button>
       </SidebarContent>
       <SidebarRail />
     </Sidebar>

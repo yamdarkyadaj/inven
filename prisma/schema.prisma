@@ -10,14 +10,64 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
-model SmaSettings {
-  setting_id           Int       @id
-  logo                 String    @db.VarChar(255)
-  logo2                String?    @db.VarChar(255)
-  site_name            String    @db.VarChar(55)
-  
+
+enum mode {
+  dark
+  light
+}
+
+enum role {
+  admin
+  sales
+  purchase
+}
+
+model superAdmin {
+  id       String @id @default(uuid())
+  userName String
+  email    String @unique
+  password String
+  role     String
+}
+
+model users {
+  id           String      @id @default(uuid())
+  email        String      
+  userName     String      @unique
+  phoneNumber  String
+  password     String
+  role         role
+  warehouses   warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
+  warehousesId String?
+  lastLogin DateTime
+}
+
+model settings {
+  setting_id      Int    @id
+  companyName     String
+  companyEmail    String
+  phoneNumber     String
+  websiteURL      String
+  address         String
+  logoUrl         String
+  defaultCurrency String
+  taxRate         Int
+  mode            mode
+  itermsPerPage   Int
+
   @@map("sma_settings")
+}
+
+model warehouses {
+  id            String  @id @default(uuid())
+  warehouseCode String  @unique
+  name          String
+  phoneNumber   String
+  email         String
+  description   String?
+  address       String
+  users         users[]
 }

@@ -78,10 +78,7 @@ export default function AddProductPage() {
                       </Select>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="brand">Brand</Label>
-                      <Input id="brand" placeholder="Enter brand name" />
-                    </div>
+                    
                   </div>
 
                   <div className="space-y-2">
@@ -137,7 +134,12 @@ export default function AddProductPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="selling-price">Selling Price *</Label>
+                      <Label htmlFor="selling-price">WholeSale Selling Price *</Label>
+                      <Input id="selling-price" type="number" placeholder="0.00" />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="selling-price">Retail Selling Price *</Label>
                       <Input id="selling-price" type="number" placeholder="0.00" />
                     </div>
                   </div>
