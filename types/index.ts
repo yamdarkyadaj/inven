@@ -12,6 +12,7 @@ declare module "next-auth" {
       email?: string | null
       image?: string | null
       role?: string // ✅ Add this
+      warehousesId?: string
     }
   }
 }

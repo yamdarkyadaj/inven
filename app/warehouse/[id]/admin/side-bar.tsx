@@ -184,7 +184,7 @@ export function WarehouseAppSidebar({ ...props }: React.ComponentProps<typeof Si
               items: [
                 {
                   title: "Add Purchase",
-                  url: "/purchases/add",
+                  url: `${endPoint}/purchases/add`,
                   icon: Plus,
                 },
                 {

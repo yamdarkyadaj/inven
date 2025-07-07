@@ -164,23 +164,23 @@ export default function AddSalePage() {
 
   // Filter products based on search
   useEffect(() => {
+    if (!products || products.length === 0) return
     if (!productSearch) {
       setFilteredProducts(products)
       return
     }
-
-    const filtered = products.filter(
-      (product) =>
-        product.name.toLowerCase().includes(productSearch.toLowerCase()) ||
-        product.code.toLowerCase().includes(productSearch.toLowerCase()) ||
-        product.barcode.includes(productSearch) ||
-        product.brand.toLowerCase().includes(productSearch.toLowerCase()) ||
-        product.category.toLowerCase().includes(productSearch.toLowerCase()),
+  
+    const filtered = products.filter((product) =>
+      product.name.toLowerCase().includes(productSearch.toLowerCase()) ||
+      product.code.toLowerCase().includes(productSearch.toLowerCase()) ||
+      product.barcode.includes(productSearch) ||
+      product.brand.toLowerCase().includes(productSearch.toLowerCase()) ||
+      product.category.toLowerCase().includes(productSearch.toLowerCase())
     )
+  
     setFilteredProducts(filtered)
-
-  console.log(filtered)
-  }, [productSearch])
+  }, [productSearch, products])
+  
 
   // Handle barcode scanning/input
   useEffect(() => {
