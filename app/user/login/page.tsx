@@ -24,11 +24,15 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
 import toast from "react-hot-toast"
+import { signIn, useSession } from "next-auth/react"
+import { redirect } from "next/dist/server/api-utils"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
+  const {data} = useSession()
 
   const [userName,setUserName] = useState<any>()
   const [password,setPassword] = useState<any>()
@@ -36,7 +40,10 @@ export function LoginForm({
 
   const handleFormSubmit = async (e:React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
-    
+    const res = await signIn("credentials",{email:userName,password:password,redirect:false})
+    console.log(res)
+    console.log(data)
+
    
   }
 
@@ -44,7 +51,7 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+          <CardTitle>User Login to your account</CardTitle>
           <CardDescription>
             Enter your email below to login to your account
           </CardDescription>

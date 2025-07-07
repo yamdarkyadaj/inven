@@ -19,12 +19,12 @@ secret: process.env.NEXTAUTH_SECRET,
         console.log("Credentials received:", credentials);
         const referer = req.headers?.referer || "";
 
-        if (referer.includes("/warehouse/login")) {
+        if (referer.includes("/user/login")) {
           // ✅ Warehouse login logic
-          const user = await prisma.users.findUnique({where:{email}})
+          const user = await prisma.users.findUnique({where:{userName:email}})
           if(!user) return null
           const compareHash = await bcrypt.compare(password,user.password)
-          
+
           if(compareHash){
             return user
           }else{
@@ -51,6 +51,20 @@ secret: process.env.NEXTAUTH_SECRET,
     strategy: "jwt",
   },
   callbacks: {
+    // async signIn({ user }) {
+    //     // Update last login
+    //     if (user?.email) {
+    //       try {
+    //         await prisma.users.update({
+    //           where: { userName: user.email },
+    //           data: { lastLogin: new Date() },
+    //         })
+    //       } catch (error) {
+    //         console.error("Failed to update last login:", error)
+    //       }
+    //     }
+    //     return true
+    //   },
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role;
@@ -60,7 +74,8 @@ secret: process.env.NEXTAUTH_SECRET,
     async session({ session, token }) {
       session.user.role = token.role;
       return session;
-    }
+    },
+    
   }
 });
 

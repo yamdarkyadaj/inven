@@ -42,7 +42,7 @@ model users {
   role         role
   warehouses   warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
   warehousesId String?
-  lastLogin DateTime
+  lastLogin DateTime?
 }
 
 model settings {

@@ -11,9 +11,24 @@ export default function SupAdminLayout({children}:{children:React.ReactNode}){
     const router = useRouter()
     
     useEffect(()=>{
-    
 
-    if(status == "unauthenticated") router.push("/login")
+        if(status == "authenticated"){
+            if(data && data?.user?.role !== "supaAdmina"){
+                router.replace("/login")
+                console.log("auth and notadmin")
+                console.log(data)
+            }
+        }
+        if(status == "unauthenticated"){
+           
+                router.replace("/login")
+                console.log("not auth")
+            
+        }
+
+    
+    // if(data?.role != "supaAdmina" && status == "authenticated") router.replace("/login")
+    // if(status == "unauthenticated") router.push("/login")
     },[status,data])
        
     // if(data?.role != "supaAdmina") return router.replace("/login")

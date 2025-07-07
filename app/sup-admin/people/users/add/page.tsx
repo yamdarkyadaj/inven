@@ -68,18 +68,35 @@ export default function AddUserPage() {
   async function handleFormSubmit(e:React.ChangeEvent<HTMLFormElement>){
     e.preventDefault()
     
-    const res = await axios.post("/api/users",{formData})
-    console.log(res.data)
-    if(res.status == 401){
-      toast.error("Username Exists")
-    }
-    if(res.status == 500){
-      toast.error("Error")
-    }
-    if(res.status == 200){
-      toast.success("User Created")
-      setFormData(initField)
-    }
+    await axios.post("/api/users",{formData}).then((data)=>{
+      console.log(data)
+    }).catch((error)=>{
+      if(error.response){
+        if(error.response.status == 401){
+          toast.error("Username Exists")
+        }
+        if(error.response.status == 500){
+          toast.error("Error")
+        }
+        if(error.response.status == 200){
+          toast.success("User Created")
+          setFormData(initField)
+        }
+      }
+    })
+    
+    // if(res.status == 401){
+    //   toast.error("Username Exists")
+    // }
+    // if(res.status == 500){
+    //   toast.error("Error")
+    // }
+    // if(res.status == 200){
+    //   toast.success("User Created")
+    //   setFormData(initField)
+    // }
+
+    // console.log(res.data)
 
   }
 

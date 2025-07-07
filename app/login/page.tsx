@@ -31,9 +31,12 @@ export default function LoginForm({
   useEffect(()=>{
 
     if(status === "authenticated"){
-      router.push("/sup-admin/dashboard")
+      if(data && data?.user?.role === "supaAdmina"){
+        router.push("/sup-admin/dashboard")
+      }
     }
-  },[status])
+    console.log(data)
+  },[status,data])
 
   const [userName,setUserName] = useState("")
   const [password,setPassword] = useState("")
