@@ -18,7 +18,7 @@ export async function POST(req:NextRequest){
                 userName,email,password:hash,role,phoneNumber,warehousesId:warehouse
             }
         }) 
-     return NextResponse.json(user,{status:200})
+     return NextResponse.json(user,{status:201})
     } catch (error) {
      return NextResponse.json(error,{status:500})
     }finally{

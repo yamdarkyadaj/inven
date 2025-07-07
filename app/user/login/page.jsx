@@ -1,15 +1,5 @@
 
 "use client"
-export default function Page() {
-  return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm">
-        <LoginForm />
-      </div>
-    </div>
-  )
-}
-
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -22,33 +12,43 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { signIn, useSession } from "next-auth/react"
 import { redirect } from "next/dist/server/api-utils"
+import { useRouter } from "next/navigation"
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+export default function LoginForm() {
 
   const {data} = useSession()
+  const router = useRouter()
 
-  const [userName,setUserName] = useState<any>()
-  const [password,setPassword] = useState<any>()
+  const [userName,setUserName] = useState("")
+  const [password,setPassword] = useState("")
 
 
-  const handleFormSubmit = async (e:React.ChangeEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault()
     const res = await signIn("credentials",{email:userName,password:password,redirect:false})
-    console.log(res)
-    console.log(data)
+    
+    if(res.ok){
+      toast.success("Welcome")
+    }else{
+      toast.error("Wrong Credentials")
+    }
 
-   
+    
   }
+  useEffect(()=>{
+    if(data){
+      router.push(`/warehouse/${data.user.warehousesId}/${data.user.role}`)
+    }
+  })
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+      <div className="w-full max-w-sm">
+    <div className={cn("flex flex-col gap-6")}>
       <Card>
         <CardHeader>
           <CardTitle>User Login to your account</CardTitle>
@@ -87,9 +87,7 @@ export function LoginForm({
                 <Button type="submit" className="w-full">
                   Login
                 </Button>
-                <Button variant="outline" className="w-full">
-                  Login with Google
-                </Button>
+                
               </div>
             </div>
             <div className="mt-4 text-center text-sm">
@@ -101,6 +99,8 @@ export function LoginForm({
           </form>
         </CardContent>
       </Card>
+    </div>
+    </div>
     </div>
   )
 }

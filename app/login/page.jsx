@@ -17,10 +17,7 @@ import toast from "react-hot-toast"
 import { signIn, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 
-export default function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+export default function LoginForm() {
 
   const {data,status} = useSession()
   const router = useRouter()
@@ -30,20 +27,28 @@ export default function LoginForm({
   
   useEffect(()=>{
 
-    if(status === "authenticated"){
-      if(data && data?.user?.role === "supaAdmina"){
+    // if(status === "authenticated"){
+    //   const role = data?.user?.role
+    //   if(data && role == "supaAdmina"){
+    //     router.push("/sup-admin/dashboard")
+    //   }
+    // }
+    if (status === "authenticated") {
+      const role = data?.user?.role
+
+      if (role === "superAdmina") {
         router.push("/sup-admin/dashboard")
       }
     }
-    console.log(data)
-  },[status,data])
+    
+  },[status,data,router])
 
   const [userName,setUserName] = useState("")
   const [password,setPassword] = useState("")
 
 
 
-  const handleFormSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault()
     
     const req = await signIn("credentials", {
@@ -51,7 +56,7 @@ export default function LoginForm({
       password:password,
       redirect: false,
     });
-    console.log(req)
+    
     if(req?.ok){
       toast.success("Welcome")
       router.replace("/sup-admin/dashboard")
@@ -64,7 +69,7 @@ export default function LoginForm({
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
-    <div className={cn("flex flex-col gap-6", className)}>
+    <div className={"flex flex-col gap-6"}>
       <Card>
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>

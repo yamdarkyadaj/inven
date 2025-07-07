@@ -43,75 +43,8 @@ import { NavbarItem } from "@heroui/navbar"
 import { Button } from "@heroui/button"
 import { signOut } from "next-auth/react"
 
-// Navigation data for inventory management system
-const navigationData = {
-  main: [
-    {
-      title: "Dashboard",
-      url: "/sup-admin/dashboard",
-      icon: Home,
-    },
-  ],
-  inventory: [
 
-    {
-      title: "Warehouses",
-      icon: Warehouse,
-      items: [
-        {
-          title: "Add Warehouse",
-          url: "/sup-admin/warehouses/add",
-          icon: Plus,
-        },
-        {
-          title: "View Warehouses",
-          url: "/sup-admin/warehouses/list",
-          icon: Eye,
-        },
-      ],
-    },
-  ],
-  people: [
-    {
-      title: "People",
-      icon: Users,
-      items: [
-        {
-          title: "Users",
-          url: "/sup-admin/people/users",
-          icon: User,
-        },
-        {
-          title: "Customers",
-          url: "/sup-admin/people/customers",
-          icon: UserCheck,
-        },
-        {
-          title: "Suppliers",
-          url: "/sup-admin/people/suppliers",
-          icon: Building2,
-        },
-      ],
-    },
-  ],
-  system: [
-    {
-      title: "Notifications",
-      url: "/notifications",
-      icon: Bell,
-    },
-    {
-      title: "Reports",
-      url: "/reports",
-      icon: BarChart3,
-    },
-    {
-      title: "Settings",
-      url: "/settings",
-      icon: Settings,
-    },
-  ],
-}
+// Navigation data for inventory management system
 
 function NavSection({
   title,
@@ -188,6 +121,7 @@ export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sid
   
   const {data,loading,error} = fetchData("/api/settings")
 
+  
   if(loading) return ""
 
   // const isOnline = useConnectionCheck()
@@ -213,10 +147,71 @@ export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sid
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavSection title="Overview" items={navigationData.main} />
-        <NavSection title="Inventory" items={navigationData.inventory} />
-        <NavSection title="People" items={navigationData.people} />
-        <NavSection title="System" items={navigationData.system} />
+        <NavSection title="Overview" items={[
+                {
+                  title: "Dashboard",
+                  url: "/sup-admin/dashboard",
+                  icon: Home,
+                },
+              ]} />
+        <NavSection title="Inventory" items={[
+              {
+                title: "Warehouses",
+                icon: Warehouse,
+                items: [
+                  {
+                    title: "Add Warehouse",
+                    url: "/sup-admin/warehouses/add",
+                    icon: Plus,
+                  },
+                  {
+                    title: "View Warehouses",
+                    url: "/sup-admin/warehouses/list",
+                    icon: Eye,
+                  },
+                ],
+              },
+              ]} />
+        <NavSection title="People" items={[
+              {
+                title: "People",
+                icon: Users,
+                items: [
+                  {
+                    title: "Users",
+                    url: "/sup-admin/people/users",
+                    icon: User,
+                  },
+                  {
+                    title: "Customers",
+                    url: "/sup-admin/people/customers",
+                    icon: UserCheck,
+                  },
+                  {
+                    title: "Suppliers",
+                    url: "/sup-admin/people/suppliers",
+                    icon: Building2,
+                  },
+                ],
+              },
+            ]} />
+        <NavSection title="System" items={ [
+              {
+                title: "Notifications",
+                url: "/notifications",
+                icon: Bell,
+              },
+              {
+                title: "Reports",
+                url: "/reports",
+                icon: BarChart3,
+              },
+              {
+                title: "Settings",
+                url: "/settings",
+                icon: Settings,
+              },
+            ]} />
         <Button onClick={()=>signOut()} className="bg-red-500 m-2">Logout</Button>
       </SidebarContent>
       <SidebarRail />

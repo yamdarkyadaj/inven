@@ -15,14 +15,14 @@ export default function SupAdminLayout({children}:{children:React.ReactNode}){
         if(status == "authenticated"){
             if(data && data?.user?.role !== "supaAdmina"){
                 router.replace("/login")
-                console.log("auth and notadmin")
-                console.log(data)
+                
+                
             }
         }
         if(status == "unauthenticated"){
            
                 router.replace("/login")
-                console.log("not auth")
+                
             
         }
 

@@ -30,7 +30,7 @@ export async function POST(req:NextRequest){
         }
      })
 
-     console.log(data.formData.code)
+     
  
      return NextResponse.json(warehouses,{status:201})
     } catch (error) {

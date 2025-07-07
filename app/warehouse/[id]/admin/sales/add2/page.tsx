@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -19,11 +19,12 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Textarea } from "@/components/ui/textarea"
-import { ShoppingCart, Plus, Trash2, Calculator, Printer, Search, Package, Barcode, X, Check } from "lucide-react"
+import { ShoppingCart, Plus, Trash2, Calculator, Printer, Check, ChevronsUpDown } from "lucide-react"
 import { usePrintReceipt } from "@/hooks/use-print-receipt"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
 
 // Sample data
 const customers = [
@@ -44,7 +45,6 @@ const products = [
     stock: 25,
     category: "Electronics",
     brand: "Apple",
-    description: "Latest iPhone with advanced features",
   },
   {
     id: "PRD-002",
@@ -56,7 +56,6 @@ const products = [
     stock: 15,
     category: "Electronics",
     brand: "Samsung",
-    description: "Samsung flagship smartphone",
   },
   {
     id: "PRD-003",
@@ -68,7 +67,6 @@ const products = [
     stock: 8,
     category: "Computers",
     brand: "Apple",
-    description: "Apple MacBook Air with M3 chip",
   },
   {
     id: "PRD-004",
@@ -80,7 +78,6 @@ const products = [
     stock: 3,
     category: "Tablets",
     brand: "Apple",
-    description: "iPad Pro with 12.9 inch display",
   },
   {
     id: "PRD-005",
@@ -92,43 +89,6 @@ const products = [
     stock: 0,
     category: "Audio",
     brand: "Apple",
-    description: "Apple AirPods Pro with noise cancellation",
-  },
-  {
-    id: "PRD-006",
-    name: "Dell XPS 13",
-    code: "DELLXPS13",
-    barcode: "123456789017",
-    price: 1199.0,
-    cost: 900.0,
-    stock: 12,
-    category: "Computers",
-    brand: "Dell",
-    description: "Dell XPS 13 ultrabook",
-  },
-  {
-    id: "PRD-007",
-    name: "Sony WH-1000XM5",
-    code: "SONYWH1000XM5",
-    barcode: "123456789018",
-    price: 399.0,
-    cost: 280.0,
-    stock: 20,
-    category: "Audio",
-    brand: "Sony",
-    description: "Premium noise-canceling headphones",
-  },
-  {
-    id: "PRD-008",
-    name: "Microsoft Surface Pro",
-    code: "MSSURFACEPRO",
-    barcode: "123456789019",
-    price: 1299.0,
-    cost: 950.0,
-    stock: 6,
-    category: "Tablets",
-    brand: "Microsoft",
-    description: "2-in-1 laptop and tablet",
   },
 ]
 
@@ -146,66 +106,18 @@ interface SaleItem {
 export default function AddSalePage() {
   const [saleItems, setSaleItems] = useState<SaleItem[]>([])
   const [selectedCustomer, setSelectedCustomer] = useState("")
-  const [productSearch, setProductSearch] = useState("")
-  const [barcodeInput, setBarcodeInput] = useState("")
-  const [selectedProduct, setSelectedProduct] = useState<(typeof products)[0] | null>(null)
+  const [selectedProductId, setSelectedProductId] = useState("")
   const [quantity, setQuantity] = useState(1)
   const [discount, setDiscount] = useState(0)
   const [taxRate, setTaxRate] = useState(10)
   const [paymentMethod, setPaymentMethod] = useState("")
   const [notes, setNotes] = useState("")
   const [amountPaid, setAmountPaid] = useState("")
-  const [referenceNumber, setReferenceNumber] = useState("")
   const [open, setOpen] = useState(false)
-  const [filteredProducts, setFilteredProducts] = useState(products)
 
   const { printReceipt } = usePrintReceipt()
 
-  // Filter products based on search
-  useEffect(() => {
-    if (!productSearch) {
-      setFilteredProducts(products)
-      return
-    }
-
-    const filtered = products.filter(
-      (product) =>
-        product.name.toLowerCase().includes(productSearch.toLowerCase()) ||
-        product.code.toLowerCase().includes(productSearch.toLowerCase()) ||
-        product.barcode.includes(productSearch) ||
-        product.brand.toLowerCase().includes(productSearch.toLowerCase()) ||
-        product.category.toLowerCase().includes(productSearch.toLowerCase()),
-    )
-    setFilteredProducts(filtered)
-  }, [productSearch])
-
-  // Handle barcode scanning/input
-  useEffect(() => {
-    if (barcodeInput.length >= 8) {
-      const product = products.find((p) => p.barcode === barcodeInput)
-      if (product) {
-        setSelectedProduct(product)
-        setBarcodeInput("")
-        setQuantity(1)
-        setDiscount(0)
-      }
-    }
-  }, [barcodeInput])
-
-  const selectProduct = (product: (typeof products)[0]) => {
-    setSelectedProduct(product)
-    setProductSearch("")
-    setOpen(false)
-    setQuantity(1)
-    setDiscount(0)
-  }
-
-  const clearProductSelection = () => {
-    setSelectedProduct(null)
-    setProductSearch("")
-    setQuantity(1)
-    setDiscount(0)
-  }
+  const selectedProduct = products.find((p) => p.id === selectedProductId)
 
   const addProductToSale = () => {
     if (!selectedProduct) return
@@ -237,7 +149,10 @@ export default function AddSalePage() {
       setSaleItems([...saleItems, newItem])
     }
 
-    clearProductSelection()
+    // Reset form
+    setSelectedProductId("")
+    setQuantity(1)
+    setDiscount(0)
   }
 
   const removeItem = (itemId: string) => {
@@ -250,18 +165,6 @@ export default function AddSalePage() {
         if (item.id === itemId) {
           const newTotal = item.price * newQuantity - item.discount
           return { ...item, quantity: newQuantity, total: newTotal }
-        }
-        return item
-      }),
-    )
-  }
-
-  const updateItemDiscount = (itemId: string, newDiscount: number) => {
-    setSaleItems(
-      saleItems.map((item) => {
-        if (item.id === itemId) {
-          const newTotal = item.price * item.quantity - newDiscount
-          return { ...item, discount: newDiscount, total: newTotal }
         }
         return item
       }),
@@ -323,9 +226,7 @@ export default function AddSalePage() {
   }
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
+    <>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
@@ -348,70 +249,46 @@ export default function AddSalePage() {
           </div>
         </header>
 
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="flex items-center gap-2 mb-4">
-            <ShoppingCart className="h-5 w-5 text-blue-600" />
-            <h1 className="text-2xl font-semibold text-blue-600">Add New Sale</h1>
+        <div className="flex flex-1 flex-col gap-6 p-6">
+          <div className="flex items-center gap-2">
+            <ShoppingCart className="h-6 w-6 text-blue-600" />
+            <h1 className="text-3xl font-bold text-blue-600">New Sale</h1>
           </div>
 
           <div className="grid gap-6 lg:grid-cols-3">
             {/* Left Column - Sale Details */}
             <div className="lg:col-span-2 space-y-6">
-              {/* Customer Information */}
+              {/* Customer Selection */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Customer Information</CardTitle>
+                  <CardTitle>Customer</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="customer">Customer *</Label>
-                      <Select value={selectedCustomer} onValueChange={setSelectedCustomer}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select customer" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {customers.map((customer) => (
-                            <SelectItem key={customer.id} value={customer.id}>
-                              {customer.name} {customer.email && `- ${customer.email}`}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="sale-date">Sale Date *</Label>
-                      <Input id="sale-date" type="date" defaultValue={new Date().toISOString().split("T")[0]} />
-                    </div>
-                  </div>
+                <CardContent>
+                  <Select value={selectedCustomer} onValueChange={setSelectedCustomer}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select customer" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {customers.map((customer) => (
+                        <SelectItem key={customer.id} value={customer.id}>
+                          {customer.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </CardContent>
               </Card>
 
-              {/* Enhanced Product Search */}
+              {/* Product Selection */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Add Products</CardTitle>
-                  <CardDescription>Search by name, code, barcode, brand, or category</CardDescription>
+                  <CardTitle>Add Product</CardTitle>
+                  <CardDescription>Select a product to add to the sale</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {/* Barcode Scanner Input */}
+                  {/* Product Combobox */}
                   <div className="space-y-2">
-                    <Label htmlFor="barcode">Barcode Scanner</Label>
-                    <div className="relative">
-                      <Barcode className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="barcode"
-                        placeholder="Scan or enter barcode..."
-                        value={barcodeInput}
-                        onChange={(e) => setBarcodeInput(e.target.value)}
-                        className="pl-8"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Product Search with Combobox */}
-                  <div className="space-y-2">
-                    <Label>Search Products</Label>
+                    <Label>Product</Label>
                     <Popover open={open} onOpenChange={setOpen}>
                       <PopoverTrigger asChild>
                         <Button
@@ -420,58 +297,46 @@ export default function AddSalePage() {
                           aria-expanded={open}
                           className="w-full justify-between bg-transparent"
                         >
-                          {selectedProduct ? (
-                            <div className="flex items-center gap-2">
-                              <Package className="h-4 w-4" />
-                              <span>
-                                {selectedProduct.name} - ${selectedProduct.price}
-                              </span>
-                            </div>
-                          ) : (
-                            <div className="flex items-center gap-2">
-                              <Search className="h-4 w-4" />
-                              <span>Search products...</span>
-                            </div>
-                          )}
+                          {selectedProductId
+                            ? products.find((product) => product.id === selectedProductId)?.name
+                            : "Select product..."}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-full p-0" align="start">
+                      <PopoverContent className="w-full p-0">
                         <Command>
-                          <CommandInput
-                            placeholder="Search products..."
-                            value={productSearch}
-                            onValueChange={setProductSearch}
-                          />
+                          <CommandInput placeholder="Search products..." className="h-9" />
                           <CommandList>
-                            <CommandEmpty>No products found.</CommandEmpty>
+                            <CommandEmpty>No product found.</CommandEmpty>
                             <CommandGroup>
-                              {filteredProducts.map((product) => {
+                              {products.map((product) => {
                                 const stockStatus = getStockStatus(product.stock)
                                 return (
                                   <CommandItem
                                     key={product.id}
                                     value={product.id}
-                                    onSelect={() => selectProduct(product)}
+                                    onSelect={(currentValue) => {
+                                      setSelectedProductId(currentValue === selectedProductId ? "" : currentValue)
+                                      setOpen(false)
+                                    }}
                                     className="flex flex-col items-start gap-1 p-3"
                                   >
                                     <div className="flex items-center justify-between w-full">
-                                      <div className="flex items-center gap-2">
-                                        <Package className="h-4 w-4" />
-                                        <span className="font-medium">{product.name}</span>
-                                      </div>
+                                      <span className="font-medium">{product.name}</span>
                                       <span className="font-semibold">${product.price}</span>
                                     </div>
-                                    <div className="flex items-center gap-4 text-xs text-muted-foreground w-full">
-                                      <span>Code: {product.code}</span>
-                                      <span>Brand: {product.brand}</span>
-                                      <span>Category: {product.category}</span>
-                                    </div>
-                                    <div className="flex items-center justify-between w-full">
-                                      <span className="text-xs text-muted-foreground">Barcode: {product.barcode}</span>
-                                      <span className={`text-xs font-medium ${stockStatus.color}`}>
-                                        {stockStatus.text} ({product.stock})
+                                    <div className="flex items-center justify-between w-full text-sm text-muted-foreground">
+                                      <span>
+                                        {product.code} • {product.brand}
                                       </span>
+                                      <span className={stockStatus.color}>{product.stock} in stock</span>
                                     </div>
+                                    <Check
+                                      className={cn(
+                                        "ml-auto h-4 w-4",
+                                        selectedProductId === product.id ? "opacity-100" : "opacity-0",
+                                      )}
+                                    />
                                   </CommandItem>
                                 )
                               })}
@@ -482,84 +347,62 @@ export default function AddSalePage() {
                     </Popover>
                   </div>
 
-                  {/* Selected Product Details */}
+                  {/* Quantity and Discount */}
                   {selectedProduct && (
-                    <Card className="border-blue-200 bg-blue-50">
-                      <CardContent className="p-4">
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="flex-1">
-                            <h4 className="font-semibold text-blue-900">{selectedProduct.name}</h4>
-                            <p className="text-sm text-blue-700">{selectedProduct.description}</p>
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={clearProductSelection}
-                            className="text-blue-600 hover:text-blue-800"
-                          >
-                            <X className="h-4 w-4" />
-                          </Button>
-                        </div>
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="quantity">Quantity</Label>
+                        <Input
+                          id="quantity"
+                          type="number"
+                          min="1"
+                          max={selectedProduct.stock}
+                          value={quantity}
+                          onChange={(e) => setQuantity(Number.parseInt(e.target.value) || 1)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="discount">Discount ($)</Label>
+                        <Input
+                          id="discount"
+                          type="number"
+                          min="0"
+                          value={discount}
+                          onChange={(e) => setDiscount(Number.parseFloat(e.target.value) || 0)}
+                        />
+                      </div>
+                      <div className="flex items-end">
+                        <Button
+                          onClick={addProductToSale}
+                          className="w-full"
+                          disabled={selectedProduct.stock === 0 || quantity > selectedProduct.stock}
+                        >
+                          <Plus className="mr-2 h-4 w-4" />
+                          Add
+                        </Button>
+                      </div>
+                    </div>
+                  )}
 
-                        <div className="grid grid-cols-2 gap-4 text-sm mb-4">
-                          <div>
-                            <span className="text-blue-600">Code:</span> {selectedProduct.code}
-                          </div>
-                          <div>
-                            <span className="text-blue-600">Brand:</span> {selectedProduct.brand}
-                          </div>
-                          <div>
-                            <span className="text-blue-600">Category:</span> {selectedProduct.category}
-                          </div>
-                          <div className={getStockStatus(selectedProduct.stock).color}>
-                            <span className="text-blue-600">Stock:</span> {selectedProduct.stock} units
-                          </div>
+                  {/* Product Details */}
+                  {selectedProduct && (
+                    <div className="p-4 bg-muted rounded-lg">
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <span className="font-medium">Price:</span> ${selectedProduct.price}
                         </div>
-
-                        <div className="grid gap-4 md:grid-cols-3">
-                          <div className="space-y-2">
-                            <Label htmlFor="quantity">Quantity</Label>
-                            <Input
-                              id="quantity"
-                              type="number"
-                              min="1"
-                              max={selectedProduct.stock}
-                              value={quantity}
-                              onChange={(e) => setQuantity(Number.parseInt(e.target.value) || 1)}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="discount">Discount ($)</Label>
-                            <Input
-                              id="discount"
-                              type="number"
-                              min="0"
-                              value={discount}
-                              onChange={(e) => setDiscount(Number.parseFloat(e.target.value) || 0)}
-                            />
-                          </div>
-                          <div className="flex items-end">
-                            <Button
-                              onClick={addProductToSale}
-                              className="w-full"
-                              disabled={selectedProduct.stock === 0 || quantity > selectedProduct.stock}
-                            >
-                              <Plus className="mr-2 h-4 w-4" />
-                              Add to Sale
-                            </Button>
-                          </div>
+                        <div>
+                          <span className="font-medium">Stock:</span> {selectedProduct.stock} units
                         </div>
-
-                        <div className="mt-3 p-2 bg-white rounded border">
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm font-medium">Item Total:</span>
-                            <span className="font-semibold">
-                              ${(selectedProduct.price * quantity - discount).toFixed(2)}
-                            </span>
-                          </div>
+                        <div>
+                          <span className="font-medium">Category:</span> {selectedProduct.category}
                         </div>
-                      </CardContent>
-                    </Card>
+                        <div>
+                          <span className="font-medium">Total:</span> $
+                          {(selectedProduct.price * quantity - discount).toFixed(2)}
+                        </div>
+                      </div>
+                    </div>
                   )}
                 </CardContent>
               </Card>
@@ -567,33 +410,34 @@ export default function AddSalePage() {
               {/* Sale Items */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Sale Items</CardTitle>
-                  <CardDescription>{saleItems.length} item(s) added to this sale</CardDescription>
+                  <CardTitle>Items ({saleItems.length})</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {saleItems.length === 0 ? (
                     <div className="text-center py-8 text-muted-foreground">
                       <ShoppingCart className="mx-auto h-12 w-12 mb-4" />
-                      <p>No items added yet. Search and select products above to add them to the sale.</p>
+                      <p>No items added yet</p>
                     </div>
                   ) : (
                     <Table>
                       <TableHeader>
                         <TableRow>
                           <TableHead>Product</TableHead>
-                          <TableHead>Code</TableHead>
                           <TableHead>Price</TableHead>
                           <TableHead>Qty</TableHead>
-                          <TableHead>Discount</TableHead>
                           <TableHead>Total</TableHead>
-                          <TableHead className="text-right">Actions</TableHead>
+                          <TableHead></TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {saleItems.map((item) => (
                           <TableRow key={item.id}>
-                            <TableCell className="font-medium">{item.productName}</TableCell>
-                            <TableCell>{item.productCode}</TableCell>
+                            <TableCell>
+                              <div>
+                                <div className="font-medium">{item.productName}</div>
+                                <div className="text-sm text-muted-foreground">{item.productCode}</div>
+                              </div>
+                            </TableCell>
                             <TableCell>${item.price.toFixed(2)}</TableCell>
                             <TableCell>
                               <Input
@@ -604,17 +448,8 @@ export default function AddSalePage() {
                                 className="w-20"
                               />
                             </TableCell>
+                            <TableCell className="font-medium">${item.total.toFixed(2)}</TableCell>
                             <TableCell>
-                              <Input
-                                type="number"
-                                min="0"
-                                value={item.discount}
-                                onChange={(e) => updateItemDiscount(item.id, Number.parseFloat(e.target.value) || 0)}
-                                className="w-20"
-                              />
-                            </TableCell>
-                            <TableCell>${item.total.toFixed(2)}</TableCell>
-                            <TableCell className="text-right">
                               <Button
                                 variant="ghost"
                                 size="sm"
@@ -640,7 +475,7 @@ export default function AddSalePage() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Calculator className="h-5 w-5" />
-                    Sale Summary
+                    Summary
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -649,13 +484,13 @@ export default function AddSalePage() {
                       <span>Subtotal:</span>
                       <span>${subtotal.toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between">
                       <span>Tax ({taxRate}%):</span>
                       <span>${taxAmount.toFixed(2)}</span>
                     </div>
                     <Separator />
                     <div className="flex justify-between font-semibold text-lg">
-                      <span>Grand Total:</span>
+                      <span>Total:</span>
                       <span>${grandTotal.toFixed(2)}</span>
                     </div>
                   </div>
@@ -674,25 +509,23 @@ export default function AddSalePage() {
                 </CardContent>
               </Card>
 
-              {/* Payment Information */}
+              {/* Payment */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Payment Information</CardTitle>
+                  <CardTitle>Payment</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="payment-method">Payment Method *</Label>
+                    <Label htmlFor="payment-method">Method</Label>
                     <Select value={paymentMethod} onValueChange={setPaymentMethod}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select payment method" />
+                        <SelectValue placeholder="Select method" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="cash">Cash</SelectItem>
-                        <SelectItem value="card">Credit/Debit Card</SelectItem>
+                        <SelectItem value="card">Card</SelectItem>
                         <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
                         <SelectItem value="check">Check</SelectItem>
-                        <SelectItem value="pos">POS</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -708,22 +541,12 @@ export default function AddSalePage() {
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="reference">Reference Number</Label>
-                    <Input
-                      id="reference"
-                      placeholder="Enter reference number"
-                      value={referenceNumber}
-                      onChange={(e) => setReferenceNumber(e.target.value)}
-                    />
-                  </div>
-
                   {amountPaid && (
                     <div className="p-3 bg-muted rounded-lg">
                       <div className="flex justify-between text-sm">
-                        <span>Balance:</span>
+                        <span>Change:</span>
                         <span className={balance >= 0 ? "text-green-600" : "text-red-600"}>
-                          ${Math.abs(balance).toFixed(2)} {balance >= 0 ? "(Change)" : "(Due)"}
+                          ${Math.abs(balance).toFixed(2)}
                         </span>
                       </div>
                     </div>
@@ -731,17 +554,17 @@ export default function AddSalePage() {
                 </CardContent>
               </Card>
 
-              {/* Additional Notes */}
+              {/* Notes */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Additional Notes</CardTitle>
+                  <CardTitle>Notes</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Textarea
-                    placeholder="Enter any additional notes or comments..."
+                    placeholder="Additional notes..."
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    rows={4}
+                    rows={3}
                   />
                 </CardContent>
               </Card>
@@ -749,10 +572,9 @@ export default function AddSalePage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex justify-end gap-4 mt-8">
-            <Button variant="outline">Save as Draft</Button>
+          <div className="flex justify-end gap-4">
+            <Button variant="outline">Save Draft</Button>
 
-            {/* Print Receipt Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" disabled={saleItems.length === 0}>
@@ -761,14 +583,8 @@ export default function AddSalePage() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => handlePrintReceipt("57mm")}>
-                  <Printer className="mr-2 h-4 w-4" />
-                  Print 57mm (2¼")
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handlePrintReceipt("80mm")}>
-                  <Printer className="mr-2 h-4 w-4" />
-                  Print 80mm (3⅛")
-                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handlePrintReceipt("57mm")}>Print 57mm (2¼")</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handlePrintReceipt("80mm")}>Print 80mm (3⅛")</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -778,7 +594,6 @@ export default function AddSalePage() {
             </Button>
           </div>
         </div>
-      </SidebarInset>
-    </SidebarProvider>
+     </>
   )
 }

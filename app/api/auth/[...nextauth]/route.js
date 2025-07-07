@@ -14,9 +14,9 @@ secret: process.env.NEXTAUTH_SECRET,
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req:any) {
+      async authorize(credentials, req) {
         const {email,password} = credentials
-        console.log("Credentials received:", credentials);
+        
         const referer = req.headers?.referer || "";
 
         if (referer.includes("/user/login")) {
@@ -67,12 +67,14 @@ secret: process.env.NEXTAUTH_SECRET,
     //   },
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role;
+        token.role = user.role; 
+        token.warehousesId = user.warehousesId;
       }
       return token;
     },
     async session({ session, token }) {
       session.user.role = token.role;
+      session.user.warehousesId = token.warehousesId;
       return session;
     },
     

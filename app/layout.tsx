@@ -44,7 +44,7 @@ export default function RootLayout({
         // )}
       >
         <SessionAppProvider>
-        <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
+        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           <div >
             <main >
               <Toaster/>
