@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -30,6 +30,10 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { User, Search, Filter, Plus, MoreHorizontal, Edit, Trash2, Eye, Shield } from "lucide-react"
 import fetchData from "@/hooks/fetch-data"
+import { getWareHouseId } from "@/hooks/get-werehouseId"
+import fetchWareHouseData from "@/hooks/fetch-invidual-data"
+import { Loading } from "@/components/loading"
+import { useSession } from "next-auth/react"
 
 // Sample users data
 
@@ -38,13 +42,25 @@ export default function UsersPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [roleFilter, setRoleFilter] = useState("all")
   const [statusFilter, setStatusFilter] = useState("all")
+  const [endpoint,setEndPoint] = useState("")
+  const {data:session} = useSession()
+  
+   
 
-  const {data:usersData,loading,error} = fetchData("/api/users")
+  const warehouseId = getWareHouseId()
 
-  if (loading) return <h1>Loading...</h1>
+  const {data:usersData,loading,error} = fetchWareHouseData("/api/users/list",{warehouseId})
+
+  useEffect(()=>{
+    setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
+  },[session,warehouseId])
+
+  if (loading) return <Loading/>
   if (error) return <h1 className="text-red-500">Error loading warehouses.</h1>
   if (!usersData) return <h1>No data available.</h1>
 
+
+  
   const filteredUsers = usersData.filter((user:any) => {
     const matchesSearch =
       user.userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -54,6 +70,8 @@ export default function UsersPage() {
 
     return matchesSearch && matchesRole && matchesStatus
   })
+
+  
 
   const getRoleBadge = (role: string) => {
     switch (role) {
@@ -91,6 +109,8 @@ export default function UsersPage() {
     }
   }
 
+  
+
   return (
     <>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
@@ -122,7 +142,7 @@ export default function UsersPage() {
               <h1 className="text-2xl font-semibold text-blue-600">System Users</h1>
             </div>
             <Button asChild>
-              <a href="/sup-admin/people/users/add">
+              <a href={`${endpoint}/people/users/add`}>
                 <Plus className="mr-2 h-4 w-4" />
                 Add User
               </a>
@@ -201,7 +221,7 @@ export default function UsersPage() {
                     <TableHead>Email</TableHead>
                     <TableHead>Phone</TableHead>
                     <TableHead>Role</TableHead>
-                    <TableHead>Warehouse</TableHead>
+                   
                     <TableHead>Status</TableHead>
                     <TableHead>Last Login</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
@@ -228,7 +248,7 @@ export default function UsersPage() {
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.phone}</TableCell>
                       <TableCell>{getRoleBadge(user.role)}</TableCell>
-                      <TableCell>{user.warehousesId}</TableCell>
+                      
                       <TableCell>{getStatusBadge(user.status)}</TableCell>
                       <TableCell>{new Date(user.lastLogin).toLocaleDateString()}</TableCell>
                       <TableCell className="text-right">

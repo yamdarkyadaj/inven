@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -25,6 +25,8 @@ import { usePrintReceipt } from "@/hooks/use-print-receipt"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { getWareHouseId } from "@/hooks/get-werehouseId"
 import fetchWareHouseData from "@/hooks/fetch-invidual-data"
+import { Loading } from "@/components/loading"
+import { useSession } from "next-auth/react"
 
 // Sample sales data
 // const salesData = [
@@ -158,12 +160,20 @@ export default function SalesListPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [dateFilter, setDateFilter] = useState("all")
+  const [endpoint,setEndPoint] = useState("")
+  const {data:session} = useSession()
+  
+   
   const router = useRouter()
 
   const warehouseId = getWareHouseId()
+
+  useEffect(()=>{
+    setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
+  },[session,warehouseId])
       
       const {data:salesData,loading,error} = fetchWareHouseData("/api/sale/list",{warehouseId})
-       if(!salesData) return "loading"
+       if(!salesData) return <Loading/>
 
        console.log(salesData)
 
@@ -195,7 +205,7 @@ export default function SalesListPage() {
   }
 
   const handleEdit = (saleId: string) => {
-    router.push(`/sales/${saleId}/edit`)
+    router.push(`${endpoint}/sales/${saleId}/edit`)
   }
 
   const handleView = (saleId: string) => {
@@ -407,10 +417,10 @@ export default function SalesListPage() {
                       <TableCell>{getStatusBadge(sale.status)}</TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <Button variant="ghost" size="sm" onClick={() => handleView(sale.id)}>
+                          <Button variant="ghost" size="sm" onClick={() => handleView(sale.invoiceNo)}>
                             <Eye className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" onClick={() => handleEdit(sale.id)}>
+                          <Button variant="ghost" size="sm" onClick={() => handleEdit(sale.invoiceNo)}>
                             <Edit className="h-4 w-4" />
                           </Button>
                           <div className="flex gap-2">

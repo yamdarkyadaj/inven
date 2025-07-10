@@ -42,7 +42,7 @@ export async function POST(req:NextRequest){
                 unit,
                 quantity:parseInt(quantity),
                 description,
-                // warehouses:warehouseId
+                warehousesId:warehouseId
             }
         })
 

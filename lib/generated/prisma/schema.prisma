@@ -10,7 +10,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
   // directUrl = env("DIRECT_URL")
 }
@@ -31,6 +31,11 @@ enum unit {
   piece
   liter
   meter
+}
+
+enum type {
+  retail
+  wholesale
 }
 
 model superAdmin {
@@ -70,8 +75,8 @@ model Settings {
 }
 
 model Warehouses {
-  id            String    @id @default(uuid())
-  warehouseCode String    @unique
+  id            String     @id @default(uuid())
+  warehouseCode String     @unique
   name          String
   phoneNumber   String
   email         String
@@ -79,6 +84,55 @@ model Warehouses {
   address       String
   users         users[]
   products      Product[]
+  customer      Customer[]
+  saleItem      SaleItem[]
+  sale          Sale[]
+}
+
+model Sale {
+  id                 String      @id @default(cuid())
+  saleItems          SaleItem[]
+  selectedCustomerId String? // reference to Customer
+  selectedCustomer   Customer?   @relation(fields: [selectedCustomerId], references: [id])
+  taxRate            Float
+  subTotal           Float
+  paymentMethod      String
+  notes              String?
+  amountPaid         Float?
+  grandTotal         Float
+  paidAmount         Float
+  balance            Float
+  createdAt          DateTime    @default(now())
+  warehousesId       String?
+  warehouses         Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
+  invoiceNo          String      @unique
+}
+
+model Customer {
+  id           String      @id
+  name         String
+  type         type
+  Warehouses   Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
+  warehousesId String?
+  Sale         Sale[]
+}
+
+model SaleItem {
+  id            String      @id @default(cuid())
+  saleId        String?
+  sale          Sale?       @relation(fields: [saleId], references: [invoiceNo])
+  productId     String?
+  product       Product?    @relation(fields: [productId], references: [barcode])
+  productName   String
+  cost          Float
+  selectedPrice Float
+  priceType     type
+  quantity      Int
+  discount      Float
+  total         Float
+  profit        Float
+  Warehouses    Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
+  warehousesId  String?
 }
 
 model Product {
@@ -94,4 +148,5 @@ model Product {
   description    String
   warehouses     Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
   warehousesId   String?
+  SaleItem       SaleItem[]
 }

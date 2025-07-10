@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -16,7 +15,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -28,91 +27,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Package, Search, Filter, Plus, MoreHorizontal, Edit, Trash2, Eye, Download, Upload } from "lucide-react"
-import axios from "axios"
 import { getWareHouseId } from "@/hooks/get-werehouseId"
 import fetchWareHouseData from "@/hooks/fetch-invidual-data"
+import { Loading } from "@/components/loading"
 
-// Sample products data
-// const productsData = [
-//   {
-//     id: "PRD-001",
-//     name: "iPhone 15 Pro",
-//     code: "IPH15PRO",
-//     brand: "Apple",
-//     category: "Electronics",
-//     price: 999.0,
-//     cost: 750.0,
-//     stock: 25,
-//     status: "active",
-//     supplier: "Tech Distributors",
-//     lastUpdated: "2024-01-15",
-//   },
-//   {
-//     id: "PRD-002",
-//     name: "Samsung Galaxy S24",
-//     code: "SGS24",
-//     brand: "Samsung",
-//     category: "Electronics",
-//     price: 849.0,
-//     cost: 650.0,
-//     stock: 15,
-//     status: "active",
-//     supplier: "Mobile Solutions",
-//     lastUpdated: "2024-01-14",
-//   },
-//   {
-//     id: "PRD-003",
-//     name: "MacBook Air M3",
-//     code: "MBAM3",
-//     brand: "Apple",
-//     category: "Computers",
-//     price: 1299.0,
-//     cost: 1000.0,
-//     stock: 8,
-//     status: "active",
-//     supplier: "Tech Distributors",
-//     lastUpdated: "2024-01-13",
-//   },
-//   {
-//     id: "PRD-004",
-//     name: "iPad Pro 12.9",
-//     code: "IPADPRO129",
-//     brand: "Apple",
-//     category: "Tablets",
-//     price: 1099.0,
-//     cost: 850.0,
-//     stock: 3,
-//     status: "low_stock",
-//     supplier: "Tech Distributors",
-//     lastUpdated: "2024-01-12",
-//   },
-//   {
-//     id: "PRD-005",
-//     name: "AirPods Pro",
-//     code: "AIRPODSPRO",
-//     brand: "Apple",
-//     category: "Audio",
-//     price: 249.0,
-//     cost: 180.0,
-//     stock: 0,
-//     status: "out_of_stock",
-//     supplier: "Audio Plus",
-//     lastUpdated: "2024-01-11",
-//   },
-//   {
-//     id: "PRD-006",
-//     name: "Dell XPS 13",
-//     code: "DELLXPS13",
-//     brand: "Dell",
-//     category: "Computers",
-//     price: 1199.0,
-//     cost: 900.0,
-//     stock: 12,
-//     status: "active",
-//     supplier: "Computer World",
-//     lastUpdated: "2024-01-10",
-//   },
-// ]
 
 export default function ListProductsPage() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -125,7 +43,11 @@ export default function ListProductsPage() {
 
 
 
-  if(!productsData) return "loading"
+  if(!productsData) return (
+    <Loading/>
+  )
+
+  
 
   // useEffect(()=>{
   //   async function main(){

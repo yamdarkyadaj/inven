@@ -22,12 +22,14 @@ import { UserPlus, Eye, EyeOff } from "lucide-react"
 import fetchData from "@/hooks/fetch-data"
 import axios from "axios"
 import toast from "react-hot-toast"
+import { getWareHouseId } from "@/hooks/get-werehouseId"
 
 // Sample warehouses data
 
 export default function AddUserPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const warehouseId = getWareHouseId()
   const initField = {
     username: "",
     email: "",
@@ -35,16 +37,14 @@ export default function AddUserPage() {
     password: "",
     confirmPassword: "",
     role: "",
-    warehouse: "",
+    warehouse:warehouseId,
   }
   const [formData, setFormData] = useState(initField)
 
-  const {data:warehouses,loading,error} = fetchData("/api/warehouse")
+ 
   
-    if (loading) return <h1>Loading...</h1>
-  if (error) return <h1 className="text-red-500">Error loading warehouses.</h1>
-  if (!warehouses) return <h1>No data available.</h1>
-
+    if (!warehouseId) return <h1>Loading...</h1>
+  
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({
       ...prev,
@@ -269,22 +269,7 @@ export default function AddUserPage() {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="warehouse">Assigned Warehouse *</Label>
-                    <Select value={formData.warehouse} onValueChange={(value) => handleInputChange("warehouse", value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select warehouse" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {warehouses.map((warehouse:any) => (
-                          <SelectItem key={warehouse.id} value={warehouse.warehouseCode}>
-                            {warehouse.name} ({warehouse.warehouseCode})
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <p className="text-xs text-muted-foreground">User will have access to this warehouse's inventory</p>
-                  </div>
+                 
 
                   
                  
@@ -309,10 +294,7 @@ export default function AddUserPage() {
                     <span>Role:</span>
                     <span className="capitalize">{formData.role || "..."}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Warehouse:</span>
-                    <span>{warehouses.find((w:any) => w.id === formData.warehouse)?.name || "..."}</span>
-                  </div>
+                  
                  
                 </CardContent>
               </Card>

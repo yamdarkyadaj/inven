@@ -206,12 +206,12 @@ export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sid
       items: [
         {
           title: "Add Purchase",
-          url: "/purchases/add",
+          url: `${endpoint}/purchases/add`,
           icon: Plus,
         },
         {
           title: "View Purchases",
-          url: "/purchases/list",
+          url: `${endpoint}/purchases/list`,
           icon: Eye,
         },
       ],

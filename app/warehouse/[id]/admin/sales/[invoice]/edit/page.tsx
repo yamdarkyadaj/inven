@@ -25,11 +25,12 @@ import { Edit, Save, ArrowLeft, Calculator, Printer, CheckCircle, X, AlertTriang
 import { useRouter, useParams } from "next/navigation"
 import { usePrintReceipt } from "@/hooks/use-print-receipt"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import fetchWareHouseData from "@/hooks/fetch-invidual-data"
+import { Loading } from "@/components/loading"
 
 // Sample sale data (in real app, this would come from API)
-const getSaleData = (id: string) => {
+const getSaleData = () => {
   const salesData = {
-    "SALE-002": {
       id: "SALE-002",
       invoiceNo: "INV-000002",
       date: "2024-01-15",
@@ -65,10 +66,10 @@ const getSaleData = (id: string) => {
       notes: "Customer will pay remaining balance next week",
       cashier: "Admin User",
       createdAt: "2024-01-15T11:45:00Z",
-    },
+    
   }
 
-  return salesData[id as keyof typeof salesData] || null
+  return salesData
 }
 
 export default function EditSalePage() {
@@ -86,13 +87,20 @@ export default function EditSalePage() {
   const [paymentMethod, setPaymentMethod] = useState("")
   const [amountPaid, setAmountPaid] = useState("")
   const [notes, setNotes] = useState("")
-  const [taxRate, setTaxRate] = useState(10)
+  const [taxRate, setTaxRate] = useState(0)
+
+
+  const invoiceNo = params.invoice
+
+  const {data,loading:load,error} = fetchWareHouseData("/api/sale/edit/list",{invoiceNo})
+
+  
 
   useEffect(() => {
     const fetchSaleData = async () => {
       try {
         // In real app, this would be an API call
-        const data = getSaleData(params.id as string)
+        const data = getSaleData()
         if (data) {
           setSaleData(data)
           setPaymentMethod(data.paymentMethod)
@@ -109,6 +117,8 @@ export default function EditSalePage() {
 
     fetchSaleData()
   }, [params.id])
+
+  if(!data) return <Loading/>
 
   if (loading) {
     return (
@@ -136,6 +146,8 @@ export default function EditSalePage() {
        </>
     )
   }
+
+  
 
   const currentAmountPaid = Number.parseFloat(amountPaid) || 0
   const newBalance = saleData.total - currentAmountPaid
@@ -187,7 +199,7 @@ export default function EditSalePage() {
       }
 
       // Simulate API call to save updated sale
-      console.log("Saving updated sale data:", updatedSaleData)
+      
 
       // In real app, you would make API calls here:
       // 1. Create new sale record

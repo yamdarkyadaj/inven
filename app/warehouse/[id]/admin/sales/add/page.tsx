@@ -31,6 +31,7 @@ import { useRouter } from "next/navigation"
 import { getWareHouseId } from "@/hooks/get-werehouseId"
 import fetchWareHouseData from "@/hooks/fetch-invidual-data"
 import axios from "axios"
+import { Loading } from "@/components/loading"
 
 // Sample data with updated pricing structure matching Prisma schema
 const customers = [
@@ -117,7 +118,9 @@ export default function AddSalePage() {
   const warehouseId = getWareHouseId()
       
       const {data:products,loading,error} = fetchWareHouseData("/api/product/list",{warehouseId})
-       if(!products) return "loading"
+       if(!products) return (
+        <Loading/>
+       )
 
   const selectedProduct = products.find((p:any) => p.id === selectedProductId)
   const selectedCustomerData = customers.find((c) => c.id === selectedCustomer)
