@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -19,202 +19,131 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Textarea } from "@/components/ui/textarea"
-import { ShoppingCart, Plus, Trash2, Calculator, Printer, Search, Package, Barcode, X, Check, ChevronsUpDown } from "lucide-react"
+import { ShoppingCart, Plus, Trash2, Calculator, Printer, Check, ChevronsUpDown, CheckCircle, X } from "lucide-react"
 import { usePrintReceipt } from "@/hooks/use-print-receipt"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useRouter } from "next/navigation"
+import { getWareHouseId } from "@/hooks/get-werehouseId"
+import fetchWareHouseData from "@/hooks/fetch-invidual-data"
+import axios from "axios"
 
-// Sample data
+// Sample data with updated pricing structure matching Prisma schema
 const customers = [
-  { id: "CUST-001", name: "John Doe", email: "john@example.com", phone: "+1234567890" },
-  { id: "CUST-002", name: "Jane Smith", email: "jane@example.com", phone: "+1234567891" },
-  { id: "CUST-003", name: "Mike Johnson", email: "mike@example.com", phone: "+1234567892" },
-  { id: "WALK-IN", name: "Walk-in Customer", email: "", phone: "" },
+  { id: "CUST-001", name: "John Doe", email: "john@example.com", phone: "+1234567890", type: "retail" },
+  { id: "CUST-002", name: "Jane Smith", email: "jane@example.com", phone: "+1234567891", type: "wholesale" },
+  { id: "CUST-003", name: "Mike Johnson", email: "mike@example.com", phone: "+1234567892", type: "retail" },
+  { id: "WALK-IN", name: "Walk-in Customer", email: "", phone: "", type: "retail" },
 ]
 
-const products = [
-  {
-    id: "PRD-001",
-    name: "iPhone 15 Pro",
-    code: "IPH15PRO",
-    barcode: "123456789012",
-    price: 999.0,
-    cost: 750.0,
-    stock: 25,
-    category: "Electronics",
-    brand: "Apple",
-    description: "Latest iPhone with advanced features",
-  },
-  {
-    id: "PRD-002",
-    name: "Samsung Galaxy S24",
-    code: "SGS24",
-    barcode: "123456789013",
-    price: 849.0,
-    cost: 650.0,
-    stock: 15,
-    category: "Electronics",
-    brand: "Samsung",
-    description: "Samsung flagship smartphone",
-  },
-  {
-    id: "PRD-003",
-    name: "MacBook Air M3",
-    code: "MBAM3",
-    barcode: "123456789014",
-    price: 1299.0,
-    cost: 1000.0,
-    stock: 8,
-    category: "Computers",
-    brand: "Apple",
-    description: "Apple MacBook Air with M3 chip",
-  },
-  {
-    id: "PRD-004",
-    name: "iPad Pro 12.9",
-    code: "IPADPRO129",
-    barcode: "123456789015",
-    price: 1099.0,
-    cost: 850.0,
-    stock: 3,
-    category: "Tablets",
-    brand: "Apple",
-    description: "iPad Pro with 12.9 inch display",
-  },
-  {
-    id: "PRD-005",
-    name: "AirPods Pro",
-    code: "AIRPODSPRO",
-    barcode: "123456789016",
-    price: 249.0,
-    cost: 180.0,
-    stock: 0,
-    category: "Audio",
-    brand: "Apple",
-    description: "Apple AirPods Pro with noise cancellation",
-  },
-  {
-    id: "PRD-006",
-    name: "Dell XPS 13",
-    code: "DELLXPS13",
-    barcode: "123456789017",
-    price: 1199.0,
-    cost: 900.0,
-    stock: 12,
-    category: "Computers",
-    brand: "Dell",
-    description: "Dell XPS 13 ultrabook",
-  },
-  {
-    id: "PRD-007",
-    name: "Sony WH-1000XM5",
-    code: "SONYWH1000XM5",
-    barcode: "123456789018",
-    price: 399.0,
-    cost: 280.0,
-    stock: 20,
-    category: "Audio",
-    brand: "Sony",
-    description: "Premium noise-canceling headphones",
-  },
-  {
-    id: "PRD-008",
-    name: "Microsoft Surface Pro",
-    code: "MSSURFACEPRO",
-    barcode: "123456789019",
-    price: 1299.0,
-    cost: 950.0,
-    stock: 6,
-    category: "Tablets",
-    brand: "Microsoft",
-    description: "2-in-1 laptop and tablet",
-  },
-]
+
 
 interface SaleItem {
   id: string
   productId: string
   productName: string
-  productCode: string
-  price: number
+  productBarcode: string
+  cost: number
+  wholeSalePrice: number
+  retailPrice: number
+  selectedPrice: number
+  priceType: "wholesale" | "retail"
   quantity: number
   discount: number
   total: number
+  unit: string
+  taxRate: number
+}
+
+interface CompletedSale {
+  saleId: string
+  invoiceNo: string
+  date: string
+  time: string
+  customer: {
+    id: string
+    name: string
+    email: string
+    phone: string
+    type: string
+  }
+  items: Array<{
+    productName: string
+    productCode: string
+    costPrice: number
+    salePrice: number
+    priceType: "wholesale" | "retail"
+    quantity: number
+    discount: number
+    total: number
+    profit: number
+  }>
+  subtotal: number
+  totalDiscount: number
+  taxRate: number
+  taxAmount: number
+  grandTotal: number
+  paymentMethod: string
+  amountPaid: number
+  balance: number
+  notes: string
+  cashier: string
+  warehouseId:string
 }
 
 export default function AddSalePage() {
+    
   const [saleItems, setSaleItems] = useState<SaleItem[]>([])
   const [selectedCustomer, setSelectedCustomer] = useState("")
-  const [productSearch, setProductSearch] = useState("")
-  const [barcodeInput, setBarcodeInput] = useState("")
-  const [selectedProduct, setSelectedProduct] = useState<(typeof products)[0] | null>(null)
+  const [selectedProductId, setSelectedProductId] = useState("")
   const [quantity, setQuantity] = useState(1)
   const [discount, setDiscount] = useState(0)
-  const [taxRate, setTaxRate] = useState(0)
+  const [priceType, setPriceType] = useState<"wholesale" | "retail">("retail")
+  const [taxRate, setTaxRate] = useState(10)
   const [paymentMethod, setPaymentMethod] = useState("")
   const [notes, setNotes] = useState("")
   const [amountPaid, setAmountPaid] = useState("")
-  const [referenceNumber, setReferenceNumber] = useState("")
   const [open, setOpen] = useState(false)
-  const [filteredProducts, setFilteredProducts] = useState(products)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [completedSale, setCompletedSale] = useState<CompletedSale | null>(null)
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false)
 
+  const router = useRouter()
   const { printReceipt } = usePrintReceipt()
+  const warehouseId = getWareHouseId()
+      
+      const {data:products,loading,error} = fetchWareHouseData("/api/product/list",{warehouseId})
+       if(!products) return "loading"
 
+  const selectedProduct = products.find((p:any) => p.id === selectedProductId)
+  const selectedCustomerData = customers.find((c) => c.id === selectedCustomer)
 
-  // Filter products based on search
-  useEffect(() => {
-    if (!products || products.length === 0) return
-    if (!productSearch) {
-      setFilteredProducts(products)
-      return
+  // Auto-set price type based on customer type
+  const handleCustomerChange = (customerId: string) => {
+    setSelectedCustomer(customerId)
+    const customer = customers.find((c) => c.id === customerId)
+    if (customer) {
+      setPriceType(customer.type as "wholesale" | "retail")
     }
-  
-    const filtered = products.filter((product) =>
-      product.name.toLowerCase().includes(productSearch.toLowerCase()) ||
-      product.code.toLowerCase().includes(productSearch.toLowerCase()) ||
-      product.barcode.includes(productSearch) ||
-      product.brand.toLowerCase().includes(productSearch.toLowerCase()) ||
-      product.category.toLowerCase().includes(productSearch.toLowerCase())
-    )
-  
-    setFilteredProducts(filtered)
-  }, [productSearch, products])
-  
-
-  // Handle barcode scanning/input
-  useEffect(() => {
-    if (barcodeInput.length >= 8) {
-      const product = products.find((p) => p.barcode === barcodeInput)
-      if (product) {
-        setSelectedProduct(product)
-        setBarcodeInput("")
-        setQuantity(1)
-        setDiscount(0)
-      }
-    }
-  }, [barcodeInput])
-
-  const selectProduct = (product: (typeof products)[0]) => {
-    setSelectedProduct(product)
-    setProductSearch("")
-    setOpen(false)
-    setQuantity(1)
-    setDiscount(0)
   }
 
-  const clearProductSelection = () => {
-    setSelectedProduct(null)
-    setProductSearch("")
-    setQuantity(1)
-    setDiscount(0)
+  const getCurrentPrice = (product: (typeof products)[0], type: "wholesale" | "retail") => {
+    return type === "wholesale" ? product.wholeSalePrice : product.retailPrice
   }
 
   const addProductToSale = () => {
     if (!selectedProduct) return
 
-    // Check if product already exists in sale
-    const existingItemIndex = saleItems.findIndex((item) => item.productId === selectedProduct.id)
+    const selectedPrice = getCurrentPrice(selectedProduct, priceType)
+
+    // Check if product already exists in sale with same price type
+    const existingItemIndex = saleItems.findIndex(
+      (item) => item.productId === selectedProduct.id && item.priceType === priceType,
+    )
 
     if (existingItemIndex >= 0) {
       // Update existing item
@@ -222,25 +151,34 @@ export default function AddSalePage() {
       const existingItem = updatedItems[existingItemIndex]
       existingItem.quantity += quantity
       existingItem.discount += discount
-      existingItem.total = existingItem.price * existingItem.quantity - existingItem.discount
+      existingItem.total = existingItem.selectedPrice * existingItem.quantity - existingItem.discount
       setSaleItems(updatedItems)
     } else {
       // Add new item
-      const itemTotal = selectedProduct.price * quantity - discount
+      const itemTotal = selectedPrice * quantity - discount
       const newItem: SaleItem = {
         id: `ITEM-${Date.now()}`,
         productId: selectedProduct.id,
         productName: selectedProduct.name,
-        productCode: selectedProduct.code,
-        price: selectedProduct.price,
+        productBarcode: selectedProduct.barcode,
+        cost: selectedProduct.cost,
+        wholeSalePrice: selectedProduct.wholeSalePrice,
+        retailPrice: selectedProduct.retailPrice,
+        selectedPrice,
+        priceType,
         quantity,
         discount,
         total: itemTotal,
+        unit: selectedProduct.unit,
+        taxRate: selectedProduct.taxRate,
       }
       setSaleItems([...saleItems, newItem])
     }
 
-    clearProductSelection()
+    // Reset form
+    setSelectedProductId("")
+    setQuantity(1)
+    setDiscount(0)
   }
 
   const removeItem = (itemId: string) => {
@@ -251,20 +189,8 @@ export default function AddSalePage() {
     setSaleItems(
       saleItems.map((item) => {
         if (item.id === itemId) {
-          const newTotal = item.price * newQuantity - item.discount
+          const newTotal = item.selectedPrice * newQuantity - item.discount
           return { ...item, quantity: newQuantity, total: newTotal }
-        }
-        return item
-      }),
-    )
-  }
-
-  const updateItemDiscount = (itemId: string, newDiscount: number) => {
-    setSaleItems(
-      saleItems.map((item) => {
-        if (item.id === itemId) {
-          const newTotal = item.price * item.quantity - newDiscount
-          return { ...item, discount: newDiscount, total: newTotal }
         }
         return item
       }),
@@ -278,51 +204,146 @@ export default function AddSalePage() {
   }
 
   const subtotal = saleItems.reduce((sum, item) => sum + item.total, 0)
+  const totalDiscount = saleItems.reduce((sum, item) => sum + item.discount, 0)
   const taxAmount = (subtotal * taxRate) / 100
   const grandTotal = subtotal + taxAmount
-  const paidAmount = Number.parseFloat(amountPaid) || grandTotal
+  const paidAmount = Number.parseFloat(amountPaid) >= 0 ?Number.parseFloat(amountPaid) : grandTotal
   const balance = paidAmount - grandTotal
 
-  const handlePrintReceipt = (paperWidth: "57mm" | "80mm") => {
-    if (saleItems.length === 0) {
-      alert("Please add items to the sale before printing receipt")
+  // Form submission handler
+  const handleFormSubmit = async () => {
+    if (saleItems.length === 0 || !selectedCustomer || !paymentMethod) {
+      alert("Please complete all required fields")
       return
     }
 
-    const customer = customers.find((c) => c.id === selectedCustomer)
-    const currentDate = new Date()
+    setIsSubmitting(true)
+
+    try {
+      const currentDate = new Date()
+      const invoiceNo = `INV-${String(Math.floor(Math.random() * 1000000)).padStart(6, "0")}`
+      const saleId = `SALE-${Date.now()}`
+
+      // Prepare sale data with only selected prices
+      const saleData: CompletedSale = {
+        saleId,
+        invoiceNo,
+        date: currentDate.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+        time: currentDate.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true,
+        }),
+        customer: {
+          id: selectedCustomerData?.id || "",
+          name: selectedCustomerData?.name || "Walk-in Customer",
+          email: selectedCustomerData?.email || "",
+          phone: selectedCustomerData?.phone || "",
+          type: selectedCustomerData?.type || "retail",
+        },
+        items: saleItems.map((item) => ({
+          productName: item.productName,
+          productCode: item.productBarcode,
+          costPrice: item.cost,
+          salePrice: item.selectedPrice, // Only the selected price, not both
+          priceType: item.priceType,
+          quantity: item.quantity,
+          discount: item.discount,
+          total: item.total,
+          profit: item.total - item.cost * item.quantity, // Calculate profit
+        })),
+        subtotal,
+        totalDiscount,
+        taxRate,
+        taxAmount,
+        grandTotal,
+        paymentMethod,
+        amountPaid: paidAmount,
+        balance,
+        notes,
+        cashier: "Admin User",
+        warehouseId // This would come from auth context in real app
+      }
+
+      // Simulate API call to save sale
+      console.log("Saving sale data:", saleData)
+
+      await axios.post("/api/sale",saleData)
+
+      
+
+      // Update product stock (in real app, this would be handled by the API)
+      saleItems.forEach((item) => {
+        const product = products.find((p:any) => p.id === item.productId)
+        if (product) {
+          product.quantity -= item.quantity
+        }
+      })
+
+      // Set completed sale data and show success dialog
+      setCompletedSale(saleData)
+      setShowSuccessDialog(true)
+
+      // Reset form
+      setSaleItems([])
+      setSelectedCustomer("")
+      setPaymentMethod("")
+      setAmountPaid("")
+      setNotes("")
+      setTaxRate(10)
+    } catch (error) {
+      console.error("Error saving sale:", error)
+      alert("Error completing sale. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handlePrintReceipt = (paperWidth: "57mm" | "80mm") => {
+    if (!completedSale) return
 
     const receiptData = {
-      invoiceNo: `INV-${String(Math.floor(Math.random() * 1000000)).padStart(6, "0")}`,
-      date: currentDate.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
-      time: currentDate.toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: true,
-      }),
-      customer: customer?.name || "Walk-in Customer",
-      cashier: "Admin User",
-      items: saleItems.map((item) => ({
+      invoiceNo: completedSale.invoiceNo,
+      date: completedSale.date,
+      time: completedSale.time,
+      customer: completedSale.customer.name,
+      cashier: completedSale.cashier,
+      items: completedSale.items.map((item) => ({
         name: item.productName,
         quantity: item.quantity,
-        price: item.price,
+        price: item.salePrice,
         total: item.total,
       })),
-      subtotal: subtotal,
-      discount: saleItems.reduce((sum, item) => sum + item.discount, 0),
-      tax: taxAmount,
-      total: grandTotal,
-      paid: paidAmount,
-      balance: balance,
-      paymentMethod: paymentMethod || "Cash",
+      subtotal: completedSale.subtotal,
+      discount: completedSale.totalDiscount,
+      tax: completedSale.taxAmount,
+      total: completedSale.grandTotal,
+      paid: completedSale.amountPaid,
+      balance: completedSale.balance,
+      paymentMethod: completedSale.paymentMethod,
     }
 
     printReceipt(receiptData, paperWidth)
+  }
+
+  const handleCloseSuccessDialog = () => {
+    setShowSuccessDialog(false)
+    setCompletedSale(null)
+  }
+
+  const handleNewSale = () => {
+    handleCloseSuccessDialog()
+    // Form is already reset, just close dialog
+  }
+
+  const handleViewSales = () => {
+    handleCloseSuccessDialog()
+    router.push("/sales/list")
   }
 
   return (
@@ -349,70 +370,56 @@ export default function AddSalePage() {
           </div>
         </header>
 
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="flex items-center gap-2 mb-4">
-            <ShoppingCart className="h-5 w-5 text-blue-600" />
-            <h1 className="text-2xl font-semibold text-blue-600">Add New Sale</h1>
+        <div className="flex flex-1 flex-col gap-6 p-6">
+          <div className="flex items-center gap-2">
+            <ShoppingCart className="h-6 w-6 text-blue-600" />
+            <h1 className="text-3xl font-bold text-blue-600">New Sale</h1>
           </div>
 
           <div className="grid gap-6 lg:grid-cols-3">
             {/* Left Column - Sale Details */}
             <div className="lg:col-span-2 space-y-6">
-              {/* Customer Information */}
+              {/* Customer Selection */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Customer Information</CardTitle>
+                  <CardTitle>Customer</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="customer">Customer *</Label>
-                      <Select value={selectedCustomer} onValueChange={setSelectedCustomer}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select customer" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {customers.map((customer) => (
-                            <SelectItem key={customer.id} value={customer.id}>
-                              {customer.name} {customer.email && `- ${customer.email}`}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="sale-date">Sale Date *</Label>
-                      <Input id="sale-date" type="date" defaultValue={new Date().toISOString().split("T")[0]} />
-                    </div>
-                  </div>
+                <CardContent>
+                  <Select value={selectedCustomer} onValueChange={handleCustomerChange}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select customer" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {customers.map((customer) => (
+                        <SelectItem key={customer.id} value={customer.id}>
+                          <div className="flex items-center gap-2">
+                            {customer.name}
+                            <Badge variant={customer.type === "wholesale" ? "default" : "secondary"}>
+                              {customer.type}
+                            </Badge>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {selectedCustomerData && (
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Default pricing: <span className="font-medium capitalize">{selectedCustomerData.type}</span>
+                    </p>
+                  )}
                 </CardContent>
               </Card>
 
-              {/* Enhanced Product Search */}
+              {/* Product Selection */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Add Products</CardTitle>
-                  <CardDescription>Search by name, code, barcode, brand, or category</CardDescription>
+                  <CardTitle>Add Product</CardTitle>
+                  <CardDescription>Select a product to add to the sale</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {/* Barcode Scanner Input */}
+                  {/* Product Combobox */}
                   <div className="space-y-2">
-                    <Label htmlFor="barcode">Barcode Scanner</Label>
-                    <div className="relative">
-                      <Barcode className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="barcode"
-                        placeholder="Scan or enter barcode..."
-                        value={barcodeInput}
-                        onChange={(e) => setBarcodeInput(e.target.value)}
-                        className="pl-8"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Product Search with Combobox */}
-                  <div className="space-y-2">
-                    <Label>Search Products</Label>
+                    <Label>Product</Label>
                     <Popover open={open} onOpenChange={setOpen}>
                       <PopoverTrigger asChild>
                         <Button
@@ -421,58 +428,51 @@ export default function AddSalePage() {
                           aria-expanded={open}
                           className="w-full justify-between bg-transparent"
                         >
-                          {selectedProduct ? (
-                            <div className="flex items-center gap-2">
-                              <Package className="h-4 w-4" />
-                              <span>
-                                {selectedProduct.name} - ${selectedProduct.price}
-                              </span>
-                            </div>
-                          ) : (
-                            <div className="flex items-center gap-2">
-                              <Search className="h-4 w-4" />
-                              <span>Search products...</span>
-                            </div>
-                          )}
+                          {selectedProductId
+                            ? products.find((product:any) => product.id === selectedProductId)?.name
+                            : "Select product..."}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-full p-0" align="start">
+                      <PopoverContent className="w-full p-0">
                         <Command>
-                          <CommandInput
-                            placeholder="Search products..."
-                            value={productSearch}
-                            onValueChange={setProductSearch}
-                          />
+                          <CommandInput placeholder="Search products..." className="h-9" />
                           <CommandList>
-                            <CommandEmpty>No products found.</CommandEmpty>
+                            <CommandEmpty>No product found.</CommandEmpty>
                             <CommandGroup>
-                              {filteredProducts.map((product) => {
-                                const stockStatus = getStockStatus(product.stock)
+                              {products.map((product:any) => {
+                                const stockStatus = getStockStatus(product.quantity)
                                 return (
                                   <CommandItem
                                     key={product.id}
                                     value={product.id}
-                                    onSelect={() => selectProduct(product)}
+                                    onSelect={(currentValue) => {
+                                      setSelectedProductId(currentValue === selectedProductId ? "" : currentValue)
+                                      setOpen(false)
+                                    }}
                                     className="flex flex-col items-start gap-1 p-3"
                                   >
                                     <div className="flex items-center justify-between w-full">
+                                      <span className="font-medium">{product.name}</span>
                                       <div className="flex items-center gap-2">
-                                        <Package className="h-4 w-4" />
-                                        <span className="font-medium">{product.name}</span>
+                                        <span className="text-sm text-muted-foreground">
+                                          W: ${product.wholeSalePrice}
+                                        </span>
+                                        <span className="font-semibold">R: ${product.retailPrice}</span>
                                       </div>
-                                      <span className="font-semibold">${product.price}</span>
                                     </div>
-                                    <div className="flex items-center gap-4 text-xs text-muted-foreground w-full">
-                                      <span>Code: {product.code}</span>
-                                      <span>Brand: {product.brand}</span>
-                                      <span>Category: {product.category}</span>
-                                    </div>
-                                    <div className="flex items-center justify-between w-full">
-                                      <span className="text-xs text-muted-foreground">Barcode: {product.barcode}</span>
-                                      <span className={`text-xs font-medium ${stockStatus.color}`}>
-                                        {stockStatus.text} ({product.stock})
+                                    <div className="flex items-center justify-between w-full text-sm text-muted-foreground">
+                                      <span>
+                                        {product.barcode} • {product.unit}
                                       </span>
+                                      <span className={stockStatus.color}>{product.quantity} in stock</span>
                                     </div>
+                                    <Check
+                                      className={cn(
+                                        "ml-auto h-4 w-4",
+                                        selectedProductId === product.id ? "opacity-100" : "opacity-0",
+                                      )}
+                                    />
                                   </CommandItem>
                                 )
                               })}
@@ -481,10 +481,25 @@ export default function AddSalePage() {
                         </Command>
                       </PopoverContent>
                     </Popover>
-
-                  
-                    
                   </div>
+
+                  {/* Price Type Selection */}
+                  {selectedProduct && (
+                    <div className="space-y-2">
+                      <Label>Price Type</Label>
+                      <Select value={priceType} onValueChange={(value: "wholesale" | "retail") => setPriceType(value)}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="wholesale">
+                            Wholesale - ${selectedProduct.wholeSalePrice.toFixed(2)}
+                          </SelectItem>
+                          <SelectItem value="retail">Retail - ${selectedProduct.retailPrice.toFixed(2)}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
 
                   {/* Quantity and Discount */}
                   {selectedProduct && (
@@ -495,7 +510,7 @@ export default function AddSalePage() {
                           id="quantity"
                           type="number"
                           min="1"
-                          max={selectedProduct.stock}
+                          max={selectedProduct.quantity}
                           value={quantity}
                           onChange={(e) => setQuantity(Number.parseInt(e.target.value) || 1)}
                         />
@@ -514,7 +529,7 @@ export default function AddSalePage() {
                         <Button
                           onClick={addProductToSale}
                           className="w-full"
-                          disabled={selectedProduct.stock === 0 || quantity > selectedProduct.stock}
+                          disabled={selectedProduct.quantity === 0 || quantity > selectedProduct.quantity}
                         >
                           <Plus className="mr-2 h-4 w-4" />
                           Add
@@ -528,17 +543,18 @@ export default function AddSalePage() {
                     <div className="p-4 bg-muted rounded-lg">
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
-                          <span className="font-medium">Price:</span> ${selectedProduct.price}
+                          <span className="font-medium">Cost:</span> ${selectedProduct.cost}
                         </div>
                         <div>
-                          <span className="font-medium">Stock:</span> {selectedProduct.stock} units
+                          <span className="font-medium">Stock:</span> {selectedProduct.quantity} {selectedProduct.unit}
                         </div>
                         <div>
-                          <span className="font-medium">Category:</span> {selectedProduct.category}
+                          <span className="font-medium">Selected Price:</span> $
+                          {getCurrentPrice(selectedProduct, priceType)}
                         </div>
                         <div>
                           <span className="font-medium">Total:</span> $
-                          {(selectedProduct.price * quantity - discount).toFixed(2)}
+                          {(getCurrentPrice(selectedProduct, priceType) * quantity - discount).toFixed(2)}
                         </div>
                       </div>
                     </div>
@@ -549,54 +565,55 @@ export default function AddSalePage() {
               {/* Sale Items */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Sale Items</CardTitle>
-                  <CardDescription>{saleItems.length} item(s) added to this sale</CardDescription>
+                  <CardTitle>Items ({saleItems.length})</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {saleItems.length === 0 ? (
                     <div className="text-center py-8 text-muted-foreground">
                       <ShoppingCart className="mx-auto h-12 w-12 mb-4" />
-                      <p>No items added yet. Search and select products above to add them to the sale.</p>
+                      <p>No items added yet</p>
                     </div>
                   ) : (
                     <Table>
                       <TableHeader>
                         <TableRow>
                           <TableHead>Product</TableHead>
-                          <TableHead>Code</TableHead>
+                          <TableHead>Price Type</TableHead>
                           <TableHead>Price</TableHead>
                           <TableHead>Qty</TableHead>
-                          <TableHead>Discount</TableHead>
                           <TableHead>Total</TableHead>
-                          <TableHead className="text-right">Actions</TableHead>
+                          <TableHead></TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {saleItems.map((item) => (
                           <TableRow key={item.id}>
-                            <TableCell className="font-medium">{item.productName}</TableCell>
-                            <TableCell>{item.productCode}</TableCell>
-                            <TableCell>${item.price.toFixed(2)}</TableCell>
                             <TableCell>
-                              <Input
-                                type="number"
-                                min="1"
-                                value={item.quantity}
-                                onChange={(e) => updateItemQuantity(item.id, Number.parseInt(e.target.value) || 1)}
-                                className="w-20"
-                              />
+                              <div>
+                                <div className="font-medium">{item.productName}</div>
+                                <div className="text-sm text-muted-foreground">{item.productBarcode}</div>
+                              </div>
                             </TableCell>
                             <TableCell>
-                              <Input
-                                type="number"
-                                min="0"
-                                value={item.discount}
-                                onChange={(e) => updateItemDiscount(item.id, Number.parseFloat(e.target.value) || 0)}
-                                className="w-20"
-                              />
+                              <Badge variant={item.priceType === "wholesale" ? "default" : "secondary"}>
+                                {item.priceType}
+                              </Badge>
                             </TableCell>
-                            <TableCell>${item.total.toFixed(2)}</TableCell>
-                            <TableCell className="text-right">
+                            <TableCell>${item.selectedPrice.toFixed(2)}</TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-1">
+                                <Input
+                                  type="number"
+                                  min="1"
+                                  value={item.quantity}
+                                  onChange={(e) => updateItemQuantity(item.id, Number.parseInt(e.target.value) || 1)}
+                                  className="w-16"
+                                />
+                                <span className="text-xs text-muted-foreground">{item.unit}</span>
+                              </div>
+                            </TableCell>
+                            <TableCell className="font-medium">${item.total.toFixed(2)}</TableCell>
+                            <TableCell>
                               <Button
                                 variant="ghost"
                                 size="sm"
@@ -622,7 +639,7 @@ export default function AddSalePage() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Calculator className="h-5 w-5" />
-                    Sale Summary
+                    Summary
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -631,13 +648,13 @@ export default function AddSalePage() {
                       <span>Subtotal:</span>
                       <span>${subtotal.toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between">
                       <span>Tax ({taxRate}%):</span>
                       <span>${taxAmount.toFixed(2)}</span>
                     </div>
                     <Separator />
                     <div className="flex justify-between font-semibold text-lg">
-                      <span>Grand Total:</span>
+                      <span>Total:</span>
                       <span>${grandTotal.toFixed(2)}</span>
                     </div>
                   </div>
@@ -656,25 +673,23 @@ export default function AddSalePage() {
                 </CardContent>
               </Card>
 
-              {/* Payment Information */}
+              {/* Payment */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Payment Information</CardTitle>
+                  <CardTitle>Payment</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="payment-method">Payment Method *</Label>
+                    <Label htmlFor="payment-method">Method</Label>
                     <Select value={paymentMethod} onValueChange={setPaymentMethod}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select payment method" />
+                        <SelectValue placeholder="Select method" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="cash">Cash</SelectItem>
-                        <SelectItem value="card">Credit/Debit Card</SelectItem>
+                        <SelectItem value="card">Card</SelectItem>
                         <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
                         <SelectItem value="check">Check</SelectItem>
-                        <SelectItem value="pos">POS</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -690,22 +705,12 @@ export default function AddSalePage() {
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="reference">Reference Number</Label>
-                    <Input
-                      id="reference"
-                      placeholder="Enter reference number"
-                      value={referenceNumber}
-                      onChange={(e) => setReferenceNumber(e.target.value)}
-                    />
-                  </div>
-
                   {amountPaid && (
                     <div className="p-3 bg-muted rounded-lg">
                       <div className="flex justify-between text-sm">
-                        <span>Balance:</span>
+                        <span>Change:</span>
                         <span className={balance >= 0 ? "text-green-600" : "text-red-600"}>
-                          ${Math.abs(balance).toFixed(2)} {balance >= 0 ? "(Change)" : "(Due)"}
+                          ${Math.abs(balance).toFixed(2)}
                         </span>
                       </div>
                     </div>
@@ -713,17 +718,17 @@ export default function AddSalePage() {
                 </CardContent>
               </Card>
 
-              {/* Additional Notes */}
+              {/* Notes */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Additional Notes</CardTitle>
+                  <CardTitle>Notes</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Textarea
-                    placeholder="Enter any additional notes or comments..."
+                    placeholder="Additional notes..."
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    rows={4}
+                    rows={3}
                   />
                 </CardContent>
               </Card>
@@ -731,35 +736,81 @@ export default function AddSalePage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex justify-end gap-4 mt-8">
-            <Button variant="outline">Save as Draft</Button>
+          <div className="flex justify-end gap-4">
+            <Button variant="outline">Save Draft</Button>
 
-            {/* Print Receipt Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" disabled={saleItems.length === 0}>
-                  <Printer className="mr-2 h-4 w-4" />
-                  Print Receipt
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => handlePrintReceipt("57mm")}>
-                  <Printer className="mr-2 h-4 w-4" />
-                  Print 57mm (2¼")
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handlePrintReceipt("80mm")}>
-                  <Printer className="mr-2 h-4 w-4" />
-                  Print 80mm (3⅛")
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <Button disabled={saleItems.length === 0 || !selectedCustomer || !paymentMethod}>
-              <Check className="mr-2 h-4 w-4" />
-              Complete Sale
+            <Button
+              onClick={handleFormSubmit}
+              disabled={saleItems.length === 0 || !selectedCustomer || !paymentMethod || isSubmitting}
+              className="min-w-[140px]"
+            >
+              {isSubmitting ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <Check className="mr-2 h-4 w-4" />
+                  Complete Sale
+                </>
+              )}
             </Button>
           </div>
         </div>
-     </>
+
+        {/* Success Dialog */}
+        <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-green-600" />
+                Sale Completed Successfully!
+              </DialogTitle>
+              <DialogDescription>
+                {completedSale && (
+                  <>
+                    Invoice #{completedSale.invoiceNo} has been created for {completedSale.customer.name}.
+                    <br />
+                    Total: ${completedSale.grandTotal.toFixed(2)}
+                  </>
+                )}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex flex-col gap-3 mt-4">
+              <div className="text-sm text-muted-foreground">Would you like to print a receipt?</div>
+
+              <div className="flex gap-2">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button className="flex-1">
+                      <Printer className="mr-2 h-4 w-4" />
+                      Print Receipt
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem onClick={() => handlePrintReceipt("57mm")}>Print 57mm (2¼")</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handlePrintReceipt("80mm")}>Print 80mm (3⅛")</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+
+              <div className="flex gap-2 mt-2">
+                <Button variant="outline" onClick={handleNewSale} className="flex-1 bg-transparent">
+                  New Sale
+                </Button>
+                <Button variant="outline" onClick={handleViewSales} className="flex-1 bg-transparent">
+                  View Sales
+                </Button>
+              </div>
+
+              <Button variant="ghost" onClick={handleCloseSuccessDialog} className="mt-2">
+                <X className="mr-2 h-4 w-4" />
+                Close
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </>
   )
 }

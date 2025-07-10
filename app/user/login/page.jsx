@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
-import { signIn, useSession } from "next-auth/react"
+import { signIn, signOut, useSession } from "next-auth/react"
 import { redirect } from "next/dist/server/api-utils"
 import { useRouter } from "next/navigation"
 
@@ -40,10 +40,18 @@ export default function LoginForm() {
     
   }
   useEffect(()=>{
-    if(data){
-      router.push(`/warehouse/${data.user.warehousesId}/${data.user.role}`)
+    async function main(){
+      if(data){
+        if(data.user.role == "supaAdmina"){
+          await signOut()
+        }
+        router.push(`/warehouse/${data.user.warehousesId}/${data.user.role}/dashboard`)
+      }
     }
+    main()
   })
+
+  
 
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">

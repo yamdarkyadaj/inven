@@ -1,3 +1,4 @@
+"use client"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -16,9 +17,55 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { Textarea } from "@/components/ui/textarea"
+import { getWareHouseId } from "@/hooks/get-werehouseId"
+import axios from "axios"
+import { error } from "console"
 import { Scan, Plus } from "lucide-react"
+import React, { useState } from "react"
+import toast from "react-hot-toast"
 
 export default function AddProductPage() {
+
+  const [productName,setProductName] = useState("")
+  const [productCode,setProductCode] = useState("")
+  const [productDescription,setProductDescription] = useState("")
+  const [costPrice,setCostPrice] = useState("")
+  const [wholeSalePrice,setWholeSalePrice] = useState("")
+  const [retailPrice,setRetailPrice] = useState("")
+  const [productUnit,setProductUnit] = useState("")
+  const [productTaxRate,setProductTaxRate] = useState("0")
+  const [productQuantity,setProductQuantity] = useState("")
+
+  const warehouseId = getWareHouseId()
+
+  async function handleFormSubmit(e:React.FormEvent<HTMLFormElement>){
+    e.preventDefault()
+    await axios.post("/api/product",{productName,productCode,productDescription,productQuantity,productTaxRate,productUnit,wholeSalePrice,retailPrice,costPrice,warehouseId}).then((data)=>{
+      console.log(data)
+      if(data.status == 201){
+        toast.success("Product Created")
+        setProductName("")
+        setProductCode("")
+        setProductDescription("")
+        setCostPrice("")
+        setWholeSalePrice("")
+        setRetailPrice("")
+        setProductUnit("")
+        setProductTaxRate("")
+        setProductQuantity("")
+      }
+    }).catch((error)=>{
+      console.log(error)
+      if(error.response.status === 403){
+        toast.error("Product Exist")
+      }
+      if(error.response.status === 401){
+        toast.error("Where House doesnot exist")
+      }
+    })
+    // console.table({productName,productCode,productDescription,productQuantity,productTaxRate,productUnit,wholeSalePrice,retailPrice,costPrice,warehouseId})
+  }
+
   return (
     <>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
@@ -44,6 +91,7 @@ export default function AddProductPage() {
         </header>
 
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          <form onSubmit={handleFormSubmit}>
           <div className="flex items-center gap-2 mb-4">
             <Plus className="h-5 w-5 text-blue-600" />
             <h1 className="text-2xl font-semibold text-blue-600">Add Product</h1>
@@ -61,33 +109,17 @@ export default function AddProductPage() {
                   <CardTitle>Basic Information</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="product-type">Product Type *</Label>
-                      <Select defaultValue="standard">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select product type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="standard">Standard</SelectItem>
-                          <SelectItem value="service">Service</SelectItem>
-                          <SelectItem value="digital">Digital</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    
-                  </div>
+                  
 
                   <div className="space-y-2">
                     <Label htmlFor="product-name">Product Name *</Label>
-                    <Input id="product-name" placeholder="Enter product name" />
+                    <Input value={productName} onChange={(e)=>setProductName(e.target.value)} id="product-name" placeholder="Enter product name" />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="product-code">Product Code *</Label>
                     <div className="flex gap-2">
-                      <Input id="product-code" placeholder="Enter product code" className="flex-1" />
+                      <Input id="product-code" value={productCode} onChange={(e)=>setProductCode(e.target.value)} placeholder="Enter product code" className="flex-1" />
                       <Button variant="outline" size="icon">
                         <Scan className="h-4 w-4" />
                       </Button>
@@ -97,25 +129,11 @@ export default function AddProductPage() {
                     </p>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="barcode-symbology">Barcode Symbology *</Label>
-                    <Select defaultValue="code128">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select barcode symbology" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="code128">Code128</SelectItem>
-                        <SelectItem value="code39">Code39</SelectItem>
-                        <SelectItem value="ean13">EAN-13</SelectItem>
-                        <SelectItem value="ean8">EAN-8</SelectItem>
-                        <SelectItem value="upc">UPC</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                 
 
                   <div className="space-y-2">
                     <Label htmlFor="description">Description</Label>
-                    <Textarea id="description" placeholder="Enter product description" rows={3} />
+                    <Textarea value={productDescription} onChange={(e)=>setProductDescription(e.target.value)} id="description" placeholder="Enter product description" rows={3} />
                   </div>
                 </CardContent>
               </Card>
@@ -128,29 +146,29 @@ export default function AddProductPage() {
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
                       <Label htmlFor="cost-price">Cost Price</Label>
-                      <Input id="cost-price" type="number" placeholder="0.00" />
+                      <Input value={costPrice} onChange={(e)=>setCostPrice(e.target.value)} id="cost-price" type="number" placeholder="0.00" />
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="selling-price">WholeSale Selling Price *</Label>
-                      <Input id="selling-price" type="number" placeholder="0.00" />
+                      <Input value={wholeSalePrice} onChange={(e)=>setWholeSalePrice(e.target.value)}  id="selling-price" type="number" placeholder="0.00" />
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="selling-price">Retail Selling Price *</Label>
-                      <Input id="selling-price" type="number" placeholder="0.00" />
+                      <Input  value={retailPrice} onChange={(e)=>setRetailPrice(e.target.value)}  id="selling-price" type="number" placeholder="0.00" />
                     </div>
                   </div>
 
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
                       <Label htmlFor="tax-rate">Tax Rate (%)</Label>
-                      <Input id="tax-rate" type="number" placeholder="0" />
+                      <Input  value={productTaxRate} onChange={(e)=>setProductTaxRate(e.target.value)}  id="tax-rate" type="number" placeholder="0" />
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="unit">Unit</Label>
-                      <Select>
+                      <Select value={productUnit} onValueChange={(e)=>setProductUnit(e)}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select unit" />
                         </SelectTrigger>
@@ -169,38 +187,17 @@ export default function AddProductPage() {
 
             {/* Right Side - Additional Options */}
             <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Product Variants</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="multiple-variants" />
-                    <Label htmlFor="multiple-variants" className="text-sm font-medium">
-                      This product has multiple variants
-                    </Label>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-2">e.g. Multiple Sizes and/or Colors</p>
-                </CardContent>
-              </Card>
-
+             
               <Card>
                 <CardHeader>
                   <CardTitle>Warehouse Quantity</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="p-3 bg-muted rounded-lg">
-                    <p className="font-medium text-sm">INVENTORY PRO</p>
-                  </div>
+                  
 
                   <div className="space-y-2">
                     <Label htmlFor="quantity">Quantity</Label>
-                    <Input id="quantity" type="number" placeholder="0" />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="racks">Racks</Label>
-                    <Input id="racks" placeholder="Enter rack location" />
+                    <Input  value={productQuantity} onChange={(e)=>setProductQuantity(e.target.value)}  id="quantity" type="number" placeholder="0" />
                   </div>
                 </CardContent>
               </Card>
@@ -245,9 +242,19 @@ export default function AddProductPage() {
 
           {/* Action Buttons */}
           <div className="flex justify-end gap-4 mt-8">
-            <Button variant="outline">Cancel</Button>
-            <Button>Save Product</Button>
+            <Button type="reset" variant="outline">Cancel</Button>
+            <Button disabled={
+              !productName || 
+              !productCode || 
+              !productDescription || 
+              !productQuantity || 
+              !productTaxRate || 
+              !productUnit || 
+              !wholeSalePrice || 
+              !retailPrice
+            } type="submit">Save Product</Button>
           </div>
+          </form>
         </div>
      </>
   )

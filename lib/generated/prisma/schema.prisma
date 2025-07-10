@@ -12,6 +12,7 @@ generator client {
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
+  // directUrl = env("DIRECT_URL")
 }
 
 enum mode {
@@ -25,12 +26,21 @@ enum role {
   purchase
 }
 
+enum unit {
+  kg
+  piece
+  liter
+  meter
+}
+
 model superAdmin {
-  id       String @id @default(uuid())
-  userName String
-  email    String @unique
-  password String
-  role     String
+  id           String    @id @default(uuid())
+  userName     String
+  email        String    @unique
+  password     String
+  role         String
+  lastLogin    DateTime?
+  warehousesId String?
 }
 
 model users {
@@ -40,12 +50,12 @@ model users {
   phoneNumber  String
   password     String
   role         role
-  warehouses   warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
+  warehouses   Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
   warehousesId String?
-  lastLogin    DateTime
+  lastLogin    DateTime?
 }
 
-model settings {
+model Settings {
   setting_id      Int    @id
   companyName     String
   companyEmail    String
@@ -57,17 +67,31 @@ model settings {
   taxRate         Int
   mode            mode
   itermsPerPage   Int
-
-  @@map("sma_settings")
 }
 
-model warehouses {
-  id            String  @id @default(uuid())
-  warehouseCode String  @unique
+model Warehouses {
+  id            String    @id @default(uuid())
+  warehouseCode String    @unique
   name          String
   phoneNumber   String
   email         String
   description   String?
   address       String
   users         users[]
+  products      Product[]
+}
+
+model Product {
+  id             String      @id @default(uuid())
+  name           String
+  barcode        String      @unique
+  wholeSalePrice Float
+  retailPrice    Float
+  cost           Float
+  quantity       Int
+  taxRate        Int
+  unit           unit
+  description    String
+  warehouses     Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
+  warehousesId   String?
 }

@@ -11,7 +11,7 @@ export async function GET(){
    } catch (error) {
     return NextResponse.json(error,{status:500})
    }finally{
-    prisma.$disconnect()
+    await prisma.$disconnect()
    }
 }
 
@@ -36,6 +36,6 @@ export async function POST(req:NextRequest){
     } catch (error) {
      return NextResponse.json(error,{status:500})
     }finally{
-     prisma.$disconnect()
+     await prisma.$disconnect()
     }
 }

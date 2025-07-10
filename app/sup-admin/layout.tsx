@@ -14,9 +14,7 @@ export default function SupAdminLayout({children}:{children:React.ReactNode}){
 
         if(status == "authenticated"){
             if(data && data?.user?.role !== "supaAdmina"){
-                router.replace("/login")
-                
-                
+                router.replace("/login")  
             }
         }
         if(status == "unauthenticated"){

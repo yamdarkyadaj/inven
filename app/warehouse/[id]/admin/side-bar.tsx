@@ -1,6 +1,7 @@
 "use client"
 
 import type * as React from "react"
+import { useState,useEffect } from "react"
 import {
   BarChart3,
   Bell,
@@ -22,6 +23,7 @@ import {
   type LucideIcon,
 } from "lucide-react"
 
+
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import {
   Sidebar,
@@ -38,14 +40,11 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import fetchData from "@/hooks/fetch-data"
-import { signOut, useSession } from "next-auth/react"
+import { NavbarItem } from "@heroui/navbar"
 import { Button } from "@heroui/button"
+import { signOut, useSession } from "next-auth/react"
 import { getWareHouseId } from "@/hooks/get-werehouseId"
 
-
-// const warehouse = getWareHouseId()
-
-// 
 
 // Navigation data for inventory management system
 
@@ -96,6 +95,7 @@ function NavSection({
                         </SidebarMenuSubItem>
                       ))}
                     </SidebarMenuSub>
+                    
                   </CollapsibleContent>
                 </SidebarMenuItem>
               </Collapsible>
@@ -111,6 +111,7 @@ function NavSection({
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
+            
           )
         })}
       </SidebarMenu>
@@ -118,20 +119,24 @@ function NavSection({
   )
 }
 
-export function WarehouseAppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-
-  const {data:session} = useSession()
+export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   
   const {data,loading,error} = fetchData("/api/settings")
   const warehouseId = getWareHouseId()
-  
- 
+  const {data:session} = useSession()
+  const [endpoint,setEndPoint] = useState("")
 
+
+  useEffect(()=>{
+    setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
+  },[session,warehouseId])
+
+  console.log(endpoint)
+
+  
   if(loading) return ""
 
   // const isOnline = useConnectionCheck()
-
-  const endPoint = `/warehouse/${warehouseId}/${session?.user?.role}`
  
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -145,7 +150,7 @@ export function WarehouseAppSidebar({ ...props }: React.ComponentProps<typeof Si
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{data?.companyName}</span>
-                  <span className="truncate text-xs">Admin Management System</span>
+                  <span className="truncate text-xs">Super Admin Management System</span>
                   {/* {isOnline ? "online" : "ofline"} */}
                 </div>
               </a>
@@ -154,88 +159,105 @@ export function WarehouseAppSidebar({ ...props }: React.ComponentProps<typeof Si
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-          <NavSection title="Overview" items={[
-            {
-              title: "Dashboard",
-              url: "/dashboard",
-              icon: Home,
-            },
-          ]} />
-        <NavSection title="Transaction" items={[
-            {
-              title: "Sales",
-              icon: ShoppingCart,
-              items: [
+        <NavSection title="Overview" items={[
                 {
-                  title: "Add Sale",
-                  url: `${endPoint}/sales/add`,
-                  icon: Plus,
+                  title: "Dashboard",
+                  url: `${endpoint}/dashboard`,
+                  icon: Home,
                 },
-                {
-                  title: "View Sales",
-                  url: "/sales/list",
-                  icon: Eye,
-                },
-              ],
-            },
-            {
-              title: "Purchases",
-              icon: Truck,
-              items: [
-                {
-                  title: "Add Purchase",
-                  url: `${endPoint}/purchases/add`,
-                  icon: Plus,
-                },
-                {
-                  title: "View Purchases",
-                  url: "/purchases/list",
-                  icon: Eye,
-                },
-              ],
-            },
-            
-          ]} />
+              ]} />
+        <NavSection title="Inventory" items={[
+    {
+      title: "Sales",
+      icon: ShoppingCart,
+      items: [
+        {
+          title: "Add Sale",
+          url: `${endpoint}/sales/add`,
+          icon: Plus,
+        },
+        {
+          title: "View Sales",
+          url: `${endpoint}/sales/list`,
+          icon: Eye,
+        },
+      ],
+    },
+    {
+      title: "Products",
+      icon: Package,
+      items: [
+        {
+          title: "Add Product",
+          url: `${endpoint}/products/add`,
+          icon: Plus,
+        },
+        {
+          title: "View Products",
+          url: `${endpoint}/products/list`,
+          icon: Eye,
+        },
+      ],
+    },
+   
+    {
+      title: "Purchases",
+      icon: Truck,
+      items: [
+        {
+          title: "Add Purchase",
+          url: "/purchases/add",
+          icon: Plus,
+        },
+        {
+          title: "View Purchases",
+          url: "/purchases/list",
+          icon: Eye,
+        },
+      ],
+    },
+   
+  ]} />
         <NavSection title="People" items={[
-            {
-              title: "People",
-              icon: Users,
-              items: [
-                {
-                  title: "Users",
-                  url: "/people/users",
-                  icon: User,
-                },
-                {
-                  title: "Customers",
-                  url: "/people/customers",
-                  icon: UserCheck,
-                },
-                {
-                  title: "Suppliers",
-                  url: "/people/suppliers",
-                  icon: Building2,
-                },
-              ],
-            },
-          ]} />
-      <NavSection title="System" items={[
-          {
-            title: "Notifications",
-            url: "/notifications",
-            icon: Bell,
-          },
-          {
-            title: "Reports",
-            url: "/reports",
-            icon: BarChart3,
-          },
-          {
-            title: "Settings",
-            url: "/settings",
-            icon: Settings,
-          },
-        ]} />
+              {
+                title: "People",
+                icon: Users,
+                items: [
+                  {
+                    title: "Users",
+                    url: `${endpoint}/people/users`,
+                    icon: User,
+                  },
+                  {
+                    title: "Customers",
+                    url: `${endpoint}/people/customers`,
+                    icon: UserCheck,
+                  },
+                  {
+                    title: "Suppliers",
+                    url: `${endpoint}/people/suppliers`,
+                    icon: Building2,
+                  },
+                ],
+              },
+            ]} />
+        <NavSection title="System" items={ [
+              {
+                title: "Notifications",
+                url: "/notifications",
+                icon: Bell,
+              },
+              {
+                title: "Reports",
+                url: "/reports",
+                icon: BarChart3,
+              },
+              {
+                title: "Settings",
+                url: "/settings",
+                icon: Settings,
+              },
+            ]} />
         <Button onClick={()=>signOut()} className="bg-red-500 m-2">Logout</Button>
       </SidebarContent>
       <SidebarRail />

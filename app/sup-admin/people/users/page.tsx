@@ -228,7 +228,7 @@ export default function UsersPage() {
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.phone}</TableCell>
                       <TableCell>{getRoleBadge(user.role)}</TableCell>
-                      <TableCell>{user.warehouse}</TableCell>
+                      <TableCell>{user.warehousesId}</TableCell>
                       <TableCell>{getStatusBadge(user.status)}</TableCell>
                       <TableCell>{new Date(user.lastLogin).toLocaleDateString()}</TableCell>
                       <TableCell className="text-right">

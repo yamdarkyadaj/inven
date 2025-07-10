@@ -16,14 +16,18 @@ export default function SupAdminLayout({children}:{children:React.ReactNode}){
         if(status == "unauthenticated"){
            
                 router.replace("/user/login")
-                console.log("not auth")
+                
             
         }
         if(status == "authenticated"){
             if(data){
+                if(data?.user?.warehousesId == "supaAdmina"){
+                    router.replace("/user/login")
+
+                }
                 if(data?.user?.warehousesId !== warehouseId){
                     router.replace("/user/login")
-                    console.log("not auth")
+                    
                 }
             }
         }

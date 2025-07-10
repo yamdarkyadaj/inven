@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -28,99 +28,118 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Package, Search, Filter, Plus, MoreHorizontal, Edit, Trash2, Eye, Download, Upload } from "lucide-react"
+import axios from "axios"
+import { getWareHouseId } from "@/hooks/get-werehouseId"
+import fetchWareHouseData from "@/hooks/fetch-invidual-data"
 
 // Sample products data
-const productsData = [
-  {
-    id: "PRD-001",
-    name: "iPhone 15 Pro",
-    code: "IPH15PRO",
-    brand: "Apple",
-    category: "Electronics",
-    price: 999.0,
-    cost: 750.0,
-    stock: 25,
-    status: "active",
-    supplier: "Tech Distributors",
-    lastUpdated: "2024-01-15",
-  },
-  {
-    id: "PRD-002",
-    name: "Samsung Galaxy S24",
-    code: "SGS24",
-    brand: "Samsung",
-    category: "Electronics",
-    price: 849.0,
-    cost: 650.0,
-    stock: 15,
-    status: "active",
-    supplier: "Mobile Solutions",
-    lastUpdated: "2024-01-14",
-  },
-  {
-    id: "PRD-003",
-    name: "MacBook Air M3",
-    code: "MBAM3",
-    brand: "Apple",
-    category: "Computers",
-    price: 1299.0,
-    cost: 1000.0,
-    stock: 8,
-    status: "active",
-    supplier: "Tech Distributors",
-    lastUpdated: "2024-01-13",
-  },
-  {
-    id: "PRD-004",
-    name: "iPad Pro 12.9",
-    code: "IPADPRO129",
-    brand: "Apple",
-    category: "Tablets",
-    price: 1099.0,
-    cost: 850.0,
-    stock: 3,
-    status: "low_stock",
-    supplier: "Tech Distributors",
-    lastUpdated: "2024-01-12",
-  },
-  {
-    id: "PRD-005",
-    name: "AirPods Pro",
-    code: "AIRPODSPRO",
-    brand: "Apple",
-    category: "Audio",
-    price: 249.0,
-    cost: 180.0,
-    stock: 0,
-    status: "out_of_stock",
-    supplier: "Audio Plus",
-    lastUpdated: "2024-01-11",
-  },
-  {
-    id: "PRD-006",
-    name: "Dell XPS 13",
-    code: "DELLXPS13",
-    brand: "Dell",
-    category: "Computers",
-    price: 1199.0,
-    cost: 900.0,
-    stock: 12,
-    status: "active",
-    supplier: "Computer World",
-    lastUpdated: "2024-01-10",
-  },
-]
+// const productsData = [
+//   {
+//     id: "PRD-001",
+//     name: "iPhone 15 Pro",
+//     code: "IPH15PRO",
+//     brand: "Apple",
+//     category: "Electronics",
+//     price: 999.0,
+//     cost: 750.0,
+//     stock: 25,
+//     status: "active",
+//     supplier: "Tech Distributors",
+//     lastUpdated: "2024-01-15",
+//   },
+//   {
+//     id: "PRD-002",
+//     name: "Samsung Galaxy S24",
+//     code: "SGS24",
+//     brand: "Samsung",
+//     category: "Electronics",
+//     price: 849.0,
+//     cost: 650.0,
+//     stock: 15,
+//     status: "active",
+//     supplier: "Mobile Solutions",
+//     lastUpdated: "2024-01-14",
+//   },
+//   {
+//     id: "PRD-003",
+//     name: "MacBook Air M3",
+//     code: "MBAM3",
+//     brand: "Apple",
+//     category: "Computers",
+//     price: 1299.0,
+//     cost: 1000.0,
+//     stock: 8,
+//     status: "active",
+//     supplier: "Tech Distributors",
+//     lastUpdated: "2024-01-13",
+//   },
+//   {
+//     id: "PRD-004",
+//     name: "iPad Pro 12.9",
+//     code: "IPADPRO129",
+//     brand: "Apple",
+//     category: "Tablets",
+//     price: 1099.0,
+//     cost: 850.0,
+//     stock: 3,
+//     status: "low_stock",
+//     supplier: "Tech Distributors",
+//     lastUpdated: "2024-01-12",
+//   },
+//   {
+//     id: "PRD-005",
+//     name: "AirPods Pro",
+//     code: "AIRPODSPRO",
+//     brand: "Apple",
+//     category: "Audio",
+//     price: 249.0,
+//     cost: 180.0,
+//     stock: 0,
+//     status: "out_of_stock",
+//     supplier: "Audio Plus",
+//     lastUpdated: "2024-01-11",
+//   },
+//   {
+//     id: "PRD-006",
+//     name: "Dell XPS 13",
+//     code: "DELLXPS13",
+//     brand: "Dell",
+//     category: "Computers",
+//     price: 1199.0,
+//     cost: 900.0,
+//     stock: 12,
+//     status: "active",
+//     supplier: "Computer World",
+//     lastUpdated: "2024-01-10",
+//   },
+// ]
 
 export default function ListProductsPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [categoryFilter, setCategoryFilter] = useState("all")
   const [statusFilter, setStatusFilter] = useState("all")
 
-  const filteredProducts = productsData.filter((product) => {
+  const warehouseId = getWareHouseId()
+
+  const {data:productsData,loading,error} = fetchWareHouseData("/api/product/list",{warehouseId})
+
+
+
+  if(!productsData) return "loading"
+
+  // useEffect(()=>{
+  //   async function main(){
+  //     await axios.post("/api/product/list",{warehouseId}).then((data)=>{
+  //       console.log(data.data)
+  //     })
+  //   }
+  //   main()
+  // },[warehouseId])
+
+  const filteredProducts = productsData.filter((product:any) => {
     const matchesSearch =
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.brand.toLowerCase().includes(searchTerm.toLowerCase())
+      product.barcode.toLowerCase().includes(searchTerm.toLowerCase()) 
     const matchesCategory = categoryFilter === "all" || product.category === categoryFilter
     const matchesStatus = statusFilter === "all" || product.status === statusFilter
 
@@ -147,9 +166,7 @@ export default function ListProductsPage() {
   }
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
+    <>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
@@ -266,29 +283,26 @@ export default function ListProductsPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Product</TableHead>
-                    <TableHead>Code</TableHead>
-                    <TableHead>Brand</TableHead>
-                    <TableHead>Category</TableHead>
-                    <TableHead>Price</TableHead>
+                    <TableHead>Barcode</TableHead>
                     <TableHead>Cost</TableHead>
+                    <TableHead>Wholesale Price</TableHead>
+                    <TableHead>Retail Price</TableHead>
                     <TableHead>Stock</TableHead>
-                    <TableHead>Status</TableHead>
                     <TableHead>Supplier</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredProducts.map((product) => (
+                  {filteredProducts.map((product:any) => (
                     <TableRow key={product.id}>
                       <TableCell className="font-medium">{product.name}</TableCell>
-                      <TableCell>{product.code}</TableCell>
-                      <TableCell>{product.brand}</TableCell>
-                      <TableCell>{product.category}</TableCell>
-                      <TableCell>${product.price.toFixed(2)}</TableCell>
-                      <TableCell>${product.cost.toFixed(2)}</TableCell>
-                      <TableCell className={getStockColor(product.stock)}>{product.stock}</TableCell>
-                      <TableCell>{getStatusBadge(product.status)}</TableCell>
-                      <TableCell>{product.supplier}</TableCell>
+                      <TableCell>{product.barcode}</TableCell>
+                      <TableCell>{product.cost}</TableCell>
+                      <TableCell>{product.wholeSalePrice}</TableCell>
+                      <TableCell>{product.retailPrice.toFixed(2)}</TableCell>
+                      <TableCell>{product.quantity}</TableCell>
+                      <TableCell className={getStockColor(product.stock)}>{""}</TableCell>
+                      
                       <TableCell className="text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -309,8 +323,10 @@ export default function ListProductsPage() {
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem className="text-red-600">
+                              <Button className="bg-red-600" onClick={()=>{alert(product.id)}}>
                               <Trash2 className="mr-2 h-4 w-4" />
                               Delete Product
+                              </Button>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -322,7 +338,6 @@ export default function ListProductsPage() {
             </CardContent>
           </Card>
         </div>
-      </SidebarInset>
-    </SidebarProvider>
+    </>
   )
 }
