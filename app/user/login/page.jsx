@@ -29,7 +29,7 @@ export default function LoginForm() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
-    const res = await signIn("credentials",{email:userName,password:password,redirect:false})
+    const res = await signIn("credentials",{email:userName,password:password,redirect:false,type:"warehouse"})
     
     if(res.ok){
       toast.success("Welcome")

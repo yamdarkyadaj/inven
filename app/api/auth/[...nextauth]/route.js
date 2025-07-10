@@ -13,13 +13,14 @@ secret: process.env.NEXTAUTH_SECRET,
       credentials: {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
+        
       },
       async authorize(credentials, req) {
-        const {email,password} = credentials
+        const {email,password,type} = credentials
         
-        const referer = req.headers?.referer || "";
+       
 
-        if (referer.includes("/user/login")) {
+        if (type == "warehouse") {
           // ✅ Warehouse login logic
           const user = await prisma.users.findUnique({where:{userName:email}})
           if(!user) return null

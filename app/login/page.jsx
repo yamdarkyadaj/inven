@@ -55,6 +55,7 @@ export default function LoginForm() {
       email:userName,
       password:password,
       redirect: false,
+      type:"admin"
     });
     
     if(req?.ok){
