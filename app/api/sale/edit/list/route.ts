@@ -32,8 +32,8 @@ export async function POST(req: NextRequest) {
       });
 
       const items = saleItems
-        .filter((item) => item.saleId === sale.invoiceNo)
-        .map((item) => ({
+        .filter((item:any) => item.saleId === sale.invoiceNo)
+        .map((item:any) => ({
           id: item.id,
           productName: item.productName,
           quantity: item.quantity,
