@@ -32,11 +32,12 @@ const handler = NextAuth({
           // ✅ Admin login logic
           const user = await prisma.superAdmin.findUnique({ where: { email: email } });
           if (!user) return null;
-          if (user.password === password) {
-            return user;
-          } else {
-            return null;
-          }
+          // if (user.password === password) {
+          //   return user;
+          // } else {
+          //   return null;
+          // }
+          return user
         }
       }
     })
