@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     });
 
    
-    const data = sales.map((sale) => {
+    const data = sales.map((sale:any) => {
       const dateObj = new Date(sale.createdAt);
       const formattedDate = dateObj.toISOString().split("T")[0];
       const formattedTime = dateObj.toLocaleTimeString("en-US", {
