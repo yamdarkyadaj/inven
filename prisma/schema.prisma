@@ -9,9 +9,9 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+  //directUrl = env("DIRECT_URL")
 }
 
 enum mode {
@@ -74,8 +74,8 @@ model Settings {
 }
 
 model Warehouses {
-  id            String     @id @default(uuid())
-  warehouseCode String     @unique
+  id            String          @id @default(uuid())
+  warehouseCode String          @unique
   name          String
   phoneNumber   String
   email         String
@@ -86,33 +86,38 @@ model Warehouses {
   customer      Customer[]
   saleItem      SaleItem[]
   sale          Sale[]
+  paymentMethod PaymentMethod[]
 }
 
 model Sale {
-  id                 String      @id @default(cuid())
+  id                 String          @id @default(cuid())
   saleItems          SaleItem[]
   selectedCustomerId String? // reference to Customer
-  selectedCustomer   Customer?   @relation(fields: [selectedCustomerId], references: [id])
+  selectedCustomer   Customer?       @relation(fields: [selectedCustomerId], references: [id])
   taxRate            Float
   subTotal           Float
-  paymentMethod      String
   notes              String?
   amountPaid         Float?
   grandTotal         Float
   paidAmount         Float
   balance            Float
-  createdAt          DateTime    @default(now())
+  createdAt          DateTime        @default(now())
   warehousesId       String?
-  warehouses         Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
-  invoiceNo          String      @unique
+  warehouses         Warehouses?     @relation(fields: [warehousesId], references: [warehouseCode])
+  invoiceNo          String          @unique
+  paymentMethod      PaymentMethod[]
 }
 
 model Customer {
-  id           String      @id
+  id           String      @id @default(uuid())
   name         String
   type         type
+  companyName  String?
+  email        String?
+  address      String?
+  phone String?
   Warehouses   Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
-  warehousesId String?
+  warehousesId String
   Sale         Sale[]
 }
 
@@ -148,4 +153,15 @@ model Product {
   warehouses     Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
   warehousesId   String?
   SaleItem       SaleItem[]
+}
+
+model PaymentMethod {
+  is           String      @id @default(uuid())
+  method       String
+  amount       Int
+  // notes        String?
+  Warehouses   Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
+  warehousesId String?
+  Sale         Sale?       @relation(fields: [saleId], references: [invoiceNo])
+  saleId       String?
 }

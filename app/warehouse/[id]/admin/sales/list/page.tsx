@@ -162,22 +162,18 @@ export default function SalesListPage() {
   const [dateFilter, setDateFilter] = useState("all")
   const [endpoint,setEndPoint] = useState("")
   const {data:session} = useSession()
-  
-   
+  const { printReceipt } = usePrintReceipt()
+
   const router = useRouter()
-
   const warehouseId = getWareHouseId()
-
+  const {data:salesData,loading,error} = fetchWareHouseData("/api/sale/list",{warehouseId})
   useEffect(()=>{
     setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
   },[session,warehouseId])
-      
-      const {data:salesData,loading,error} = fetchWareHouseData("/api/sale/list",{warehouseId})
-       if(!salesData) return <Loading/>
-
-       console.log(salesData)
-
-  const { printReceipt } = usePrintReceipt()
+  if(!salesData) return <Loading/>
+  
+  console.log(salesData)
+  
 
   const filteredSales = salesData.filter((sale:any) => {
     const matchesSearch =
@@ -233,7 +229,7 @@ export default function SalesListPage() {
           discount: 0,
           tax: parseInt(completedSale.tax),
           total: parseInt(completedSale.total),
-          paid: completedSale.amountPaid,
+          paid: completedSale.total - completedSale.balance,
           balance: completedSale.balance,
           paymentMethod: completedSale.paymentMethod,
         }
@@ -410,7 +406,7 @@ export default function SalesListPage() {
                         </div>
                       </TableCell>
                       <TableCell className="font-medium">${sale.total.toFixed(2)}</TableCell>
-                      <TableCell className="text-green-600">${sale.amountPaid.toFixed(2)}</TableCell>
+                      <TableCell className="text-green-600">${(sale.total - sale.balance).toFixed(2)}</TableCell>
                       <TableCell className={sale.balance > 0 ? "text-red-600" : "text-green-600"}>
                         ${sale.balance.toFixed(2)}
                       </TableCell>

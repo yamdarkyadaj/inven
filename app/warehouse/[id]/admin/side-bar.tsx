@@ -131,7 +131,7 @@ export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sid
     setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
   },[session,warehouseId])
 
-  console.log(endpoint)
+  
 
   
   if(loading) return ""

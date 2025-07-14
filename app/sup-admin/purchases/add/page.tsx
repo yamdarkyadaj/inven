@@ -490,9 +490,26 @@ export default function AddPurchasePage() {
                         </SelectContent>
                       </Select>
                     </div>
-                    
+                    <div className="space-y-2">
+                      <Label htmlFor="warehouse">Warehouse *</Label>
+                      <Select value={selectedWarehouse} onValueChange={setSelectedWarehouse}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select warehouse" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {warehouses.map((warehouse) => (
+                            <SelectItem key={warehouse.id} value={warehouse.id}>
+                              {warehouse.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
-                 
+                  <div className="space-y-2">
+                    <Label htmlFor="purchase-date">Purchase Date *</Label>
+                    <Input id="purchase-date" type="date" defaultValue={new Date().toISOString().split("T")[0]} />
+                  </div>
                 </CardContent>
               </Card>
 

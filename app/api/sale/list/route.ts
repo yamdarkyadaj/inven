@@ -8,7 +8,9 @@ export async function POST(req: NextRequest) {
 
   try {
     const warehouse = await prisma.warehouses.findUnique({
+    
       where: { warehouseCode: warehouseId },
+      
     });
 
     if (!warehouse)
@@ -19,6 +21,9 @@ export async function POST(req: NextRequest) {
     
     const sales = await prisma.sale.findMany({
       where: { warehousesId: warehouseId },
+      orderBy:{
+        createdAt:"desc"
+      },
       include: {
         selectedCustomer: true,
       },

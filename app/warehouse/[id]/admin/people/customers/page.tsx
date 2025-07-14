@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -28,6 +28,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { UserCheck, Search, Filter, Plus, MoreHorizontal, Edit, Trash2, Eye, Download, Upload } from "lucide-react"
+import { useSession } from "next-auth/react"
+import { getWareHouseId } from "@/hooks/get-werehouseId"
+import fetchWareHouseData from "@/hooks/fetch-invidual-data"
+import { Loading } from "@/components/loading"
 
 // Sample customers data
 const customersData = [
@@ -84,11 +88,28 @@ const customersData = [
 export default function CustomersPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
+  const [endPoint, setEndPoint] = useState("")
+  const {data:session} = useSession()
+    
+     
+  
+    const warehouseId = getWareHouseId()
+  
+    const {data:customersData,loading,error} = fetchWareHouseData("/api/customer/list",{warehouseId})
+  
+    useEffect(()=>{
+      setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
+    },[session,warehouseId])
+  
+    if (loading) return <Loading/>
+    if (error) return <h1 className="text-red-500">Error loading warehouses.</h1>
+    if (!customersData) return <h1>No data available.</h1>
 
-  const filteredCustomers = customersData.filter((customer) => {
+    console.log(customersData)
+
+  const filteredCustomers = customersData.filter((customer:any) => {
     const matchesSearch =
       customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      customer.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
       customer.email.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesStatus = statusFilter === "all" || customer.status === statusFilter
 
@@ -215,24 +236,19 @@ export default function CustomersPage() {
                     <TableHead>Company</TableHead>
                     <TableHead>Email</TableHead>
                     <TableHead>Phone</TableHead>
-                    <TableHead>Credit Limit</TableHead>
-                    <TableHead>Total Purchases</TableHead>
-                    <TableHead>Last Purchase</TableHead>
-                    <TableHead>Status</TableHead>
+                   
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredCustomers.map((customer) => (
+                  {filteredCustomers.map((customer:any) => (
                     <TableRow key={customer.id}>
                       <TableCell className="font-medium">{customer.name}</TableCell>
-                      <TableCell>{customer.company}</TableCell>
+                      <TableCell>{customer.companyName}</TableCell>
                       <TableCell>{customer.email}</TableCell>
                       <TableCell>{customer.phone}</TableCell>
-                      <TableCell>${customer.creditLimit.toFixed(2)}</TableCell>
-                      <TableCell>${customer.totalPurchases.toFixed(2)}</TableCell>
-                      <TableCell>{new Date(customer.lastPurchase).toLocaleDateString()}</TableCell>
-                      <TableCell>{getStatusBadge(customer.status)}</TableCell>
+                      
+                     
                       <TableCell className="text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>

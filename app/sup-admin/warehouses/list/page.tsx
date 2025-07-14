@@ -51,6 +51,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Loading } from "@/components/loading"
 
 
 
@@ -125,7 +126,7 @@ export default function WarehousesListPage() {
 
   const {data:warehousesData,loading,error} = fetchData("/api/warehouse")
 
-  if (loading) return <h1>Loading...</h1>
+  if (loading) return <Loading/>
 if (error) return <h1 className="text-red-500">Error loading warehouses.</h1>
 if (!warehousesData) return <h1>No data available.</h1>
 

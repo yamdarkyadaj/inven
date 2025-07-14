@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { User, Search, Filter, Plus, MoreHorizontal, Edit, Trash2, Eye, Shield } from "lucide-react"
 import fetchData from "@/hooks/fetch-data"
+import { Loading } from "@/components/loading"
 
 // Sample users data
 
@@ -41,7 +42,7 @@ export default function UsersPage() {
 
   const {data:usersData,loading,error} = fetchData("/api/users")
 
-  if (loading) return <h1>Loading...</h1>
+  if (loading) return <Loading/>
   if (error) return <h1 className="text-red-500">Error loading warehouses.</h1>
   if (!usersData) return <h1>No data available.</h1>
 

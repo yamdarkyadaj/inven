@@ -19,20 +19,7 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Textarea } from "@/components/ui/textarea"
-import {
-  ShoppingCart,
-  Plus,
-  Trash2,
-  Calculator,
-  Printer,
-  Check,
-  ChevronsUpDown,
-  CheckCircle,
-  X,
-  CreditCard,
-  Banknote,
-  Smartphone,
-} from "lucide-react"
+import { ShoppingCart, Plus, Trash2, Calculator, Printer, Check, ChevronsUpDown, CheckCircle, X } from "lucide-react"
 import { usePrintReceipt } from "@/hooks/use-print-receipt"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
@@ -42,12 +29,18 @@ import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useRouter } from "next/navigation"
 import { getWareHouseId } from "@/hooks/get-werehouseId"
-import { Loading } from "@/components/loading"
 import fetchWareHouseData from "@/hooks/fetch-invidual-data"
 import axios from "axios"
-import { SystemStatus } from "@/components/system-status"
+import { Loading } from "@/components/loading"
 
 // Sample data with updated pricing structure matching Prisma schema
+const customers = [
+  { id: "CUST-001", name: "John Doe", email: "john@example.com", phone: "+1234567890", type: "retail" },
+  { id: "CUST-002", name: "Jane Smith", email: "jane@example.com", phone: "+1234567891", type: "wholesale" },
+  { id: "CUST-003", name: "Mike Johnson", email: "mike@example.com", phone: "+1234567892", type: "retail" },
+  { id: "WALK-IN", name: "Walk-in Customer", email: "", phone: "", type: "retail" },
+]
+
 
 
 interface SaleItem {
@@ -67,14 +60,6 @@ interface SaleItem {
   taxRate: number
 }
 
-interface PaymentMethod {
-  id: string
-  method: "cash" | "card" | "bank_transfer" | "check" | "mobile_money"
-  amount: number
-  reference?: string
-  notes?: string
-}
-
 interface CompletedSale {
   saleId: string
   invoiceNo: string
@@ -88,7 +73,6 @@ interface CompletedSale {
     type: string
   }
   items: Array<{
-    productId: string
     productName: string
     productCode: string
     costPrice: number
@@ -104,8 +88,8 @@ interface CompletedSale {
   taxRate: number
   taxAmount: number
   grandTotal: number
-  paymentMethods: PaymentMethod[]
-  totalPaid: number
+  paymentMethod: string
+  amountPaid: number
   balance: number
   notes: string
   cashier: string
@@ -113,53 +97,38 @@ interface CompletedSale {
 }
 
 export default function AddSalePage() {
+    
   const [saleItems, setSaleItems] = useState<SaleItem[]>([])
   const [selectedCustomer, setSelectedCustomer] = useState("")
   const [selectedProductId, setSelectedProductId] = useState("")
   const [quantity, setQuantity] = useState(1)
   const [discount, setDiscount] = useState(0)
   const [priceType, setPriceType] = useState<"wholesale" | "retail">("retail")
-  const [taxRate, setTaxRate] = useState(0)
+  const [taxRate, setTaxRate] = useState(10)
+  const [paymentMethod, setPaymentMethod] = useState("")
   const [notes, setNotes] = useState("")
+  const [amountPaid, setAmountPaid] = useState("")
   const [open, setOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [completedSale, setCompletedSale] = useState<CompletedSale | null>(null)
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
 
-  
-  // Multiple payment methods state
-  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
-  const [currentPaymentMethod, setCurrentPaymentMethod] = useState<
-    "cash" | "card" | "bank_transfer" | "check" | "mobile_money"
-  >("cash")
-  const [currentPaymentAmount, setCurrentPaymentAmount] = useState<any>("")
-  const [currentPaymentReference, setCurrentPaymentReference] = useState("")
-  const [currentPaymentNotes, setCurrentPaymentNotes] = useState("")
-
   const router = useRouter()
   const { printReceipt } = usePrintReceipt()
   const warehouseId = getWareHouseId()
-        
-        const {data:products,loading,error} = fetchWareHouseData("/api/product/list",{warehouseId})
-        const {data:customers,loading:loadingCustomers,error:errorCustomers} = fetchWareHouseData("/api/customer/list",{warehouseId})
-
-         if(!products && !customers) return (
-          <Loading/>
-         )
-
-    
       
-    
-    
-
+      const {data:products,loading,error} = fetchWareHouseData("/api/product/list",{warehouseId})
+       if(!products) return (
+        <Loading/>
+       )
 
   const selectedProduct = products.find((p:any) => p.id === selectedProductId)
-  const selectedCustomerData = customers.find((c:any) => c.id === selectedCustomer)
+  const selectedCustomerData = customers.find((c) => c.id === selectedCustomer)
 
   // Auto-set price type based on customer type
   const handleCustomerChange = (customerId: string) => {
     setSelectedCustomer(customerId)
-    const customer = customers.find((c:any) => c.id === customerId)
+    const customer = customers.find((c) => c.id === customerId)
     if (customer) {
       setPriceType(customer.type as "wholesale" | "retail")
     }
@@ -237,90 +206,17 @@ export default function AddSalePage() {
     return { color: "text-green-600", text: "In Stock" }
   }
 
-  // Payment methods functions
-  const addPaymentMethod = () => {
-    const amount = Number.parseFloat(currentPaymentAmount)
-    if (!amount || amount <= 0) {
-      alert("Please enter a valid payment amount")
-      return
-    }
-
-    const totalPaid = paymentMethods.reduce((sum, pm) => sum + pm.amount, 0)
-    const remaining = grandTotal - totalPaid
-
-    if (amount > remaining) {
-      alert(`Payment amount cannot exceed remaining balance of $${remaining.toFixed(2)}`)
-      return
-    }
-
-    const newPayment: PaymentMethod = {
-      id: `PAY-${Date.now()}`,
-      method: currentPaymentMethod,
-      amount,
-      reference: currentPaymentReference || undefined,
-      notes: currentPaymentNotes || undefined,
-    }
-
-    setPaymentMethods([...paymentMethods, newPayment])
-
-    // Reset payment form
-    setCurrentPaymentAmount("")
-    setCurrentPaymentReference("")
-    setCurrentPaymentNotes("")
-  }
-
-  const removePaymentMethod = (paymentId: string) => {
-    setPaymentMethods(paymentMethods.filter((pm) => pm.id !== paymentId))
-  }
-
-  const getPaymentMethodIcon = (method: string) => {
-    switch (method) {
-      case "cash":
-        return <Banknote className="h-4 w-4" />
-      case "card":
-        return <CreditCard className="h-4 w-4" />
-      case "bank_transfer":
-        return <Smartphone className="h-4 w-4" />
-      case "mobile_money":
-        return <Smartphone className="h-4 w-4" />
-      default:
-        return <CreditCard className="h-4 w-4" />
-    }
-  }
-
-  const getPaymentMethodLabel = (method: string) => {
-    switch (method) {
-      case "cash":
-        return "Cash"
-      case "card":
-        return "Card"
-      case "bank_transfer":
-        return "Bank Transfer"
-      case "check":
-        return "Check"
-      case "mobile_money":
-        return "Mobile Money"
-      default:
-        return method
-    }
-  }
-
   const subtotal = saleItems.reduce((sum, item) => sum + item.total, 0)
   const totalDiscount = saleItems.reduce((sum, item) => sum + item.discount, 0)
   const taxAmount = (subtotal * taxRate) / 100
   const grandTotal = subtotal + taxAmount
-  const totalPaid = paymentMethods.reduce((sum, pm) => sum + pm.amount, 0)
-  const balance = grandTotal - totalPaid
+  const paidAmount = Number.parseFloat(amountPaid) >= 0 ?Number.parseFloat(amountPaid) : grandTotal
+  const balance = paidAmount - grandTotal
 
   // Form submission handler
   const handleFormSubmit = async () => {
-    if (saleItems.length === 0 || !selectedCustomer) {
+    if (saleItems.length === 0 || !selectedCustomer || !paymentMethod) {
       alert("Please complete all required fields")
-      return
-    }
-
-    if (paymentMethods.length === 0) {
-      alert("Please add at least one payment method")
       return
     }
 
@@ -331,7 +227,7 @@ export default function AddSalePage() {
       const invoiceNo = `INV-${String(Math.floor(Math.random() * 1000000)).padStart(6, "0")}`
       const saleId = `SALE-${Date.now()}`
 
-      // Prepare sale data with multiple payment methods
+      // Prepare sale data with only selected prices
       const saleData: CompletedSale = {
         saleId,
         invoiceNo,
@@ -354,35 +250,35 @@ export default function AddSalePage() {
           type: selectedCustomerData?.type || "retail",
         },
         items: saleItems.map((item) => ({
-          productId: item.productId,
           productName: item.productName,
           productCode: item.productBarcode,
           costPrice: item.cost,
-          salePrice: item.selectedPrice,
+          salePrice: item.selectedPrice, // Only the selected price, not both
           priceType: item.priceType,
           quantity: item.quantity,
           discount: item.discount,
           total: item.total,
-          profit: item.total - item.cost * item.quantity,
+          profit: item.total - item.cost * item.quantity, // Calculate profit
         })),
         subtotal,
         totalDiscount,
         taxRate,
         taxAmount,
         grandTotal,
-        paymentMethods: [...paymentMethods],
-        totalPaid,
+        paymentMethod,
+        amountPaid: paidAmount,
         balance,
         notes,
         cashier: "Admin User",
-        warehouseId
+        warehouseId // This would come from auth context in real app
       }
 
       // Simulate API call to save sale
       console.log("Saving sale data:", saleData)
 
-      // Simulate API delay
       await axios.post("/api/sale",saleData)
+
+      
 
       // Update product stock (in real app, this would be handled by the API)
       saleItems.forEach((item) => {
@@ -399,7 +295,8 @@ export default function AddSalePage() {
       // Reset form
       setSaleItems([])
       setSelectedCustomer("")
-      setPaymentMethods([])
+      setPaymentMethod("")
+      setAmountPaid("")
       setNotes("")
       setTaxRate(10)
     } catch (error) {
@@ -429,9 +326,9 @@ export default function AddSalePage() {
       discount: completedSale.totalDiscount,
       tax: completedSale.taxAmount,
       total: completedSale.grandTotal,
-      paymentMethods: completedSale.paymentMethods,
-      totalPaid: completedSale.totalPaid,
+      paid: completedSale.amountPaid,
       balance: completedSale.balance,
+      paymentMethod: completedSale.paymentMethod,
     }
 
     printReceipt(receiptData, paperWidth)
@@ -444,6 +341,7 @@ export default function AddSalePage() {
 
   const handleNewSale = () => {
     handleCloseSuccessDialog()
+    // Form is already reset, just close dialog
   }
 
   const handleViewSales = () => {
@@ -452,7 +350,7 @@ export default function AddSalePage() {
   }
 
   return (
-   <>
+    <>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
@@ -473,7 +371,6 @@ export default function AddSalePage() {
               </BreadcrumbList>
             </Breadcrumb>
           </div>
-          <SystemStatus/>
         </header>
 
         <div className="flex flex-1 flex-col gap-6 p-6">
@@ -496,7 +393,7 @@ export default function AddSalePage() {
                       <SelectValue placeholder="Select customer" />
                     </SelectTrigger>
                     <SelectContent>
-                      {customers.map((customer:any) => (
+                      {customers.map((customer) => (
                         <SelectItem key={customer.id} value={customer.id}>
                           <div className="flex items-center gap-2">
                             {customer.name}
@@ -763,16 +660,6 @@ export default function AddSalePage() {
                       <span>Total:</span>
                       <span>${grandTotal.toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between text-green-600">
-                      <span>Paid:</span>
-                      <span>${totalPaid.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between font-medium">
-                      <span>Balance:</span>
-                      <span className={balance > 0 ? "text-red-600" : "text-green-600"}>
-                        ${Math.abs(balance).toFixed(2)}
-                      </span>
-                    </div>
                   </div>
 
                   <div className="space-y-2">
@@ -789,109 +676,46 @@ export default function AddSalePage() {
                 </CardContent>
               </Card>
 
-              {/* Multiple Payment Methods */}
+              {/* Payment */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Payment Methods</CardTitle>
-                  <CardDescription>Add multiple payment methods for this sale</CardDescription>
+                  <CardTitle>Payment</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {/* Add Payment Form */}
-                  <div className="space-y-3 p-4 border rounded-lg bg-muted/50">
-                    <div className="space-y-2">
-                      <Label>Payment Method</Label>
-                      <Select
-                        value={currentPaymentMethod}
-                        onValueChange={(value: any) => setCurrentPaymentMethod(value)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="cash">Cash</SelectItem>
-                          <SelectItem value="card">Card</SelectItem>
-                          <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
-                          <SelectItem value="check">Check</SelectItem>
-                          <SelectItem value="mobile_money">Mobile Money</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="space-y-2">
-                        <Label>Amount</Label>
-                        <Input
-                          type="number"
-                          placeholder="0.00"
-                          value={currentPaymentAmount}
-                          onChange={(e) => setCurrentPaymentAmount(e.target.value)}
-                        />
-                        <Button onClick={()=>setCurrentPaymentAmount(grandTotal)}>All</Button>
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Reference</Label>
-                        <Input
-                          placeholder="Optional"
-                          value={currentPaymentReference}
-                          onChange={(e) => setCurrentPaymentReference(e.target.value)}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label>Notes</Label>
-                      <Input
-                        placeholder="Optional notes"
-                        value={currentPaymentNotes}
-                        onChange={(e) => setCurrentPaymentNotes(e.target.value)}
-                      />
-                    </div>
-
-                    <Button onClick={addPaymentMethod} className="w-full" size="sm">
-                      <Plus className="mr-2 h-4 w-4" />
-                      Add Payment
-                    </Button>
+                  <div className="space-y-2">
+                    <Label htmlFor="payment-method">Method</Label>
+                    <Select value={paymentMethod} onValueChange={setPaymentMethod}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select method" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="cash">Cash</SelectItem>
+                        <SelectItem value="card">Card</SelectItem>
+                        <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
+                        <SelectItem value="check">Check</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
 
-                  {/* Payment Methods List */}
-                  {paymentMethods.length > 0 && (
-                    <div className="space-y-2">
-                      <Label>Added Payments</Label>
-                      <div className="space-y-2">
-                        {paymentMethods.map((payment) => (
-                          <div key={payment.id} className="flex items-center justify-between p-3 border rounded-lg">
-                            <div className="flex items-center gap-2">
-                              {getPaymentMethodIcon(payment.method)}
-                              <div>
-                                <div className="font-medium">
-                                  {getPaymentMethodLabel(payment.method)} - ${payment.amount.toFixed(2)}
-                                </div>
-                                {payment.reference && (
-                                  <div className="text-sm text-muted-foreground">Ref: {payment.reference}</div>
-                                )}
-                                {payment.notes && <div className="text-sm text-muted-foreground">{payment.notes}</div>}
-                              </div>
-                            </div>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => removePaymentMethod(payment.id)}
-                              className="text-red-600 hover:text-red-700"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                  <div className="space-y-2">
+                    <Label htmlFor="amount-paid">Amount Paid</Label>
+                    <Input
+                      id="amount-paid"
+                      type="number"
+                      placeholder="0.00"
+                      value={amountPaid}
+                      onChange={(e) => setAmountPaid(e.target.value)}
+                    />
+                  </div>
 
-                  {/* Remaining Balance Alert */}
-                  {balance > 0 && paymentMethods.length > 0 && (
-                    <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                      <p className="text-sm text-yellow-800">
-                        <strong>Remaining Balance:</strong> ${balance.toFixed(2)}
-                      </p>
+                  {amountPaid && (
+                    <div className="p-3 bg-muted rounded-lg">
+                      <div className="flex justify-between text-sm">
+                        <span>Change:</span>
+                        <span className={balance >= 0 ? "text-green-600" : "text-red-600"}>
+                          ${Math.abs(balance).toFixed(2)}
+                        </span>
+                      </div>
                     </div>
                   )}
                 </CardContent>
@@ -920,7 +744,7 @@ export default function AddSalePage() {
 
             <Button
               onClick={handleFormSubmit}
-              disabled={saleItems.length === 0 || !selectedCustomer || paymentMethods.length === 0 || isSubmitting}
+              disabled={saleItems.length === 0 || !selectedCustomer || !paymentMethod || isSubmitting}
               className="min-w-[140px]"
             >
               {isSubmitting ? (
@@ -952,14 +776,6 @@ export default function AddSalePage() {
                     Invoice #{completedSale.invoiceNo} has been created for {completedSale.customer.name}.
                     <br />
                     Total: ${completedSale.grandTotal.toFixed(2)}
-                    <br />
-                    Paid: ${completedSale.totalPaid.toFixed(2)} via {completedSale.paymentMethods.length} method(s)
-                    {completedSale.balance > 0 && (
-                      <>
-                        <br />
-                        Balance: ${completedSale.balance.toFixed(2)}
-                      </>
-                    )}
                   </>
                 )}
               </DialogDescription>
@@ -998,6 +814,6 @@ export default function AddSalePage() {
             </div>
           </DialogContent>
         </Dialog>
-     </>
+      </>
   )
 }

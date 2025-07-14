@@ -12,7 +12,7 @@ export async function POST(req:NextRequest){
         taxRate,
         taxAmount,
         grandTotal,
-        paymentMethod,
+        paymentMethods,
         amountPaid,
         balance,
         notes,
@@ -30,11 +30,11 @@ export async function POST(req:NextRequest){
             invoiceNo,
             subTotal:subtotal,
             taxRate,
-            paymentMethod,
+           
             notes,
             amountPaid,
             grandTotal,
-            paidAmount:amountPaid,
+            paidAmount:grandTotal - balance,
             balance,
             warehousesId:warehouseId
         }
@@ -58,7 +58,20 @@ export async function POST(req:NextRequest){
                 profit:items[i].profit,
             }
         })
-        console.log(savedSales)
+        
+    }
+
+    for (let j = 0; j < paymentMethods.length; j++) {
+        await prisma.paymentMethod.create({
+            data:{
+                method:paymentMethods[j].method,
+                amount:paymentMethods[j].amount,
+                // notes:paymentMethods[j].notes,
+                warehousesId:warehouseId,
+                saleId:sale.invoiceNo
+            }
+        })
+         
     }
     
     

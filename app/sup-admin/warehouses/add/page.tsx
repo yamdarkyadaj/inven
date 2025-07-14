@@ -24,6 +24,7 @@ import { Warehouse, MapPin, Users, Package, Building } from "lucide-react"
 import fetchData from "@/hooks/fetch-data"
 import axios from "axios"
 import toast from "react-hot-toast"
+import { Loading } from "@/components/loading"
 
 // Sample users for assignment
 const availableUsers = [
@@ -66,7 +67,7 @@ export default function AddWarehousePage() {
 
   const {data,loading,error} = fetchData("/api/warehouse")
 
-  if (loading) return <h1>Loading...</h1>
+  if (loading) return <Loading/>
 if (error) return <h1 className="text-red-500">Error loading warehouses.</h1>
 if (!data) return <h1>No data available.</h1>
 
