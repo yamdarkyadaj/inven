@@ -60,14 +60,14 @@ export default function AddCustomerPage() {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simulate API call
+    
     await new Promise((resolve) => setTimeout(resolve, 1000))
 
     const newCustomer: Customer = {
       ...formData,
     }
 
-    // Save to localStorage (replace with API call)
+    
     await axios.post("/api/customer",newCustomer)
    console.log(newCustomer)
     setIsSubmitting(false)

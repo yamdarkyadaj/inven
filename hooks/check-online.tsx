@@ -2,33 +2,36 @@
 
 import { useEffect, useState } from "react"
 
+export function useOnlineStatus(url = "https://ping-v6lv.onrender.com/", interval = 5000) {
+  const [online, setOnline] = useState(false)
+  const [loading, setLoading] = useState(true)
 
-export async function isOnline(url = "http://localhost:2001/",interval = 1000){
-    const [loading,setLoading] = useState<any>(true)
-    const [onLine,setOnline] = useState<any>(false)
+  useEffect(() => {
+    let timer: any
 
-    useEffect(()=>{
-        async function data() {
-            setLoading(true)
-            try {   
-                const res = await fetch(url)
-                if(res.ok){
-                    setOnline(true)
-                    console.log("online")
-                }else{
-                    setOnline(false)
-                    console.log("ofline")
-                }
-            } catch (error) {
-                setOnline(false)
-                console.log("ofline")
-            }finally{
-                setLoading(false)
-            }
-        }
-        data()
-    },[url])
+    async function checkStatus() {
+      setLoading(true)
+      try {
+        const res = await fetch(url, { method: "GET" })
+        setOnline(res.ok)
+        console.log(res.ok ? "online" : "offline")
+      } catch (error) {
+        setOnline(false)
+        console.log("offline")
+      } finally {
+        setLoading(false)
+      }
+    }
 
-    return onLine
+    // Initial check
+    checkStatus()
 
+    // Set interval check
+    timer = setInterval(checkStatus, interval)
+
+    // Cleanup interval
+    return () => clearInterval(timer)
+  }, [url, interval])
+
+  return { online, loading }
 }

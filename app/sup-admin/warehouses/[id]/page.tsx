@@ -68,6 +68,9 @@ import {
   Bar,
   Cell
 } from "recharts"
+import { usePathname } from "next/navigation"
+import fetchWareHouseData from "@/hooks/fetch-invidual-data"
+import { Loading } from "@/components/loading"
 
 // Sample warehouse data
 const warehouseData = {
@@ -215,6 +218,13 @@ export default function WarehouseDetailsPage() {
   const [selectedPeriod, setSelectedPeriod] = useState("6months")
   const [isAddUserOpen, setIsAddUserOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState("")
+  const path = usePathname()
+
+  const warehouseId = path.split("/")[3]
+  const {data:salesData} = fetchWareHouseData("/api/sale/list",{warehouseId})
+  const {data:availableUsers} = fetchWareHouseData("/api/users/list",{warehouseId})
+   if(!salesData && !availableUsers) return <Loading/>
+  console.log(availableUsers)
 
   const getRoleBadge = (role: string) => {
     switch (role) {
@@ -258,9 +268,14 @@ export default function WarehouseDetailsPage() {
     }
   }
 
-  const getCapacityPercentage = () => {
-    return Math.round((warehouseData.currentStock / warehouseData.capacity) * 100)
-  }
+  const totalSales = salesData.reduce((sum:any, sale:any) => sum + sale.total, 0)
+  const totalProfit = salesData.reduce((sum:any, sale:any) => sum + sale.total, 0)
+  const pendingPayments = salesData
+    .filter((sale:any) => sale.status === "partial" || sale.status === "pending")
+    .reduce((sum:any, sale:any) => sum + sale.balance, 0)
+
+
+
 
   return (
     <>
@@ -332,7 +347,7 @@ export default function WarehouseDetailsPage() {
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">${financialData.totalSales.toLocaleString()}</div>
+                <div className="text-2xl font-bold">${totalSales}</div>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
                   <TrendingUp className="h-3 w-3 text-green-600" />+{financialData.monthlyGrowth}% from last month
                 </p>
@@ -360,11 +375,11 @@ export default function WarehouseDetailsPage() {
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Capacity Used</CardTitle>
+                <CardTitle className="text-sm font-medium">Pending Payment</CardTitle>
                 <Package className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{getCapacityPercentage()}%</div>
+                <div className="text-2xl font-bold">${pendingPayments}</div>
                 <p className="text-xs text-muted-foreground">
                   {warehouseData.currentStock.toLocaleString()} / {warehouseData.capacity.toLocaleString()} sq ft
                 </p>
@@ -696,17 +711,14 @@ export default function WarehouseDetailsPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {assignedUsers.map((user) => (
+                      {assignedUsers.map((user:any) => (
                         <TableRow key={user.id}>
                           <TableCell>
                             <div className="flex items-center gap-3">
                               <Avatar className="h-8 w-8">
                                 <AvatarImage src={user.avatar || ""} alt={user.name} />
                                 <AvatarFallback>
-                                  {user.name
-                                    .split(" ")
-                                    .map((n) => n[0])
-                                    .join("")}
+                                  {user.name}
                                 </AvatarFallback>
                               </Avatar>
                               <div>
