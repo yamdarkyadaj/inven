@@ -50,7 +50,7 @@ export default function UsersPage() {
   const warehouseId = getWareHouseId()
 
   const {data:usersData,loading,error} = fetchWareHouseData("/api/users/list",{warehouseId})
-
+ 
   useEffect(()=>{
     setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
   },[session,warehouseId])

@@ -37,7 +37,7 @@ interface Customer {
 
 export default function AddCustomerPage() {
   const warehouseId = getWareHouseId()
-  const init = {
+  const [formData, setFormData] = useState({
     name: "",
     company: "",
     email: "",
@@ -45,8 +45,7 @@ export default function AddCustomerPage() {
     address: "",
     userType:"",
     warehouseId
-  }
-  const [formData, setFormData] = useState(init)
+  })
 
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -73,7 +72,6 @@ export default function AddCustomerPage() {
    console.log(newCustomer)
     setIsSubmitting(false)
     setShowSuccessDialog(true)
-    setFormData(init)
   }
 
   const handleNewCustomer = () => {

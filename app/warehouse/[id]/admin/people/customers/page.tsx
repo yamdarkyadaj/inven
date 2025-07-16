@@ -32,6 +32,7 @@ import { useSession } from "next-auth/react"
 import { getWareHouseId } from "@/hooks/get-werehouseId"
 import fetchWareHouseData from "@/hooks/fetch-invidual-data"
 import { Loading } from "@/components/loading"
+import Link from "next/link"
 
 // Sample customers data
 const customersData = [
@@ -171,10 +172,10 @@ export default function CustomersPage() {
                 Export
               </Button>
               <Button asChild>
-                <a href="/people/customers/add">
+                <Link href={`${endPoint}/people/customers/add`}>
                   <Plus className="mr-2 h-4 w-4" />
                   Add Customer
-                </a>
+                </Link>
               </Button>
             </div>
           </div>

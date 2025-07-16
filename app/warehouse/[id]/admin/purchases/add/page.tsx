@@ -20,7 +20,14 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/s
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Truck, Plus, Trash2, Calculator, Check, Printer } from "lucide-react"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Badge } from "@/components/ui/badge"
+import { cn, formatCurrency } from "@/lib/utils"
+import { Truck, Plus, Trash2, Calculator, Check, Printer, ChevronsUpDown, ShoppingCart } from "lucide-react"
+import { getWareHouseId } from "@/hooks/get-werehouseId"
+import fetchWareHouseData from "@/hooks/fetch-invidual-data"
+import { Loading } from "@/components/loading"
 
 // Sample data
 const suppliers = [
@@ -72,77 +79,103 @@ const products = [
     id: "PRD-001",
     name: "iPhone 15 Pro",
     code: "IPH15PRO",
+    barcode: "123456789012",
     costPrice: 750.0,
     wholesalePrice: 850.0,
     retailPrice: 999.0,
     stock: 25,
+    unit: "PCS",
+    description: "Latest iPhone with advanced features",
   },
   {
     id: "PRD-002",
     name: "Samsung Galaxy S24",
     code: "SGS24",
+    barcode: "123456789013",
     costPrice: 650.0,
     wholesalePrice: 750.0,
     retailPrice: 899.0,
     stock: 15,
+    unit: "PCS",
+    description: "Samsung flagship smartphone",
   },
   {
     id: "PRD-003",
     name: "MacBook Air M3",
     code: "MBAM3",
+    barcode: "123456789014",
     costPrice: 1000.0,
     wholesalePrice: 1150.0,
     retailPrice: 1299.0,
     stock: 8,
+    unit: "PCS",
+    description: "Apple MacBook Air with M3 chip",
   },
   {
     id: "PRD-004",
     name: "iPad Pro 12.9",
     code: "IPADPRO129",
+    barcode: "123456789015",
     costPrice: 850.0,
     wholesalePrice: 950.0,
     retailPrice: 1099.0,
     stock: 3,
+    unit: "PCS",
+    description: "iPad Pro with 12.9 inch display",
   },
   {
     id: "PRD-005",
     name: "AirPods Pro",
     code: "AIRPODSPRO",
+    barcode: "123456789016",
     costPrice: 180.0,
     wholesalePrice: 220.0,
     retailPrice: 249.0,
     stock: 0,
+    unit: "PCS",
+    description: "Apple AirPods Pro with noise cancellation",
   },
   {
     id: "PRD-006",
     name: "Dell XPS 13",
     code: "DELLXPS13",
+    barcode: "123456789017",
     costPrice: 900.0,
     wholesalePrice: 1000.0,
     retailPrice: 1199.0,
     stock: 12,
+    unit: "PCS",
+    description: "Dell XPS 13 laptop",
   },
   {
     id: "PRD-007",
     name: "Sony WH-1000XM5",
     code: "SONYWH1000",
+    barcode: "123456789018",
     costPrice: 280.0,
     wholesalePrice: 320.0,
     retailPrice: 399.0,
     stock: 18,
+    unit: "PCS",
+    description: "Sony noise-cancelling headphones",
   },
 ]
 
 interface PurchaseItem {
   id: string
-  invoiceNumber: string
   productId: string
   productName: string
-  productCode: string
-  costPrice: number
+  productBarcode: string
+  cost: number
+  wholeSalePrice: number
+  retailPrice: number
+  selectedPrice: number
+  priceType: "wholesale" | "retail"
   quantity: number
   discount: number
   total: number
+  unit: string
+  taxRate: number
 }
 
 interface PurchaseData {
@@ -171,7 +204,7 @@ export default function AddPurchasePage() {
   const [purchaseItems, setPurchaseItems] = useState<PurchaseItem[]>([])
   const [selectedSupplier, setSelectedSupplier] = useState("")
   const [selectedWarehouse, setSelectedWarehouse] = useState("")
-  const [selectedProduct, setSelectedProduct] = useState("")
+  const [selectedProductId, setSelectedProductId] = useState("")
   const [quantity, setQuantity] = useState(1)
   const [discount, setDiscount] = useState(0)
   const [taxRate, setTaxRate] = useState(10)
@@ -179,11 +212,25 @@ export default function AddPurchasePage() {
   const [paidAmount, setPaidAmount] = useState(0)
   const [status, setStatus] = useState<"ordered" | "received" | "pending">("ordered")
   const [notes, setNotes] = useState("")
+  const [priceType, setPriceType] = useState<"wholesale" | "retail">("retail")
+  
   const [referenceNo, setReferenceNo] = useState(
     `PO-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 1000)).padStart(3, "0")}`,
   )
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
   const [createdPurchase, setCreatedPurchase] = useState<PurchaseData | null>(null)
+  const [open, setOpen] = useState(false)
+
+   const warehouseId = getWareHouseId()
+          
+          const {data:products,loading,error} = fetchWareHouseData("/api/product/list",{warehouseId})
+          const {data:suppliers,loading:loadingsuppliers,error:errorsuppliers} = fetchWareHouseData("/api/supplier/list",{warehouseId})
+  
+           if(!products && !suppliers) return (
+            <Loading/>
+           )
+
+  const selectedProduct = products?.find((p:any) => p.id === selectedProductId)
 
   const generateInvoiceNumber = () => {
     const timestamp = Date.now()
@@ -193,29 +240,40 @@ export default function AddPurchasePage() {
     return `INV-${timestamp}-${random}`
   }
 
+  const getStockStatus = (stock: number) => {
+    if (stock === 0) return { color: "text-red-600", text: "Out of Stock", bgColor: "bg-red-50" }
+    if (stock <= 5) return { color: "text-yellow-600", text: "Low Stock", bgColor: "bg-yellow-50" }
+    return { color: "text-green-600", text: "In Stock", bgColor: "bg-green-50" }
+  }
+
   const addProductToPurchase = () => {
     if (!selectedProduct) return
 
-    const product = products.find((p) => p.id === selectedProduct)
-    if (!product) return
+    const selectedPrice = getCurrentPrice(selectedProduct, priceType)
 
-    const itemTotal = product.costPrice * quantity - discount
+    const itemTotal = selectedProduct.costPrice * quantity - discount
     const newItem: PurchaseItem = {
       id: `ITEM-${Date.now()}`,
-      invoiceNumber: generateInvoiceNumber(),
-      productId: product.id,
-      productName: product.name,
-      productCode: product.code,
-      costPrice: product.costPrice,
-      quantity,
-      discount,
-      total: itemTotal,
+        productId: selectedProduct.id,
+        productName: selectedProduct.name,
+        productBarcode: selectedProduct.barcode,
+        cost: selectedProduct.cost,
+        wholeSalePrice: selectedProduct.wholeSalePrice,
+        retailPrice: selectedProduct.retailPrice,
+        selectedPrice,
+        priceType,
+        quantity,
+        discount,
+        total: itemTotal,
+        unit: selectedProduct.unit,
+        taxRate: selectedProduct.taxRate,
     }
 
     setPurchaseItems([...purchaseItems, newItem])
-    setSelectedProduct("")
+    setSelectedProductId("")
     setQuantity(1)
     setDiscount(0)
+    setOpen(false)
   }
 
   const removeItem = (itemId: string) => {
@@ -226,7 +284,7 @@ export default function AddPurchasePage() {
     setPurchaseItems(
       purchaseItems.map((item) => {
         if (item.id === itemId) {
-          const newTotal = item.costPrice * newQuantity - item.discount
+          const newTotal = item.cost * newQuantity - item.discount
           return { ...item, quantity: newQuantity, total: newTotal }
         }
         return item
@@ -234,17 +292,11 @@ export default function AddPurchasePage() {
     )
   }
 
-  const updateItemDiscount = (itemId: string, newDiscount: number) => {
-    setPurchaseItems(
-      purchaseItems.map((item) => {
-        if (item.id === itemId) {
-          const newTotal = item.costPrice * item.quantity - newDiscount
-          return { ...item, discount: newDiscount, total: newTotal }
-        }
-        return item
-      }),
-    )
+  const getCurrentPrice = (product: (typeof products)[0], type: "wholesale" | "retail") => {
+    return type === "wholesale" ? product.wholeSalePrice : product.retailPrice
   }
+
+ 
 
   const subtotal = purchaseItems.reduce((sum, item) => sum + item.total, 0)
   const taxAmount = (subtotal * taxRate) / 100
@@ -259,7 +311,7 @@ export default function AddPurchasePage() {
   const handleSubmit = () => {
     if (purchaseItems.length === 0 || !selectedSupplier || !selectedWarehouse) return
 
-    const supplier = suppliers.find((s) => s.id === selectedSupplier)
+    const supplier = suppliers.find((s:any) => s.id === selectedSupplier)
     const warehouse = warehouses.find((w) => w.id === selectedWarehouse)
 
     const purchaseData: PurchaseData = {
@@ -285,8 +337,9 @@ export default function AddPurchasePage() {
     }
 
     // Save to localStorage (replace with API call)
-    console.log(purchaseData)
-    
+    const existingPurchases = JSON.parse(localStorage.getItem("purchases") || "[]")
+    existingPurchases.push(purchaseData)
+    localStorage.setItem("purchases", JSON.stringify(existingPurchases))
 
     setCreatedPurchase(purchaseData)
     setShowSuccessDialog(true)
@@ -306,8 +359,8 @@ export default function AddPurchasePage() {
     const printWindow = window.open("", "_blank")
     if (!printWindow) return
 
-    const supplier = suppliers.find((s) => s.id === createdPurchase.supplierId)
-    const warehouse = warehouses.find((w) => w.id === createdPurchase.warehouseId)
+    const supplier = suppliers.find((s:any) => s.id === createdPurchase.supplierId)
+    const warehouse = warehouses.find((w:any) => w.id === createdPurchase.warehouseId)
 
     printWindow.document.write(`
       <html>
@@ -348,9 +401,10 @@ export default function AddPurchasePage() {
           <table class="items">
             <thead>
               <tr>
-                <th>Item Invoice</th>
+                
                 <th>Product</th>
-                <th>Code</th>
+                
+                <th>Barcode</th>
                 <th>Cost Price</th>
                 <th>Quantity</th>
                 <th>Discount</th>
@@ -362,11 +416,12 @@ export default function AddPurchasePage() {
                 .map(
                   (item) => `
                 <tr>
-                  <td>${item.invoiceNumber}</td>
+                 
                   <td>${item.productName}</td>
-                  <td>${item.productCode}</td>
-                  <td>$${item.costPrice.toFixed(2)}</td>
-                  <td>${item.quantity}</td>
+                  
+                  <td>${item.productBarcode}</td>
+                  <td>$${item.cost.toFixed(2)}</td>
+                  <td>${item.quantity} ${item.unit}</td>
                   <td>$${item.discount.toFixed(2)}</td>
                   <td>$${item.total.toFixed(2)}</td>
                 </tr>
@@ -473,6 +528,7 @@ export default function AddPurchasePage() {
                         value={referenceNo}
                         onChange={(e) => setReferenceNo(e.target.value)}
                         placeholder="PO-2024-001"
+                        disabled
                       />
                     </div>
                     <div className="space-y-2">
@@ -482,7 +538,7 @@ export default function AddPurchasePage() {
                           <SelectValue placeholder="Select supplier" />
                         </SelectTrigger>
                         <SelectContent>
-                          {suppliers.map((supplier) => (
+                          {suppliers.map((supplier:any) => (
                             <SelectItem key={supplier.id} value={supplier.id}>
                               {supplier.name}
                             </SelectItem>
@@ -492,7 +548,10 @@ export default function AddPurchasePage() {
                     </div>
                     
                   </div>
-                 
+                  <div className="space-y-2">
+                    <Label htmlFor="purchase-date">Purchase Date *</Label>
+                    <Input id="purchase-date" type="date" defaultValue={new Date().toISOString().split("T")[0]} />
+                  </div>
                 </CardContent>
               </Card>
 
@@ -503,105 +562,209 @@ export default function AddPurchasePage() {
                   <CardDescription>Each product will get a unique invoice number</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid gap-4 md:grid-cols-5">
-                    <div className="md:col-span-2 space-y-2">
-                      <Label htmlFor="product">Product</Label>
-                      <Select value={selectedProduct} onValueChange={setSelectedProduct}>
+                  {/* Product Selection with Search */}
+                  <div className="space-y-2">
+                    <Label>Product</Label>
+                    <Popover open={open} onOpenChange={setOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={open}
+                          className="w-full justify-between bg-transparent"
+                        >
+                          {selectedProductId
+                            ? products.find((product:any) => product.id === selectedProductId)?.name
+                            : "Select product..."}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-full p-0">
+                        <Command>
+                          <CommandInput placeholder="Search products..." className="h-9" />
+                          <CommandList>
+                            <CommandEmpty>No product found.</CommandEmpty>
+                            <CommandGroup>
+                              {products?.map((product:any) => {
+                                const stockStatus = getStockStatus(product.stock)
+                                return (
+                                 <CommandItem
+                                                                     key={product.id}
+                                                                     value={`${product.name} ${product.barcode} ${product.unit}`} // include searchable fields here
+                                                                     onSelect={(currentValue) => {
+                                                                       const selected = products?.find((p:any) =>
+                                                                         `${p.name} ${p.barcode} ${p.unit}` === currentValue
+                                                                       )?.id
+                                                                       setSelectedProductId(selected || "")
+                                                                       setOpen(false)
+                                                                     }}
+                                                                     className="flex flex-col items-start gap-1 p-3"
+                                                                   >
+                                                                     {/* Render actual searchable text here so the filter works */}
+                                                                     <div className="sr-only">{`${product.name} ${product.barcode} ${product.unit}`}</div>
+                                 
+                                                                     <div className="flex items-center justify-between w-full">
+                                                                       <span className="font-medium">{product.name}</span>
+                                                                       <div className="flex items-center gap-2">
+                                                                         <span className="text-sm text-muted-foreground">
+                                                                           W: {formatCurrency(product.wholeSalePrice)}
+                                                                         </span>
+                                                                         <span className="font-semibold">R: {formatCurrency(product.retailPrice)}</span>
+                                                                       </div>
+                                                                     </div>
+                                                                     <div className="flex items-center justify-between w-full text-sm text-muted-foreground">
+                                                                       <span>
+                                                                         {product.barcode} • {product.unit}
+                                                                       </span>
+                                                                       <span className={stockStatus.color}>{product.quantity} in stock</span>
+                                                                     </div>
+                                                                     <Check
+                                                                       className={cn(
+                                                                         "ml-auto h-4 w-4",
+                                                                         selectedProductId === product.id ? "opacity-100" : "opacity-0",
+                                                                       )}
+                                                                     />
+                                                                   </CommandItem>
+                                )
+                              })}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+
+                  {/* Price Type Selection */}
+                  {selectedProduct && (
+                    <div className="space-y-2">
+                      <Label>Price Type</Label>
+                      <Select value={priceType} onValueChange={(value: "wholesale" | "retail") => setPriceType(value)}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select product" />
+                          <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          {products.map((product) => (
-                            <SelectItem key={product.id} value={product.id}>
-                              {product.name} - ${product.costPrice} (Stock: {product.stock})
-                            </SelectItem>
-                          ))}
+                          <SelectItem value="wholesale">
+                            Wholesale - {formatCurrency(selectedProduct.wholeSalePrice.toFixed(2))}
+                          </SelectItem>
+                          <SelectItem value="retail">Retail - {formatCurrency(selectedProduct.retailPrice.toFixed(2))}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="quantity">Quantity</Label>
-                      <Input
-                        id="quantity"
-                        type="number"
-                        min="1"
-                        value={quantity}
-                        onChange={(e) => setQuantity(Number.parseInt(e.target.value) || 1)}
-                      />
+                  )}
+
+                  {/* Quantity and Discount */}
+                  {selectedProduct && (
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="quantity">Quantity</Label>
+                        <Input
+                          id="quantity"
+                          type="number"
+                          min="1"
+                          max={selectedProduct.quantity}
+                          value={quantity}
+                          onChange={(e) => setQuantity(Number.parseInt(e.target.value) || 1)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="discount">Discount </Label>
+                        <Input
+                          id="discount"
+                          type="number"
+                          min="0"
+                          value={discount}
+                          onChange={(e) => setDiscount(Number.parseFloat(e.target.value) || 0)}
+                        />
+                      </div>
+                      <div className="flex items-end">
+                        <Button
+                          onClick={addProductToPurchase}
+                          className="w-full"
+                          disabled={selectedProduct.quantity === 0 || quantity > selectedProduct.quantity}
+                        >
+                          <Plus className="mr-2 h-4 w-4" />
+                          Add
+                        </Button>
+                      </div>
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="discount">Discount ($)</Label>
-                      <Input
-                        id="discount"
-                        type="number"
-                        min="0"
-                        value={discount}
-                        onChange={(e) => setDiscount(Number.parseFloat(e.target.value) || 0)}
-                      />
+                  )}
+
+                  {/* Product Details */}
+                  {selectedProduct && (
+                    <div className="p-4 bg-muted rounded-lg">
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <span className="font-medium">Cost: </span> {formatCurrency(selectedProduct.cost)}
+                        </div>
+                        <div>
+                          <span className="font-medium">Stock: </span> {selectedProduct.quantity} {selectedProduct.unit}
+                        </div>
+                        <div>
+                          <span className="font-medium">Selected Price: </span> 
+                          {formatCurrency(getCurrentPrice(selectedProduct, priceType))}
+                        </div>
+                        <div>
+                          <span className="font-medium">Total: </span> 
+                          {formatCurrency((getCurrentPrice(selectedProduct, priceType) * quantity - discount).toFixed(2))}
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex items-end">
-                      <Button onClick={addProductToPurchase} className="w-full">
-                        <Plus className="mr-2 h-4 w-4" />
-                        Add
-                      </Button>
-                    </div>
-                  </div>
+                  )}
                 </CardContent>
               </Card>
 
               {/* Purchase Items */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Purchase Items</CardTitle>
-                  <CardDescription>{purchaseItems.length} item(s) added to this purchase</CardDescription>
+                  <CardTitle>Items ({purchaseItems?.length})</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {purchaseItems.length === 0 ? (
+                  {purchaseItems?.length === 0 ? (
                     <div className="text-center py-8 text-muted-foreground">
-                      <Truck className="mx-auto h-12 w-12 mb-4" />
-                      <p>No items added yet. Select products above to add them to the purchase.</p>
+                      <ShoppingCart className="mx-auto h-12 w-12 mb-4" />
+                      <p>No items added yet</p>
                     </div>
                   ) : (
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Invoice #</TableHead>
                           <TableHead>Product</TableHead>
-                          <TableHead>Code</TableHead>
-                          <TableHead>Cost</TableHead>
+                          <TableHead>Price Type</TableHead>
+                          <TableHead>Price</TableHead>
                           <TableHead>Qty</TableHead>
-                          <TableHead>Discount</TableHead>
                           <TableHead>Total</TableHead>
-                          <TableHead className="text-right">Actions</TableHead>
+                          <TableHead></TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {purchaseItems.map((item) => (
+                        {purchaseItems?.map((item:any) => (
                           <TableRow key={item.id}>
-                            <TableCell className="font-mono text-xs">{item.invoiceNumber}</TableCell>
-                            <TableCell className="font-medium">{item.productName}</TableCell>
-                            <TableCell>{item.productCode}</TableCell>
-                            <TableCell>${item.costPrice.toFixed(2)}</TableCell>
                             <TableCell>
-                              <Input
-                                type="number"
-                                min="1"
-                                value={item.quantity}
-                                onChange={(e) => updateItemQuantity(item.id, Number.parseInt(e.target.value) || 1)}
-                                className="w-20"
-                              />
+                              <div>
+                                <div className="font-medium">{item.productName}</div>
+                                <div className="text-sm text-muted-foreground">{item.productBarcode}</div>
+                              </div>
                             </TableCell>
                             <TableCell>
-                              <Input
-                                type="number"
-                                min="0"
-                                value={item.discount}
-                                onChange={(e) => updateItemDiscount(item.id, Number.parseFloat(e.target.value) || 0)}
-                                className="w-20"
-                              />
+                              <Badge variant={item.priceType === "wholesale" ? "default" : "secondary"}>
+                                {item.priceType}
+                              </Badge>
                             </TableCell>
-                            <TableCell>${item.total.toFixed(2)}</TableCell>
-                            <TableCell className="text-right">
+                            <TableCell>{formatCurrency(item.selectedPrice)}</TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-1">
+                                <Input
+                                  type="number"
+                                 
+                                  value={item.quantity}
+                                  onChange={(e) => updateItemQuantity(item.id, Number.parseInt(e.target.value) || 1)}
+                                  className="w-16"
+                                />
+                                <span className="text-xs text-muted-foreground">{item.unit}</span>
+                              </div>
+                            </TableCell>
+                            <TableCell className="font-medium">${item.total.toFixed(2)}</TableCell>
+                            <TableCell>
                               <Button
                                 variant="ghost"
                                 size="sm"
@@ -782,6 +945,6 @@ export default function AddPurchasePage() {
             </div>
           </DialogContent>
         </Dialog>
-      </>
+     </>
   )
 }

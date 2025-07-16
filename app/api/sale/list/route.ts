@@ -34,6 +34,10 @@ export async function POST(req: NextRequest) {
       where: { warehousesId: warehouseId },
     });
 
+    const paymentMethod = await prisma.paymentMethod.findMany({
+      where: { warehousesId: warehouseId },
+    });
+
    
     const data = sales.map((sale:any) => {
       const dateObj = new Date(sale.createdAt);
@@ -54,6 +58,14 @@ export async function POST(req: NextRequest) {
           total: item.total,
           priceType: item.priceType,
         }));
+
+      const payment = paymentMethod
+      .filter((method:any) => method.saleId === sale.invoiceNo)
+      .map((method:any) => ({
+        id: method.id,
+        method: method.method,
+        amount: method.amount,
+      }));
 
       return {
         id: sale.id,
@@ -77,7 +89,7 @@ export async function POST(req: NextRequest) {
         total: sale.grandTotal,
         amountPaid: sale.amountPaid ?? 0,
         balance: sale.balance,
-        paymentMethod: sale.paymentMethod || "",
+        paymentMethod:payment,
         status:
           sale.balance === 0
             ? "completed"

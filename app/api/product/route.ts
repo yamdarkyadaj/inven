@@ -27,7 +27,7 @@ export async function POST(req:NextRequest){
         
         if(!warehouse) return NextResponse.json("werehous does not exisi",{status:401})
             
-        const checkProduct = await prisma.product.findUnique({where:{barcode}})
+        const checkProduct = await prisma.product.findUnique({where:{barcode,warehousesId:warehouseId}})
        
         if(checkProduct) return NextResponse.json("werehous Product Exist",{status:403})
 

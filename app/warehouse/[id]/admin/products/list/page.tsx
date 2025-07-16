@@ -26,21 +26,39 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { Package, Search, Filter, Plus, MoreHorizontal, Edit, Trash2, Eye, Download, Upload } from "lucide-react"
 import { getWareHouseId } from "@/hooks/get-werehouseId"
 import fetchWareHouseData from "@/hooks/fetch-invidual-data"
 import { Loading } from "@/components/loading"
+import { formatCurrency } from "@/lib/utils"
+import { useSession } from "next-auth/react"
+import Link from "next/link"
+
 
 
 export default function ListProductsPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [categoryFilter, setCategoryFilter] = useState("all")
   const [statusFilter, setStatusFilter] = useState("all")
+   const [endpoint,setEndPoint] = useState("")
+    const {data:session} = useSession()
 
   const warehouseId = getWareHouseId()
 
   const {data:productsData,loading,error} = fetchWareHouseData("/api/product/list",{warehouseId})
-
+  useEffect(()=>{
+    setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
+  },[session,warehouseId])
 
 
   if(!productsData) return (
@@ -127,10 +145,10 @@ export default function ListProductsPage() {
                 Export
               </Button>
               <Button asChild>
-                <a href="/products/add">
+                <Link href={`${endpoint}/products/add`}>
                   <Plus className="mr-2 h-4 w-4" />
                   Add Product
-                </a>
+                </Link>
               </Button>
             </div>
           </div>
@@ -219,9 +237,9 @@ export default function ListProductsPage() {
                     <TableRow key={product.id}>
                       <TableCell className="font-medium">{product.name}</TableCell>
                       <TableCell>{product.barcode}</TableCell>
-                      <TableCell>{product.cost}</TableCell>
-                      <TableCell>{product.wholeSalePrice}</TableCell>
-                      <TableCell>{product.retailPrice.toFixed(2)}</TableCell>
+                      <TableCell>{formatCurrency(product.cost)}</TableCell>
+                      <TableCell>{formatCurrency(product.wholeSalePrice)}</TableCell>
+                      <TableCell>{formatCurrency(product.retailPrice.toFixed(2))}</TableCell>
                       <TableCell>{product.quantity}</TableCell>
                       <TableCell className={getStockColor(product.stock)}>{""}</TableCell>
                       
@@ -245,10 +263,23 @@ export default function ListProductsPage() {
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem className="text-red-600">
-                              <Button className="bg-red-600" onClick={()=>{alert(product.id)}}>
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              Delete Product
-                              </Button>
+                            <Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">Open</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Simple Dialog</DialogTitle>
+    </DialogHeader>
+    <p>This should stay open when you click inside</p>
+    <DialogFooter>
+      <DialogClose asChild>
+        <Button type="button">Close</Button>
+      </DialogClose>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>

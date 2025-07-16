@@ -31,6 +31,7 @@ import {
 import { User, Search, Filter, Plus, MoreHorizontal, Edit, Trash2, Eye, Shield } from "lucide-react"
 import fetchData from "@/hooks/fetch-data"
 import { Loading } from "@/components/loading"
+import Link from "next/link"
 
 // Sample users data
 
@@ -123,10 +124,10 @@ export default function UsersPage() {
               <h1 className="text-2xl font-semibold text-blue-600">System Users</h1>
             </div>
             <Button asChild>
-              <a href="/sup-admin/people/users/add">
+              <Link href="/sup-admin/people/users/add">
                 <Plus className="mr-2 h-4 w-4" />
                 Add User
-              </a>
+              </Link>
             </Button>
           </div>
 

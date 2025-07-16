@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -144,34 +145,6 @@ const filteredWarehouses = warehousesData?.filter((warehouse: any) => {
   return matchesSearch && matchesStatus
 }) || []
 
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "active":
-        return (
-          <Badge variant="default" className="bg-green-600">
-            Active
-          </Badge>
-        )
-      case "inactive":
-        return <Badge variant="destructive">Inactive</Badge>
-      case "maintenance":
-        return <Badge variant="secondary">Maintenance</Badge>
-      default:
-        return <Badge variant="outline">{status}</Badge>
-    }
-  }
-
-  const getCapacityColor = (current: number, total: number) => {
-    const percentage = (current / total) * 100
-    if (percentage >= 90) return "text-red-600"
-    if (percentage >= 75) return "text-yellow-600"
-    return "text-green-600"
-  }
-
-  const getCapacityPercentage = (current: number, total: number) => {
-    return Math.round((current / total) * 100)
-  }
 
   return (
     <>
@@ -353,15 +326,17 @@ const filteredWarehouses = warehousesData?.filter((warehouse: any) => {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem>
-                              <a href={`/sup-admin/warehouses/${warehouse?.warehouseCode}`}>
+                            <DropdownMenuItem asChild>
+                              <Link href={`/sup-admin/warehouses/${warehouse?.warehouseCode}`}>
                                 <Eye className="mr-2 h-4 w-4" />
                                 View Details
-                              </a>
+                              </Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem>
+                              <Link  href={`/sup-admin/warehouses/${warehouse?.warehouseCode}/edit`} >
                               <Edit className="mr-2 h-4 w-4" />
                               Edit Warehouse
+                              </Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem>
                               <Users className="mr-2 h-4 w-4" />

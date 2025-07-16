@@ -30,7 +30,6 @@ export async function POST(req:NextRequest){
             invoiceNo,
             subTotal:subtotal,
             taxRate,
-           
             notes,
             amountPaid,
             grandTotal,
@@ -40,8 +39,7 @@ export async function POST(req:NextRequest){
         }
     })
 
-    console.log(sale)
-
+    
     for (let i = 0; i < items.length; i++) {
         const savedSales = await prisma.saleItem.create({
             data:{
@@ -58,7 +56,12 @@ export async function POST(req:NextRequest){
                 profit:items[i].profit,
             }
         })
-        
+        await prisma.product.update({
+            where:{barcode:items[i].productCode},
+            data:{quantity:{
+                decrement:items[i].quantity
+            }}
+        })
     }
 
     for (let j = 0; j < paymentMethods.length; j++) {
@@ -73,6 +76,8 @@ export async function POST(req:NextRequest){
         })
          
     }
+
+    
     
     
     

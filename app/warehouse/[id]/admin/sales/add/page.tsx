@@ -37,7 +37,7 @@ import { usePrintReceipt } from "@/hooks/use-print-receipt"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
+import { cn, formatCurrency } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useRouter } from "next/navigation"
@@ -147,19 +147,14 @@ export default function AddSalePage() {
           <Loading/>
          )
 
-    
-      
-    
-    
-
-
-  const selectedProduct = products.find((p:any) => p.id === selectedProductId)
-  const selectedCustomerData = customers.find((c:any) => c.id === selectedCustomer)
+         console.log(customers)
+  const selectedProduct = products?.find((p:any) => p.id === selectedProductId)
+  const selectedCustomerData = customers?.find((c:any) => c.id === selectedCustomer)
 
   // Auto-set price type based on customer type
   const handleCustomerChange = (customerId: string) => {
     setSelectedCustomer(customerId)
-    const customer = customers.find((c:any) => c.id === customerId)
+    const customer = customers?.find((c:any) => c.id === customerId)
     if (customer) {
       setPriceType(customer.type as "wholesale" | "retail")
     }
@@ -175,7 +170,7 @@ export default function AddSalePage() {
     const selectedPrice = getCurrentPrice(selectedProduct, priceType)
 
     // Check if product already exists in sale with same price type
-    const existingItemIndex = saleItems.findIndex(
+    const existingItemIndex = saleItems?.findIndex(
       (item) => item.productId === selectedProduct.id && item.priceType === priceType,
     )
 
@@ -216,12 +211,12 @@ export default function AddSalePage() {
   }
 
   const removeItem = (itemId: string) => {
-    setSaleItems(saleItems.filter((item) => item.id !== itemId))
+    setSaleItems(saleItems?.filter((item) => item.id !== itemId))
   }
 
   const updateItemQuantity = (itemId: string, newQuantity: number) => {
     setSaleItems(
-      saleItems.map((item) => {
+      saleItems?.map((item) => {
         if (item.id === itemId) {
           const newTotal = item.selectedPrice * newQuantity - item.discount
           return { ...item, quantity: newQuantity, total: newTotal }
@@ -245,7 +240,7 @@ export default function AddSalePage() {
       return
     }
 
-    const totalPaid = paymentMethods.reduce((sum, pm) => sum + pm.amount, 0)
+    const totalPaid = paymentMethods?.reduce((sum, pm) => sum + pm.amount, 0)
     const remaining = grandTotal - totalPaid
 
     if (amount > remaining) {
@@ -305,8 +300,8 @@ export default function AddSalePage() {
     }
   }
 
-  const subtotal = saleItems.reduce((sum, item) => sum + item.total, 0)
-  const totalDiscount = saleItems.reduce((sum, item) => sum + item.discount, 0)
+  const subtotal = saleItems?.reduce((sum, item) => sum + item.total, 0)
+  const totalDiscount = saleItems?.reduce((sum, item) => sum + item.discount, 0)
   const taxAmount = (subtotal * taxRate) / 100
   const grandTotal = subtotal + taxAmount
   const totalPaid = paymentMethods.reduce((sum, pm) => sum + pm.amount, 0)
@@ -314,7 +309,7 @@ export default function AddSalePage() {
 
   // Form submission handler
   const handleFormSubmit = async () => {
-    if (saleItems.length === 0 || !selectedCustomer) {
+    if (saleItems?.length === 0 || !selectedCustomer) {
       alert("Please complete all required fields")
       return
     }
@@ -353,7 +348,7 @@ export default function AddSalePage() {
           phone: selectedCustomerData?.phone || "",
           type: selectedCustomerData?.type || "retail",
         },
-        items: saleItems.map((item) => ({
+        items: saleItems?.map((item) => ({
           productId: item.productId,
           productName: item.productName,
           productCode: item.productBarcode,
@@ -385,8 +380,8 @@ export default function AddSalePage() {
       await axios.post("/api/sale",saleData)
 
       // Update product stock (in real app, this would be handled by the API)
-      saleItems.forEach((item) => {
-        const product = products.find((p:any) => p.id === item.productId)
+      saleItems?.forEach((item) => {
+        const product = products?.find((p:any) => p.id === item.productId)
         if (product) {
           product.quantity -= item.quantity
         }
@@ -496,7 +491,7 @@ export default function AddSalePage() {
                       <SelectValue placeholder="Select customer" />
                     </SelectTrigger>
                     <SelectContent>
-                      {customers.map((customer:any) => (
+                      {customers?.map((customer:any) => (
                         <SelectItem key={customer.id} value={customer.id}>
                           <div className="flex items-center gap-2">
                             {customer.name}
@@ -535,36 +530,42 @@ export default function AddSalePage() {
                           className="w-full justify-between bg-transparent"
                         >
                           {selectedProductId
-                            ? products.find((product:any) => product.id === selectedProductId)?.name
+                            ? products?.find((product:any) => product.id === selectedProductId)?.name
                             : "Select product..."}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-full p-0">
                         <Command>
-                          <CommandInput placeholder="Search products..." className="h-9" />
+                          <CommandInput placeholder="Search products?..." className="h-9" />
                           <CommandList>
                             <CommandEmpty>No product found.</CommandEmpty>
                             <CommandGroup>
-                              {products.map((product:any) => {
+                              {products?.map((product:any) => {
                                 const stockStatus = getStockStatus(product.quantity)
                                 return (
                                   <CommandItem
                                     key={product.id}
-                                    value={product.id}
+                                    value={`${product.name} ${product.barcode} ${product.unit}`} // include searchable fields here
                                     onSelect={(currentValue) => {
-                                      setSelectedProductId(currentValue === selectedProductId ? "" : currentValue)
+                                      const selected = products.find((p:any) =>
+                                        `${p.name} ${p.barcode} ${p.unit}` === currentValue
+                                      )?.id
+                                      setSelectedProductId(selected || "")
                                       setOpen(false)
                                     }}
                                     className="flex flex-col items-start gap-1 p-3"
                                   >
+                                    {/* Render actual searchable text here so the filter works */}
+                                    <div className="sr-only">{`${product.name} ${product.barcode} ${product.unit}`}</div>
+
                                     <div className="flex items-center justify-between w-full">
                                       <span className="font-medium">{product.name}</span>
                                       <div className="flex items-center gap-2">
                                         <span className="text-sm text-muted-foreground">
-                                          W: ${product.wholeSalePrice}
+                                          W: {formatCurrency(product.wholeSalePrice)}
                                         </span>
-                                        <span className="font-semibold">R: ${product.retailPrice}</span>
+                                        <span className="font-semibold">R: {formatCurrency(product.retailPrice)}</span>
                                       </div>
                                     </div>
                                     <div className="flex items-center justify-between w-full text-sm text-muted-foreground">
@@ -580,6 +581,7 @@ export default function AddSalePage() {
                                       )}
                                     />
                                   </CommandItem>
+
                                 )
                               })}
                             </CommandGroup>
@@ -599,9 +601,9 @@ export default function AddSalePage() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="wholesale">
-                            Wholesale - ${selectedProduct.wholeSalePrice.toFixed(2)}
+                            Wholesale - {formatCurrency(selectedProduct.wholeSalePrice.toFixed(2))}
                           </SelectItem>
-                          <SelectItem value="retail">Retail - ${selectedProduct.retailPrice.toFixed(2)}</SelectItem>
+                          <SelectItem value="retail">Retail - {formatCurrency(selectedProduct.retailPrice.toFixed(2))}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -622,7 +624,7 @@ export default function AddSalePage() {
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="discount">Discount ($)</Label>
+                        <Label htmlFor="discount">Discount </Label>
                         <Input
                           id="discount"
                           type="number"
@@ -649,18 +651,18 @@ export default function AddSalePage() {
                     <div className="p-4 bg-muted rounded-lg">
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
-                          <span className="font-medium">Cost:</span> ${selectedProduct.cost}
+                          <span className="font-medium">Cost: </span> {formatCurrency(selectedProduct.cost)}
                         </div>
                         <div>
-                          <span className="font-medium">Stock:</span> {selectedProduct.quantity} {selectedProduct.unit}
+                          <span className="font-medium">Stock: </span> {selectedProduct.quantity} {selectedProduct.unit}
                         </div>
                         <div>
-                          <span className="font-medium">Selected Price:</span> $
-                          {getCurrentPrice(selectedProduct, priceType)}
+                          <span className="font-medium">Selected Price: </span> 
+                          {formatCurrency(getCurrentPrice(selectedProduct, priceType))}
                         </div>
                         <div>
-                          <span className="font-medium">Total:</span> $
-                          {(getCurrentPrice(selectedProduct, priceType) * quantity - discount).toFixed(2)}
+                          <span className="font-medium">Total: </span> 
+                          {formatCurrency((getCurrentPrice(selectedProduct, priceType) * quantity - discount).toFixed(2))}
                         </div>
                       </div>
                     </div>
@@ -671,10 +673,10 @@ export default function AddSalePage() {
               {/* Sale Items */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Items ({saleItems.length})</CardTitle>
+                  <CardTitle>Items ({saleItems?.length})</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {saleItems.length === 0 ? (
+                  {saleItems?.length === 0 ? (
                     <div className="text-center py-8 text-muted-foreground">
                       <ShoppingCart className="mx-auto h-12 w-12 mb-4" />
                       <p>No items added yet</p>
@@ -692,7 +694,7 @@ export default function AddSalePage() {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {saleItems.map((item) => (
+                        {saleItems?.map((item) => (
                           <TableRow key={item.id}>
                             <TableCell>
                               <div>
@@ -705,7 +707,7 @@ export default function AddSalePage() {
                                 {item.priceType}
                               </Badge>
                             </TableCell>
-                            <TableCell>${item.selectedPrice.toFixed(2)}</TableCell>
+                            <TableCell>{formatCurrency(item.selectedPrice.toFixed(2))}</TableCell>
                             <TableCell>
                               <div className="flex items-center gap-1">
                                 <Input
@@ -752,25 +754,25 @@ export default function AddSalePage() {
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span>Subtotal:</span>
-                      <span>${subtotal.toFixed(2)}</span>
+                      <span>{formatCurrency(subtotal.toFixed(2))}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Tax ({taxRate}%):</span>
-                      <span>${taxAmount.toFixed(2)}</span>
+                      <span>{formatCurrency(taxAmount.toFixed(2))}</span>
                     </div>
                     <Separator />
                     <div className="flex justify-between font-semibold text-lg">
                       <span>Total:</span>
-                      <span>${grandTotal.toFixed(2)}</span>
+                      <span>{formatCurrency(grandTotal.toFixed(2))}</span>
                     </div>
                     <div className="flex justify-between text-green-600">
                       <span>Paid:</span>
-                      <span>${totalPaid.toFixed(2)}</span>
+                      <span>{formatCurrency(totalPaid.toFixed(2))}</span>
                     </div>
                     <div className="flex justify-between font-medium">
                       <span>Balance:</span>
                       <span className={balance > 0 ? "text-red-600" : "text-green-600"}>
-                        ${Math.abs(balance).toFixed(2)}
+                        {formatCurrency(Math.abs(balance).toFixed(2))}
                       </span>
                     </div>
                   </div>
@@ -826,7 +828,8 @@ export default function AddSalePage() {
                           value={currentPaymentAmount}
                           onChange={(e) => setCurrentPaymentAmount(e.target.value)}
                         />
-                        <Button onClick={()=>setCurrentPaymentAmount(grandTotal)}>All</Button>
+                        <Button onClick={()=>setCurrentPaymentAmount(grandTotal)}>All</Button>&nbsp;
+                        <Button onClick={()=>setCurrentPaymentAmount(grandTotal/2)}>Half</Button>
                       </div>
                       <div className="space-y-2">
                         <Label>Reference</Label>
@@ -920,7 +923,7 @@ export default function AddSalePage() {
 
             <Button
               onClick={handleFormSubmit}
-              disabled={saleItems.length === 0 || !selectedCustomer || paymentMethods.length === 0 || isSubmitting}
+              disabled={saleItems?.length === 0 || !selectedCustomer || paymentMethods.length === 0 || isSubmitting}
               className="min-w-[140px]"
             >
               {isSubmitting ? (

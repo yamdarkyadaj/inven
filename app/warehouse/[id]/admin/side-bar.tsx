@@ -44,6 +44,7 @@ import { NavbarItem } from "@heroui/navbar"
 import { Button } from "@heroui/button"
 import { signOut, useSession } from "next-auth/react"
 import { getWareHouseId } from "@/hooks/get-werehouseId"
+import { SystemStatus } from "@/components/system-status"
 
 
 // Navigation data for inventory management system
@@ -156,6 +157,7 @@ export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sid
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
+          <SystemStatus/>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>

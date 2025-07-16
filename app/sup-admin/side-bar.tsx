@@ -178,33 +178,33 @@ export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sid
                     url: "/sup-admin/people/users",
                     icon: User,
                   },
-                  {
-                    title: "Customers",
-                    url: "/sup-admin/people/customers",
-                    icon: UserCheck,
-                  },
-                  {
-                    title: "Suppliers",
-                    url: "/sup-admin/people/suppliers",
-                    icon: Building2,
-                  },
+                  // {
+                  //   title: "Customers",
+                  //   url: "/sup-admin/people/customers",
+                  //   icon: UserCheck,
+                  // },
+                  // {
+                  //   title: "Suppliers",
+                  //   url: "/sup-admin/people/suppliers",
+                  //   icon: Building2,
+                  // },
                 ],
               },
             ]} />
         <NavSection title="System" items={ [
-              {
-                title: "Notifications",
-                url: "/notifications",
-                icon: Bell,
-              },
-              {
-                title: "Reports",
-                url: "/reports",
-                icon: BarChart3,
-              },
+              // {
+              //   title: "Notifications",
+              //   url: "/notifications",
+              //   icon: Bell,
+              // },
+              // {
+              //   title: "Reports",
+              //   url: "/reports",
+              //   icon: BarChart3,
+              // },
               {
                 title: "Settings",
-                url: "/settings",
+                url: "/sup-admin//settings",
                 icon: Settings,
               },
             ]} />

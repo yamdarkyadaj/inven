@@ -39,3 +39,34 @@ export async function POST(req:NextRequest){
      await prisma.$disconnect()
     }
 }
+
+export async function PUT(req:NextRequest){
+    const data = await req.json()
+
+    console.log(data)
+
+    // return
+
+    const {warehouseCode,name,phoneNumber,email,description,address} = data
+    try {
+     const warehouses = await prisma.warehouses.update({
+        where:{
+            warehouseCode
+        },
+        data:{
+            name,
+            warehouseCode,
+            phoneNumber,
+            email,
+            description,
+            address
+        }
+     })
+     console.log(warehouses)
+     return NextResponse.json(warehouses,{status:201})
+    } catch (error) {
+     return NextResponse.json(error,{status:500})
+    }finally{
+     await prisma.$disconnect()
+    }
+}

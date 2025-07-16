@@ -27,134 +27,8 @@ import { getWareHouseId } from "@/hooks/get-werehouseId"
 import fetchWareHouseData from "@/hooks/fetch-invidual-data"
 import { Loading } from "@/components/loading"
 import { useSession } from "next-auth/react"
+import { formatCurrency } from "@/lib/utils"
 
-// Sample sales data
-// const salesData = [
-//   {
-//     id: "SALE-001",
-//     invoiceNo: "INV-000001",
-//     date: "2024-01-15",
-//     time: "10:30 AM",
-//     customer: {
-//       id: "CUST-001",
-//       name: "John Doe",
-//       type: "retail",
-//     },
-//     items: [
-//       {
-//         id: "ITEM-001",
-//         productName: "iPhone 15 Pro",
-//         quantity: 1,
-//         price: 999.0,
-//         total: 999.0,
-//         priceType: "retail",
-//       },
-//       {
-//         id: "ITEM-002",
-//         productName: "AirPods Pro",
-//         quantity: 2,
-//         price: 249.0,
-//         total: 498.0,
-//         priceType: "retail",
-//       },
-//     ],
-//     subtotal: 1497.0,
-//     tax: 149.7,
-//     total: 1646.7,
-//     amountPaid: 1646.7,
-//     balance: 0,
-//     paymentMethod: "card",
-//     status: "completed",
-//     cashier: "Admin User",
-//   },
-//   {
-//     id: "SALE-002",
-//     invoiceNo: "INV-000002",
-//     date: "2024-01-15",
-//     time: "11:45 AM",
-//     customer: {
-//       id: "CUST-002",
-//       name: "Jane Smith",
-//       type: "wholesale",
-//     },
-//     items: [
-//       {
-//         id: "ITEM-003",
-//         productName: "MacBook Air M3",
-//         quantity: 3,
-//         price: 1199.0,
-//         total: 3597.0,
-//         priceType: "wholesale",
-//       },
-//     ],
-//     subtotal: 3597.0,
-//     tax: 359.7,
-//     total: 3956.7,
-//     amountPaid: 2000.0,
-//     balance: 1956.7,
-//     paymentMethod: "cash",
-//     status: "partial",
-//     cashier: "Admin User",
-//   },
-//   {
-//     id: "SALE-003",
-//     invoiceNo: "INV-000003",
-//     date: "2024-01-14",
-//     time: "02:15 PM",
-//     customer: {
-//       id: "WALK-IN",
-//       name: "Walk-in Customer",
-//       type: "retail",
-//     },
-//     items: [
-//       {
-//         id: "ITEM-004",
-//         productName: "Samsung Galaxy S24",
-//         quantity: 1,
-//         price: 849.0,
-//         total: 849.0,
-//         priceType: "retail",
-//       },
-//     ],
-//     subtotal: 849.0,
-//     tax: 84.9,
-//     total: 933.9,
-//     amountPaid: 933.9,
-//     balance: 0,
-//     paymentMethod: "card",
-//     status: "completed",
-//     cashier: "Admin User",
-//   },
-//   {
-//     id: "SALE-004",
-//     invoiceNo: "INV-000004",
-//     date: "2024-01-14",
-//     time: "04:30 PM",
-//     customer: {
-//       id: "CUST-003",
-//       name: "Mike Johnson",
-//       type: "retail",
-//     },
-//     items: [
-//       {
-//         id: "ITEM-005",
-//         productName: "iPad Pro 12.9",
-//         quantity: 1,
-//         price: 1099.0,
-//         total: 1099.0,
-//         priceType: "retail",
-//       },
-//     ],
-//     subtotal: 1099.0,
-//     tax: 109.9,
-//     total: 1208.9,
-//     amountPaid: 0,
-//     balance: 1208.9,
-//     paymentMethod: "",
-//     status: "pending",
-//     cashier: "Admin User",
-//   },
-// ]
 
 export default function SalesListPage() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -182,7 +56,7 @@ export default function SalesListPage() {
 
     const matchesStatus = statusFilter === "all" || sale.status === statusFilter
 
-    const matchesDate = dateFilter === "all" || sale.date === dateFilter
+    const matchesDate = dateFilter === "all" || sale.createdAt === dateFilter
 
     return matchesSearch && matchesStatus && matchesDate
   })
@@ -231,7 +105,7 @@ export default function SalesListPage() {
           total: parseInt(completedSale.total),
           paid: completedSale.total - completedSale.balance,
           balance: completedSale.balance,
-          paymentMethod: completedSale.paymentMethod,
+          paymentMethods: completedSale.paymentMethod,
         }
     
         printReceipt(receiptData, paperWidth)
@@ -274,12 +148,7 @@ export default function SalesListPage() {
               <ShoppingCart className="h-6 w-6 text-blue-600" />
               <h1 className="text-3xl font-bold text-blue-600">Sales</h1>
             </div>
-            <Link href="/sales/add">
-              <Button>
-                <Plus className="mr-2 h-4 w-4" />
-                New Sale
-              </Button>
-            </Link>
+            
           </div>
 
           {/* Stats Cards */}
@@ -290,7 +159,7 @@ export default function SalesListPage() {
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">${totalSales.toFixed(2)}</div>
+                <div className="text-2xl font-bold">{formatCurrency(totalSales.toFixed(2))}</div>
                 <p className="text-xs text-muted-foreground">{filteredSales.length} transactions</p>
               </CardContent>
             </Card>
@@ -310,7 +179,7 @@ export default function SalesListPage() {
                 <Calendar className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">${pendingPayments.toFixed(2)}</div>
+                <div className="text-2xl font-bold">{formatCurrency(pendingPayments.toFixed(2))}</div>
                 <p className="text-xs text-muted-foreground">Outstanding balance</p>
               </CardContent>
             </Card>
@@ -380,7 +249,7 @@ export default function SalesListPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredSales.map((sale:any) => (
+                  {filteredSales?.map((sale:any) => (
                     <TableRow key={sale.id}>
                       <TableCell className="font-medium">{sale.invoiceNo}</TableCell>
                       <TableCell>
@@ -405,10 +274,10 @@ export default function SalesListPage() {
                           {sale.items.length} item{sale.items.length > 1 ? "s" : ""}
                         </div>
                       </TableCell>
-                      <TableCell className="font-medium">${sale.total.toFixed(2)}</TableCell>
-                      <TableCell className="text-green-600">${(sale.total - sale.balance).toFixed(2)}</TableCell>
+                      <TableCell className="font-medium">{formatCurrency(sale.total.toFixed(2))}</TableCell>
+                      <TableCell className="text-green-600">{formatCurrency((sale.total - sale.balance))}</TableCell>
                       <TableCell className={sale.balance > 0 ? "text-red-600" : "text-green-600"}>
-                        ${sale.balance.toFixed(2)}
+                        {formatCurrency(sale.balance.toFixed(2))}
                       </TableCell>
                       <TableCell>{getStatusBadge(sale.status)}</TableCell>
                       <TableCell>

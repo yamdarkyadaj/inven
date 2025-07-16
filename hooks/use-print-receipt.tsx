@@ -1,5 +1,6 @@
 "use client"
 
+import { formatCurrency } from "@/lib/utils"
 import { useCallback } from "react"
 
 interface ReceiptItem {
@@ -51,7 +52,7 @@ export function usePrintReceipt() {
             (pm) => `
           <div style="display: flex; justify-content: space-between; margin: 2px 0;">
             <span>${pm.method.charAt(0).toUpperCase() + pm.method.slice(1).replace("_", " ")}:</span>
-            <span>$${pm.amount.toFixed(2)}</span>
+            <span>${formatCurrency(pm.amount.toFixed(2))}</span>
           </div>
           ${pm.reference ? `<div style="font-size: 9px; color: #666; margin-left: 10px;">Ref: ${pm.reference}</div>` : ""}
         `,
@@ -174,8 +175,8 @@ export function usePrintReceipt() {
               <div class="item">
                 <div class="item-header">${item.name}</div>
                 <div class="item-details">
-                  <span>${item.quantity} x $${item.price.toFixed(2)}</span>
-                  <span>$${item.total.toFixed(2)}</span>
+                  <span>${item.quantity} x ${formatCurrency(item.price.toFixed(2))}</span>
+                  <span>${formatCurrency(item.total.toFixed(2))}</span>
                 </div>
               </div>
             `,
@@ -186,25 +187,25 @@ export function usePrintReceipt() {
           <div class="totals">
             <div class="total-line">
               <span>Subtotal:</span>
-              <span>$${data.subtotal.toFixed(2)}</span>
+              <span>${formatCurrency(data.subtotal.toFixed(2))}</span>
             </div>
             ${
               data.discount > 0
                 ? `
             <div class="total-line">
               <span>Discount:</span>
-              <span>-$${data.discount.toFixed(2)}</span>
+              <span>-${formatCurrency(data.discount.toFixed(2))}</span>
             </div>
             `
                 : ""
             }
             <div class="total-line">
               <span>Tax:</span>
-              <span>$${data.tax.toFixed(2)}</span>
+              <span>${formatCurrency(data.tax.toFixed(2))}</span>
             </div>
             <div class="total-line grand-total">
               <span>TOTAL:</span>
-              <span>$${data.total.toFixed(2)}</span>
+              <span>${formatCurrency(data.total.toFixed(2))}</span>
             </div>
           </div>
 
@@ -213,7 +214,7 @@ export function usePrintReceipt() {
             ${formatPaymentMethods()}
             <div class="total-line" style="font-weight: bold; margin-top: 8px;">
               <span>Total Paid:</span>
-              <span>$${(data.totalPaid || data.paid || 0).toFixed(2)}</span>
+              <span>${formatCurrency((data.totalPaid || data.paid || 0).toFixed(2))}</span>
             </div>
             ${
               (data.balance !== undefined ? data.balance : data.total - (data.totalPaid || data.paid || 0)) !== 0

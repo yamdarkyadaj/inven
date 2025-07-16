@@ -15,16 +15,6 @@ export async function POST(req:NextRequest){
         warehouseId
     } = await req.json()
 
-        console.log({
-            address,
-            company,
-            email,
-            name,
-            phone,
-            userType,
-            wholesale,
-            
-        })
         try {
             const newcustomer = await prisma.customer.create({
                 data:{
