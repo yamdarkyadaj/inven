@@ -134,7 +134,7 @@ model SaleItem {
   productName   String
   cost          Float
   selectedPrice Float
-  priceType     type
+  priceType     String
   quantity      Int
   discount      Float
   total         Float
@@ -173,7 +173,7 @@ model PurchaseItem {
   productName   String
   cost          Float
   selectedPrice Float
-  priceType     type
+  priceType     String
   quantity      Int
   discount      Float
   total         Float
@@ -204,7 +204,7 @@ model Customer {
 model Supplier {
   id           String      @id @default(uuid())
   name         String
-  type         type
+  type         String
   companyName  String?
   email        String
   address      String
