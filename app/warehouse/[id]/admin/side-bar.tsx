@@ -21,6 +21,7 @@ import {
   Eye,
   Warehouse,
   type LucideIcon,
+  Receipt,
 } from "lucide-react"
 
 
@@ -250,9 +251,9 @@ export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sid
                 icon: Bell,
               },
               {
-                title: "Reports",
-                url: "/reports",
-                icon: BarChart3,
+                title: "Recpiet",
+                url: `${endpoint}/receipt`,
+                icon: Receipt,
               },
               {
                 title: "Settings",

@@ -581,7 +581,6 @@ export default function AddSalePage() {
                                       )}
                                     />
                                   </CommandItem>
-
                                 )
                               })}
                             </CommandGroup>

@@ -84,24 +84,25 @@ model Settings {
 }
 
 model Warehouses {
-  id            String          @id @default(uuid())
-  warehouseCode String          @unique
-  name          String
-  phoneNumber   String
-  email         String
-  description   String?
-  address       String
-  users         users[]
-  products      Product[]
-  customer      Customer[]
-  saleItem      SaleItem[]
-  sale          Sale[]
-  paymentMethod PaymentMethod[]
-  purchase      Purchase[]
-  purchaseItem  PurchaseItem[]
-  supplier      Supplier[]
-  sync          Boolean         @default(false) // Sync field
-  syncedAt      DateTime? // When last synced
+  id              String            @id @default(uuid())
+  warehouseCode   String            @unique
+  name            String
+  phoneNumber     String
+  email           String
+  description     String?
+  address         String
+  users           users[]
+  products        Product[]
+  customer        Customer[]
+  saleItem        SaleItem[]
+  sale            Sale[]
+  paymentMethod   PaymentMethod[]
+  purchase        Purchase[]
+  purchaseItem    PurchaseItem[]
+  supplier        Supplier[]
+  receiptSettings ReceiptSettings[]
+  sync            Boolean           @default(false) // Sync field
+  syncedAt        DateTime? // When last synced
 }
 
 model Sale {
@@ -246,4 +247,19 @@ model PaymentMethod {
   saleId       String?
   sync         Boolean     @default(false) // Sync field
   syncedAt     DateTime? // When last synced
+}
+
+model ReceiptSettings {
+  id           String      @id @default(uuid())
+  companyName  String
+  businessName String
+  address      String
+  city         String
+  state        String
+  country      String
+  phone        String
+  email        String
+  website      String
+  Warehouses   Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
+  warehousesId String?
 }
