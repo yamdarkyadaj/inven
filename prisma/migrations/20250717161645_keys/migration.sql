@@ -103,7 +103,7 @@ CREATE TABLE "SaleItem" (
     "productName" TEXT NOT NULL,
     "cost" DOUBLE PRECISION NOT NULL,
     "selectedPrice" DOUBLE PRECISION NOT NULL,
-    "priceType" "type" NOT NULL,
+    "priceType" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "discount" DOUBLE PRECISION NOT NULL,
     "total" DOUBLE PRECISION NOT NULL,
@@ -142,7 +142,7 @@ CREATE TABLE "PurchaseItem" (
     "productName" TEXT NOT NULL,
     "cost" DOUBLE PRECISION NOT NULL,
     "selectedPrice" DOUBLE PRECISION NOT NULL,
-    "priceType" "type" NOT NULL,
+    "priceType" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "discount" DOUBLE PRECISION NOT NULL,
     "total" DOUBLE PRECISION NOT NULL,
@@ -175,7 +175,7 @@ CREATE TABLE "Customer" (
 CREATE TABLE "Supplier" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "type" "type" NOT NULL,
+    "type" TEXT NOT NULL,
     "companyName" TEXT,
     "email" TEXT NOT NULL,
     "address" TEXT NOT NULL,
@@ -219,6 +219,23 @@ CREATE TABLE "PaymentMethod" (
     CONSTRAINT "PaymentMethod_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "ReceiptSettings" (
+    "id" TEXT NOT NULL,
+    "companyName" TEXT NOT NULL,
+    "businessName" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
+    "city" TEXT NOT NULL,
+    "state" TEXT NOT NULL,
+    "country" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "website" TEXT NOT NULL,
+    "warehousesId" TEXT NOT NULL,
+
+    CONSTRAINT "ReceiptSettings_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "superAdmin_email_key" ON "superAdmin"("email");
 
@@ -235,7 +252,7 @@ CREATE UNIQUE INDEX "Sale_invoiceNo_key" ON "Sale"("invoiceNo");
 CREATE UNIQUE INDEX "Purchase_referenceNo_key" ON "Purchase"("referenceNo");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Product_barcode_key" ON "Product"("barcode");
+CREATE UNIQUE INDEX "ReceiptSettings_warehousesId_key" ON "ReceiptSettings"("warehousesId");
 
 -- AddForeignKey
 ALTER TABLE "users" ADD CONSTRAINT "users_warehousesId_fkey" FOREIGN KEY ("warehousesId") REFERENCES "Warehouses"("warehouseCode") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -250,7 +267,7 @@ ALTER TABLE "Sale" ADD CONSTRAINT "Sale_warehousesId_fkey" FOREIGN KEY ("warehou
 ALTER TABLE "SaleItem" ADD CONSTRAINT "SaleItem_saleId_fkey" FOREIGN KEY ("saleId") REFERENCES "Sale"("invoiceNo") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SaleItem" ADD CONSTRAINT "SaleItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("barcode") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "SaleItem" ADD CONSTRAINT "SaleItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "SaleItem" ADD CONSTRAINT "SaleItem_warehousesId_fkey" FOREIGN KEY ("warehousesId") REFERENCES "Warehouses"("warehouseCode") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -262,7 +279,7 @@ ALTER TABLE "Purchase" ADD CONSTRAINT "Purchase_warehousesId_fkey" FOREIGN KEY (
 ALTER TABLE "Purchase" ADD CONSTRAINT "Purchase_supplierId_fkey" FOREIGN KEY ("supplierId") REFERENCES "Supplier"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "PurchaseItem" ADD CONSTRAINT "PurchaseItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("barcode") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "PurchaseItem" ADD CONSTRAINT "PurchaseItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "PurchaseItem" ADD CONSTRAINT "PurchaseItem_warehousesId_fkey" FOREIGN KEY ("warehousesId") REFERENCES "Warehouses"("warehouseCode") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -284,3 +301,6 @@ ALTER TABLE "PaymentMethod" ADD CONSTRAINT "PaymentMethod_warehousesId_fkey" FOR
 
 -- AddForeignKey
 ALTER TABLE "PaymentMethod" ADD CONSTRAINT "PaymentMethod_saleId_fkey" FOREIGN KEY ("saleId") REFERENCES "Sale"("invoiceNo") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ReceiptSettings" ADD CONSTRAINT "ReceiptSettings_warehousesId_fkey" FOREIGN KEY ("warehousesId") REFERENCES "Warehouses"("warehouseCode") ON DELETE RESTRICT ON UPDATE CASCADE;

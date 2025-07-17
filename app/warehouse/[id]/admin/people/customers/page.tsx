@@ -34,70 +34,21 @@ import fetchWareHouseData from "@/hooks/fetch-invidual-data"
 import { Loading } from "@/components/loading"
 import Link from "next/link"
 
-// Sample customers data
-const customersData = [
-  {
-    id: "CUST-001",
-    name: "John Doe",
-    company: "John Doe Enterprises",
-    email: "john@example.com",
-    phone: "+1234567890",
-    address: "123 Main St, New York, NY 10001",
-    creditLimit: 5000.0,
-    totalPurchases: 15750.0,
-    lastPurchase: "2024-01-15",
-    status: "active",
-  },
-  {
-    id: "CUST-002",
-    name: "Jane Smith",
-    company: "Smith Corp",
-    email: "jane@example.com",
-    phone: "+1234567891",
-    address: "456 Oak Ave, Los Angeles, CA 90001",
-    creditLimit: 10000.0,
-    totalPurchases: 8900.0,
-    lastPurchase: "2024-01-14",
-    status: "active",
-  },
-  {
-    id: "CUST-003",
-    name: "Mike Johnson",
-    company: "Johnson Industries",
-    email: "mike@example.com",
-    phone: "+1234567892",
-    address: "789 Pine St, Chicago, IL 60601",
-    creditLimit: 7500.0,
-    totalPurchases: 12300.0,
-    lastPurchase: "2024-01-13",
-    status: "active",
-  },
-  {
-    id: "CUST-004",
-    name: "Sarah Wilson",
-    company: "Wilson LLC",
-    email: "sarah@example.com",
-    phone: "+1234567893",
-    address: "321 Elm St, Houston, TX 77001",
-    creditLimit: 3000.0,
-    totalPurchases: 2100.0,
-    lastPurchase: "2024-01-10",
-    status: "inactive",
-  },
-]
 
 export default function CustomersPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
-  const [endPoint, setEndPoint] = useState("")
-  const {data:session} = useSession()
+  
+  const warehouseId = getWareHouseId()
     
      
   
-    const warehouseId = getWareHouseId()
+   
   
     const {data:customersData,loading,error} = fetchWareHouseData("/api/customer/list",{warehouseId})
-  
+    const [endPoint, setEndPoint] = useState("")
+    const {data:session} = useSession()
+    
     useEffect(()=>{
       setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
     },[session,warehouseId])

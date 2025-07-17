@@ -30,8 +30,21 @@ export async function POST(req:NextRequest){
         }
      })
 
-     
- 
+     await prisma.receiptSettings.create({
+        data:{
+            warehousesId:warehouses.warehouseCode,
+            phone:"",
+            email:"",
+            state:"",
+            country:"",
+            city:"",
+            companyName:"Change",
+            businessName:warehouses.warehouseCode,
+            website:`${warehouses.warehouseCode}.com`,
+            address:"",
+        }
+     })
+
      return NextResponse.json(warehouses,{status:201})
     } catch (error) {
      return NextResponse.json(error,{status:500})

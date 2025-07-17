@@ -26,9 +26,13 @@ export default function LoginForm() {
   const [userName,setUserName] = useState("")
   const [password,setPassword] = useState("")
 
+  const [loading,setLoading] = useState(false)
+  
+
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    setLoading(true)
     const res = await signIn("credentials",{email:userName,password:password,redirect:false,type:"warehouse"})
     
     if(res.ok){
@@ -36,7 +40,7 @@ export default function LoginForm() {
     }else{
       toast.error("Wrong Credentials")
     }
-
+    setLoading(false)
     
   }
   useEffect(()=>{
@@ -92,7 +96,7 @@ export default function LoginForm() {
                   onChange={(e)=>setPassword(e.target.value)} required />
               </div>
               <div className="flex flex-col gap-3">
-                <Button type="submit" className="w-full">
+                <Button disabled={loading} type="submit" className="w-full">
                   Login
                 </Button>
                 

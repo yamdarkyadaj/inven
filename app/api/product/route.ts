@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 
 export async function GET(req:NextRequest){
     const warehouseId = await req.json()
-    console.log(warehouseId)
+    
     try {
         const products = await prisma.product.findMany()
 
@@ -27,9 +27,10 @@ export async function POST(req:NextRequest){
         
         if(!warehouse) return NextResponse.json("werehous does not exisi",{status:401})
             
-        const checkProduct = await prisma.product.findUnique({where:{barcode,warehousesId:warehouseId}})
+        const checkProduct = await prisma.product.findMany({where:{barcode,warehousesId:warehouseId}})
        
-        if(checkProduct) return NextResponse.json("werehous Product Exist",{status:403})
+        
+        if(checkProduct.length > 0) return NextResponse.json("werehous Product Exist",{status:403})
 
         const product = await prisma.product.create({
             data:{
@@ -46,47 +47,47 @@ export async function POST(req:NextRequest){
             }
         })
 
-        console.log(product)
+        
         
         return NextResponse.json(product,{status:201})
     }catch(error){
-        console.log(error)
-        return NextResponse.json(error,{status:500})
-    }finally{
-        await prisma.$disconnect()
-    }
-}
-
-export async function PUT(req:NextRequest){
-    const {productName:name,productCode:barcode,productDescription:description,productQuantity:quantity,productTaxRate:taxRate,productUnit:unit,wholeSalePrice,retailPrice,costPrice:cost} = await req.json()
-    try{  
-        const checkProduct = await prisma.product.findUnique({where:{barcode}})
-        if(checkProduct) return NextResponse.json("werehous Product Exist",{status:403})
-
-        const productUpdate = await prisma.product.update({
-            where:{barcode},
-            data:{
-                name,
-                barcode,
-                wholeSalePrice:parseFloat(wholeSalePrice),
-                retailPrice:parseFloat(retailPrice),
-                cost:parseFloat(cost),
-                taxRate:parseInt(taxRate),
-                unit,
-                quantity:parseInt(quantity),
-                description,
-                // warehousesId:warehouseId
-            }
-        })
         
-        return NextResponse.json(productUpdate,{status:201})
-    }catch(error){
-        console.log(error)
         return NextResponse.json(error,{status:500})
     }finally{
         await prisma.$disconnect()
     }
 }
+
+// export async function PUT(req:NextRequest){
+//     const {productName:name,productCode:barcode,productDescription:description,productQuantity:quantity,productTaxRate:taxRate,productUnit:unit,wholeSalePrice,retailPrice,costPrice:cost} = await req.json()
+//     try{  
+//         const checkProduct = await prisma.product.findUnique({where:{barcode}})
+//         if(checkProduct) return NextResponse.json("werehous Product Exist",{status:403})
+
+//         const productUpdate = await prisma.product.update({
+//             where:{barcode},
+//             data:{
+//                 name,
+//                 barcode,
+//                 wholeSalePrice:parseFloat(wholeSalePrice),
+//                 retailPrice:parseFloat(retailPrice),
+//                 cost:parseFloat(cost),
+//                 taxRate:parseInt(taxRate),
+//                 unit,
+//                 quantity:parseInt(quantity),
+//                 description,
+//                 // warehousesId:warehouseId
+//             }
+//         })
+        
+//         return NextResponse.json(productUpdate,{status:201})
+//     }catch(error){
+        
+//         return NextResponse.json(error,{status:500})
+//     }finally{
+//         await prisma.$disconnect()
+//     }
+// }
 
 export async function DELETE(req:NextRequest){
     const {productId} = await req.json()

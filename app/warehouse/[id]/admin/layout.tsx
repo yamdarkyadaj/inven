@@ -20,6 +20,11 @@ export default function SupAdminLayout({children}:{children:React.ReactNode}){
                 console.log('na me log out')
                 
             }
+            if(data && data?.user?.role !== "admin"){
+                await signOut()
+                router.replace("/user/login")
+                console.log('na me log out')
+            }
         }
         if(status == "unauthenticated"){
            

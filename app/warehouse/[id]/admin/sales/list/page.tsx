@@ -79,7 +79,7 @@ export default function SalesListPage() {
   }
 
   const handleView = (saleId: string) => {
-    router.push(`/sales/${saleId}`)
+    router.push(`${endpoint}/sales/${saleId}`)
   }
 
   const handlePrintReceipt = (id:string,paperWidth: "57mm" | "80mm") => {

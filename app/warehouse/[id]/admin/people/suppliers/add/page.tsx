@@ -1,9 +1,9 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
-import { AppSidebar } from "@/components/app-sidebar"
+import { useParams, useRouter } from "next/navigation"
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -18,48 +18,24 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Truck, Save, ArrowLeft, Check } from "lucide-react"
-
-interface Supplier {
-  id: string
-  name: string
-  contactPerson: string
-  email: string
-  phone: string
-  address: string
-  city: string
-  state: string
-  zipCode: string
-  country: string
-  category: string
-  paymentTerms: string
-  taxId: string
-  website: string
-  notes: string
-  status: "active" | "inactive"
-  createdAt: string
-}
+import toast from "react-hot-toast"
 
 export default function AddSupplierPage() {
+  const params = useParams()
+  const router = useRouter()
+  const warehouseId = params.id as string
+
   const [formData, setFormData] = useState({
     name: "",
-    contactPerson: "",
+    companyName: "",
     email: "",
     phone: "",
     address: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    country: "United States",
-    category: "",
-    paymentTerms: "net-30",
-    taxId: "",
-    website: "",
-    notes: "",
-    status: "active" as const,
+    type: "COMPANY",
   })
 
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
@@ -69,55 +45,51 @@ export default function AddSupplierPage() {
     setFormData((prev) => ({ ...prev, [field]: value }))
   }
 
-  const generateSupplierId = () => {
-    const timestamp = Date.now()
-    const random = Math.floor(Math.random() * 1000)
-      .toString()
-      .padStart(3, "0")
-    return `SUPP-${timestamp}-${random}`
-  }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    try {
+      const response = await fetch('/api/supplier', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          warehousesId: warehouseId,
+        }),
+      })
 
-    const newSupplier: Supplier = {
-      id: generateSupplierId(),
-      ...formData,
-      createdAt: new Date().toISOString(),
+      if (!response.ok) {
+        throw new Error('Failed to create supplier')
+      }
+
+      const result = await response.json()
+      setShowSuccessDialog(true)
+      toast.success("Supplier created successfully!")
+    } catch (error) {
+      console.error('Error creating supplier:', error)
+      toast.error("Failed to create supplier. Please try again.")
+    } finally {
+      setIsSubmitting(false)
     }
-
-    // Save to localStorage (replace with API call)
-    const existingSuppliers = JSON.parse(localStorage.getItem("suppliers") || "[]")
-    existingSuppliers.push(newSupplier)
-    localStorage.setItem("suppliers", JSON.stringify(existingSuppliers))
-
-    setIsSubmitting(false)
-    setShowSuccessDialog(true)
   }
 
   const handleNewSupplier = () => {
     setFormData({
       name: "",
-      contactPerson: "",
+      companyName: "",
       email: "",
       phone: "",
       address: "",
-      city: "",
-      state: "",
-      zipCode: "",
-      country: "United States",
-      category: "",
-      paymentTerms: "net-30",
-      taxId: "",
-      website: "",
-      notes: "",
-      status: "active",
+      type: "COMPANY",
     })
     setShowSuccessDialog(false)
+  }
+
+  const handleViewSuppliers = () => {
+    router.push(`/warehouse/${warehouseId}/admin/people/suppliers`)
   }
 
   return (
@@ -129,15 +101,15 @@ export default function AddSupplierPage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
+                  <BreadcrumbLink href={`/warehouse/${warehouseId}/admin`}>Dashboard</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/people">People</BreadcrumbLink>
+                  <BreadcrumbLink href={`/warehouse/${warehouseId}/admin/people`}>People</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/people/suppliers">Suppliers</BreadcrumbLink>
+                  <BreadcrumbLink href={`/warehouse/${warehouseId}/admin/people/suppliers`}>Suppliers</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
@@ -154,11 +126,9 @@ export default function AddSupplierPage() {
               <Truck className="h-5 w-5 text-orange-600" />
               <h1 className="text-2xl font-semibold text-orange-600">Add New Supplier</h1>
             </div>
-            <Button variant="outline" asChild>
-              <a href="/people/suppliers">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Suppliers
-              </a>
+            <Button variant="outline" onClick={() => router.back()}>
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Suppliers
             </Button>
           </div>
 
@@ -166,29 +136,28 @@ export default function AddSupplierPage() {
             {/* Basic Information */}
             <Card>
               <CardHeader>
-                <CardTitle>Basic Information</CardTitle>
-                <CardDescription>Enter the supplier's basic contact details</CardDescription>
+                <CardTitle>Supplier Information</CardTitle>
+                <CardDescription>Enter the supplier's contact and business details</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Company Name *</Label>
+                    <Label htmlFor="name">Contact Person Name *</Label>
                     <Input
                       id="name"
                       value={formData.name}
                       onChange={(e) => handleInputChange("name", e.target.value)}
-                      placeholder="Enter supplier company name"
+                      placeholder="Enter contact person name"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="contactPerson">Contact Person *</Label>
+                    <Label htmlFor="companyName">Company Name</Label>
                     <Input
-                      id="contactPerson"
-                      value={formData.contactPerson}
-                      onChange={(e) => handleInputChange("contactPerson", e.target.value)}
-                      placeholder="Enter contact person name"
-                      required
+                      id="companyName"
+                      value={formData.companyName}
+                      onChange={(e) => handleInputChange("companyName", e.target.value)}
+                      placeholder="Enter company name (optional)"
                     />
                   </div>
                   <div className="space-y-2">
@@ -213,163 +182,31 @@ export default function AddSupplierPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="website">Website</Label>
-                    <Input
-                      id="website"
-                      type="url"
-                      value={formData.website}
-                      onChange={(e) => handleInputChange("website", e.target.value)}
-                      placeholder="https://www.supplier.com"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="category">Category *</Label>
-                    <Select value={formData.category} onValueChange={(value) => handleInputChange("category", value)}>
+                    <Label htmlFor="type">Supplier Type *</Label>
+                    <Select value={formData.type} onValueChange={(value) => handleInputChange("type", value)}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
+                        <SelectValue placeholder="Select supplier type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Electronics">Electronics</SelectItem>
-                        <SelectItem value="Parts">Parts & Components</SelectItem>
-                        <SelectItem value="Software">Software & Licenses</SelectItem>
-                        <SelectItem value="Office">Office Supplies</SelectItem>
-                        <SelectItem value="Manufacturing">Manufacturing</SelectItem>
-                        <SelectItem value="Services">Services</SelectItem>
-                        <SelectItem value="Raw Materials">Raw Materials</SelectItem>
-                        <SelectItem value="Other">Other</SelectItem>
+                        <SelectItem value="COMPANY">Company</SelectItem>
+                        <SelectItem value="INDIVIDUAL">Individual</SelectItem>
+                        <SelectItem value="GOVERNMENT">Government</SelectItem>
+                        <SelectItem value="NON_PROFIT">Non-Profit</SelectItem>
+                        <SelectItem value="retal">Retail</SelectItem>
+                        <SelectItem value="wholesale">Wholesale</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* Address Information */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Address Information</CardTitle>
-                <CardDescription>Enter the supplier's business address</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="address">Street Address</Label>
-                  <Input
+                  <Label htmlFor="address">Address *</Label>
+                  <Textarea
                     id="address"
                     value={formData.address}
                     onChange={(e) => handleInputChange("address", e.target.value)}
-                    placeholder="123 Business Street"
-                  />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="city">City</Label>
-                    <Input
-                      id="city"
-                      value={formData.city}
-                      onChange={(e) => handleInputChange("city", e.target.value)}
-                      placeholder="Business City"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="state">State/Province</Label>
-                    <Input
-                      id="state"
-                      value={formData.state}
-                      onChange={(e) => handleInputChange("state", e.target.value)}
-                      placeholder="BC"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="zipCode">ZIP/Postal Code</Label>
-                    <Input
-                      id="zipCode"
-                      value={formData.zipCode}
-                      onChange={(e) => handleInputChange("zipCode", e.target.value)}
-                      placeholder="12345"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="country">Country</Label>
-                  <Select value={formData.country} onValueChange={(value) => handleInputChange("country", value)}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="United States">United States</SelectItem>
-                      <SelectItem value="Canada">Canada</SelectItem>
-                      <SelectItem value="United Kingdom">United Kingdom</SelectItem>
-                      <SelectItem value="Australia">Australia</SelectItem>
-                      <SelectItem value="Germany">Germany</SelectItem>
-                      <SelectItem value="France">France</SelectItem>
-                      <SelectItem value="China">China</SelectItem>
-                      <SelectItem value="Japan">Japan</SelectItem>
-                      <SelectItem value="Other">Other</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Business Information */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Business Information</CardTitle>
-                <CardDescription>Set payment terms and business details</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="paymentTerms">Payment Terms</Label>
-                    <Select
-                      value={formData.paymentTerms}
-                      onValueChange={(value) => handleInputChange("paymentTerms", value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="cash">Cash on Delivery</SelectItem>
-                        <SelectItem value="net-15">Net 15 Days</SelectItem>
-                        <SelectItem value="net-30">Net 30 Days</SelectItem>
-                        <SelectItem value="net-60">Net 60 Days</SelectItem>
-                        <SelectItem value="net-90">Net 90 Days</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="status">Status</Label>
-                    <Select
-                      value={formData.status}
-                      onValueChange={(value: "active" | "inactive") => handleInputChange("status", value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="inactive">Inactive</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2 md:col-span-2">
-                    <Label htmlFor="taxId">Tax ID/VAT Number</Label>
-                    <Input
-                      id="taxId"
-                      value={formData.taxId}
-                      onChange={(e) => handleInputChange("taxId", e.target.value)}
-                      placeholder="12-3456789"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="notes">Notes</Label>
-                  <Textarea
-                    id="notes"
-                    value={formData.notes}
-                    onChange={(e) => handleInputChange("notes", e.target.value)}
-                    placeholder="Additional notes about the supplier..."
+                    placeholder="Enter full business address"
                     rows={3}
+                    required
                   />
                 </div>
               </CardContent>
@@ -377,8 +214,8 @@ export default function AddSupplierPage() {
 
             {/* Submit Button */}
             <div className="flex justify-end gap-2">
-              <Button type="button" variant="outline" asChild>
-                <a href="/people/suppliers">Cancel</a>
+              <Button type="button" variant="outline" onClick={() => router.back()}>
+                Cancel
               </Button>
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? (
@@ -411,8 +248,8 @@ export default function AddSupplierPage() {
               <Button variant="outline" onClick={handleNewSupplier}>
                 Add Another Supplier
               </Button>
-              <Button asChild>
-                <a href="/people/suppliers">View All Suppliers</a>
+              <Button onClick={handleViewSuppliers}>
+                View All Suppliers
               </Button>
             </div>
           </DialogContent>

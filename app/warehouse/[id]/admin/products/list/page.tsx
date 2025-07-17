@@ -257,28 +257,31 @@ export default function ListProductsPage() {
                               <Eye className="mr-2 h-4 w-4" />
                               View Details
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Edit className="mr-2 h-4 w-4" />
-                              Edit Product
+                            <DropdownMenuItem asChild>
+                              <Link href={`/warehouse/${warehouseId}/admin/products/edit/${product.id}`}>
+                                <Edit className="mr-2 h-4 w-4" />
+                                Edit Product
+                              </Link>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem className="text-red-600">
-                            <Dialog>
-  <DialogTrigger asChild>
-    <Button variant="outline">Open</Button>
-  </DialogTrigger>
-  <DialogContent>
-    <DialogHeader>
-      <DialogTitle>Simple Dialog</DialogTitle>
-    </DialogHeader>
-    <p>This should stay open when you click inside</p>
-    <DialogFooter>
-      <DialogClose asChild>
-        <Button type="button">Close</Button>
-      </DialogClose>
-    </DialogFooter>
-  </DialogContent>
-</Dialog>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button variant="outline">Open</Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>Simple Dialog</DialogTitle>
+                                <DialogDescription>This should stay open when you click inside</DialogDescription>
+                              </DialogHeader>
+                              
+                              <DialogFooter>
+                                <DialogClose asChild>
+                                  <Button type="button">Close</Button>
+                                </DialogClose>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
 
                             </DropdownMenuItem>
                           </DropdownMenuContent>

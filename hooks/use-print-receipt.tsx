@@ -2,6 +2,8 @@
 
 import { formatCurrency } from "@/lib/utils"
 import { useCallback } from "react"
+import fetchWareHouseData from "./fetch-invidual-data"
+import { getWareHouseId } from "./get-werehouseId"
 
 interface ReceiptItem {
   name: string
@@ -44,6 +46,8 @@ export function usePrintReceipt() {
     const width = paperWidth === "57mm" ? "57mm" : "80mm"
     const fontSize = paperWidth === "57mm" ? "10px" : "12px"
     const lineHeight = paperWidth === "57mm" ? "12px" : "14px"
+
+   
 
     const formatPaymentMethods = () => {
       if (data.paymentMethods && data.paymentMethods.length > 0) {

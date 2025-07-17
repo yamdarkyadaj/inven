@@ -39,6 +39,7 @@ import { formatCurrency } from "@/lib/utils"
 import { usePrintReceipt } from "@/hooks/use-print-receipt"
 import { useSession } from "next-auth/react"
 import { getWareHouseId } from "@/hooks/get-werehouseId"
+import fetchWareHouseData from "@/hooks/fetch-invidual-data"
 
 interface SaleItem {
   id: string
@@ -106,41 +107,14 @@ export default function SaleInvoiceViewPage() {
   const { printReceipt } = usePrintReceipt()
   const warehouseId = getWareHouseId()
   
-  const [saleData, setSaleData] = useState<SaleData | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  
 
   const invoiceNo = params.invoice as string
 
-  useEffect(() => {
-    const fetchSaleData = async () => {
-      try {
-        setLoading(true)
-        const response = await fetch(`/api/sale/${invoiceNo}`)
-        
-        if (!response.ok) {
-          if (response.status === 404) {
-            setError("Sale not found")
-          } else {
-            setError("Failed to fetch sale data")
-          }
-          return
-        }
-        
-        const data = await response.json()
-        setSaleData(data)
-      } catch (err) {
-        console.error("Error fetching sale data:", err)
-        setError("Failed to fetch sale data")
-      } finally {
-        setLoading(false)
-      }
-    }
+  const {data:saleData,loading,error} = fetchWareHouseData("/api/sale/invoice",{invoiceNo})
 
-    if (invoiceNo) {
-      fetchSaleData()
-    }
-  }, [invoiceNo])
+  if(!saleData) return ""
+ 
 
   const handlePrint = () => {
     if (saleData) {
@@ -150,7 +124,7 @@ export default function SaleInvoiceViewPage() {
         time: saleData.time,
         customer: saleData.customer.name,
         cashier: "Admin User",
-        items: saleData.items.map(item => ({
+        items: saleData.items.map((item:any) => ({
           name: item.productName,
           quantity: item.quantity,
           price: item.selectedPrice,
@@ -246,9 +220,7 @@ export default function SaleInvoiceViewPage() {
   }
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
+    <>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
@@ -442,7 +414,7 @@ export default function SaleInvoiceViewPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {saleData.items.map((item) => (
+                  {saleData.items.map((item:any) => (
                     <TableRow key={item.id}>
                       <TableCell>
                         <div>
@@ -494,7 +466,7 @@ export default function SaleInvoiceViewPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {saleData.paymentMethods.map((payment) => (
+                    {saleData.paymentMethods.map((payment:any) => (
                       <div
                         key={payment.id}
                         className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
@@ -557,7 +529,6 @@ export default function SaleInvoiceViewPage() {
             </Card>
           </div>
         </div>
-      </SidebarInset>
-    </SidebarProvider>
+      </>
   )
 }

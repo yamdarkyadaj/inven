@@ -45,7 +45,7 @@ export async function POST(req:NextRequest){
             data:{
                 saleId:sale.invoiceNo,
                 productName:items[i].productName,
-                productId:items[i].productCode,
+                productId:items[i].productId,
                 cost:items[i].costPrice,
                 selectedPrice:items[i].salePrice,
                 priceType:items[i].priceType ,
@@ -56,8 +56,9 @@ export async function POST(req:NextRequest){
                 profit:items[i].profit,
             }
         })
+        console.log(items[i].productId)
         await prisma.product.update({
-            where:{barcode:items[i].productCode},
+            where:{id:items[i].productId},
             data:{quantity:{
                 decrement:items[i].quantity
             }}

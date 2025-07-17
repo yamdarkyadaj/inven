@@ -131,7 +131,7 @@ model SaleItem {
   saleId        String?
   sale          Sale?       @relation(fields: [saleId], references: [invoiceNo])
   productId     String?
-  product       Product?    @relation(fields: [productId], references: [barcode])
+  product       Product?    @relation(fields: [productId], references: [id])
   productName   String
   cost          Float
   selectedPrice Float
@@ -170,7 +170,7 @@ model Purchase {
 model PurchaseItem {
   id            String      @id @default(cuid())
   productId     String?
-  product       Product?    @relation(fields: [productId], references: [barcode])
+  product       Product?    @relation(fields: [productId], references: [id])
   productName   String
   cost          Float
   selectedPrice Float
@@ -220,7 +220,7 @@ model Supplier {
 model Product {
   id             String         @id @default(uuid())
   name           String
-  barcode        String         @unique
+  barcode        String        
   wholeSalePrice Float
   retailPrice    Float
   cost           Float
@@ -261,5 +261,5 @@ model ReceiptSettings {
   email        String
   website      String
   Warehouses   Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
-  warehousesId String?
+  warehousesId String @unique
 }

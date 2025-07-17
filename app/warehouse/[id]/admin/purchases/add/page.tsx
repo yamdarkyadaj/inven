@@ -30,43 +30,7 @@ import fetchWareHouseData from "@/hooks/fetch-invidual-data"
 import { Loading } from "@/components/loading"
 
 // Sample data
-const suppliers = [
-  {
-    id: "SUP-001",
-    name: "Tech Distributors Inc",
-    email: "sales@techdist.com",
-    phone: "+1234567892",
-    address: "123 Tech Street, Silicon Valley",
-  },
-  {
-    id: "SUP-002",
-    name: "Electronics Supply Co",
-    email: "orders@elecsupply.com",
-    phone: "+1234567893",
-    address: "456 Electronics Ave, Tech City",
-  },
-  {
-    id: "SUP-003",
-    name: "Mobile Solutions Ltd",
-    email: "info@mobilesol.com",
-    phone: "+1234567894",
-    address: "789 Mobile Blvd, Phone Town",
-  },
-  {
-    id: "SUP-004",
-    name: "Computer World",
-    email: "sales@compworld.com",
-    phone: "+1234567895",
-    address: "321 Computer St, Hardware City",
-  },
-  {
-    id: "SUP-005",
-    name: "Audio Plus",
-    email: "contact@audioplus.com",
-    phone: "+1234567896",
-    address: "654 Audio Lane, Sound City",
-  },
-]
+
 
 const warehouses = [
   { id: "WH-001", name: "Main Warehouse", code: "MAIN", address: "100 Storage St, Warehouse District" },
@@ -74,92 +38,6 @@ const warehouses = [
   { id: "WH-003", name: "Storage Facility", code: "STORAGE", address: "300 Storage Rd, Remote Area" },
 ]
 
-const products = [
-  {
-    id: "PRD-001",
-    name: "iPhone 15 Pro",
-    code: "IPH15PRO",
-    barcode: "123456789012",
-    costPrice: 750.0,
-    wholesalePrice: 850.0,
-    retailPrice: 999.0,
-    stock: 25,
-    unit: "PCS",
-    description: "Latest iPhone with advanced features",
-  },
-  {
-    id: "PRD-002",
-    name: "Samsung Galaxy S24",
-    code: "SGS24",
-    barcode: "123456789013",
-    costPrice: 650.0,
-    wholesalePrice: 750.0,
-    retailPrice: 899.0,
-    stock: 15,
-    unit: "PCS",
-    description: "Samsung flagship smartphone",
-  },
-  {
-    id: "PRD-003",
-    name: "MacBook Air M3",
-    code: "MBAM3",
-    barcode: "123456789014",
-    costPrice: 1000.0,
-    wholesalePrice: 1150.0,
-    retailPrice: 1299.0,
-    stock: 8,
-    unit: "PCS",
-    description: "Apple MacBook Air with M3 chip",
-  },
-  {
-    id: "PRD-004",
-    name: "iPad Pro 12.9",
-    code: "IPADPRO129",
-    barcode: "123456789015",
-    costPrice: 850.0,
-    wholesalePrice: 950.0,
-    retailPrice: 1099.0,
-    stock: 3,
-    unit: "PCS",
-    description: "iPad Pro with 12.9 inch display",
-  },
-  {
-    id: "PRD-005",
-    name: "AirPods Pro",
-    code: "AIRPODSPRO",
-    barcode: "123456789016",
-    costPrice: 180.0,
-    wholesalePrice: 220.0,
-    retailPrice: 249.0,
-    stock: 0,
-    unit: "PCS",
-    description: "Apple AirPods Pro with noise cancellation",
-  },
-  {
-    id: "PRD-006",
-    name: "Dell XPS 13",
-    code: "DELLXPS13",
-    barcode: "123456789017",
-    costPrice: 900.0,
-    wholesalePrice: 1000.0,
-    retailPrice: 1199.0,
-    stock: 12,
-    unit: "PCS",
-    description: "Dell XPS 13 laptop",
-  },
-  {
-    id: "PRD-007",
-    name: "Sony WH-1000XM5",
-    code: "SONYWH1000",
-    barcode: "123456789018",
-    costPrice: 280.0,
-    wholesalePrice: 320.0,
-    retailPrice: 399.0,
-    stock: 18,
-    unit: "PCS",
-    description: "Sony noise-cancelling headphones",
-  },
-]
 
 interface PurchaseItem {
   id: string
@@ -203,7 +81,7 @@ interface PurchaseData {
 export default function AddPurchasePage() {
   const [purchaseItems, setPurchaseItems] = useState<PurchaseItem[]>([])
   const [selectedSupplier, setSelectedSupplier] = useState("")
-  const [selectedWarehouse, setSelectedWarehouse] = useState("")
+
   const [selectedProductId, setSelectedProductId] = useState("")
   const [quantity, setQuantity] = useState(1)
   const [discount, setDiscount] = useState(0)
@@ -251,25 +129,40 @@ export default function AddPurchasePage() {
 
     const selectedPrice = getCurrentPrice(selectedProduct, priceType)
 
-    const itemTotal = selectedProduct.costPrice * quantity - discount
-    const newItem: PurchaseItem = {
-      id: `ITEM-${Date.now()}`,
-        productId: selectedProduct.id,
-        productName: selectedProduct.name,
-        productBarcode: selectedProduct.barcode,
-        cost: selectedProduct.cost,
-        wholeSalePrice: selectedProduct.wholeSalePrice,
-        retailPrice: selectedProduct.retailPrice,
-        selectedPrice,
-        priceType,
-        quantity,
-        discount,
-        total: itemTotal,
-        unit: selectedProduct.unit,
-        taxRate: selectedProduct.taxRate,
+    const existingItemIndex = purchaseItems?.findIndex(
+      (item) => item.productId === selectedProduct.id && item.priceType === priceType,
+    )
+
+    if(existingItemIndex >= 0){
+      const updatedItems = [...purchaseItems]
+      const existingItem = updatedItems[existingItemIndex]
+      existingItem.quantity += quantity
+      existingItem.discount += discount
+      existingItem.total = existingItem.selectedPrice * existingItem.quantity - existingItem.discount
+      setPurchaseItems(updatedItems)
+    }else{
+      const itemTotal = selectedProduct.cost * quantity - discount
+      const newItem: PurchaseItem = {
+        id:`${Math.random()}`,
+          productId: selectedProduct.id,
+          productName: selectedProduct.name,
+          productBarcode: selectedProduct.barcode,
+          cost: selectedProduct.cost,
+          wholeSalePrice: selectedProduct.wholeSalePrice,
+          retailPrice: selectedProduct.retailPrice,
+          selectedPrice,
+          priceType,
+          quantity,
+          discount,
+          total: itemTotal,
+          unit: selectedProduct.unit,
+          taxRate: selectedProduct.taxRate,
+      }
+
+      setPurchaseItems([...purchaseItems, newItem])
     }
 
-    setPurchaseItems([...purchaseItems, newItem])
+    
     setSelectedProductId("")
     setQuantity(1)
     setDiscount(0)
@@ -308,49 +201,90 @@ export default function AddPurchasePage() {
     return "partial"
   }
 
-  const handleSubmit = () => {
-    if (purchaseItems.length === 0 || !selectedSupplier || !selectedWarehouse) return
+  const handleSubmit = async () => {
+    if (purchaseItems.length === 0 || !selectedSupplier) return
 
-    const supplier = suppliers.find((s:any) => s.id === selectedSupplier)
-    const warehouse = warehouses.find((w) => w.id === selectedWarehouse)
+    const supplier = suppliers?.find((s:any) => s.id === selectedSupplier)
 
-    const purchaseData: PurchaseData = {
-      id: `PUR-${Date.now()}`,
-      invoiceNumber: generateInvoiceNumber(),
+    const purchaseData = {
+      items: purchaseItems.map(item => ({
+        productId:item.id,
+        productName: item.productName,
+        productBarcode: item.productBarcode,
+        cost: item.cost,
+        selectedPrice: item.selectedPrice,
+        priceType: item.priceType,
+        quantity: item.quantity,
+        discount: item.discount,
+        total: item.total
+      })),
       referenceNo,
-      date: new Date().toISOString().split("T")[0],
-      supplierId: selectedSupplier,
-      supplierName: supplier?.name || "",
-      warehouseId: selectedWarehouse,
-      warehouseName: warehouse?.name || "",
-      items: purchaseItems,
       subtotal,
       taxRate,
       taxAmount,
       shipping,
       grandTotal,
       paidAmount,
-      status,
-      paymentStatus: getPaymentStatus(),
+      balance: grandTotal - paidAmount,
       notes,
-      createdAt: new Date().toISOString(),
+      warehouseId,
+      supplierId: selectedSupplier,
+      status
     }
 
-    // Save to localStorage (replace with API call)
-    const existingPurchases = JSON.parse(localStorage.getItem("purchases") || "[]")
-    existingPurchases.push(purchaseData)
-    localStorage.setItem("purchases", JSON.stringify(existingPurchases))
+    console.log(purchaseData)
 
-    setCreatedPurchase(purchaseData)
-    setShowSuccessDialog(true)
+    try {
+      const response = await fetch('/api/purchase', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(purchaseData),
+      })
 
-    // Reset form
-    setPurchaseItems([])
-    setSelectedSupplier("")
-    setSelectedWarehouse("")
-    setPaidAmount(0)
-    setNotes("")
-    setReferenceNo(`PO-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 1000)).padStart(3, "0")}`)
+      if (response.ok) {
+        const result = await response.json()
+        
+        const completedPurchase: PurchaseData = {
+          id: result.purchase.id,
+          invoiceNumber: result.purchase.referenceNo,
+          referenceNo,
+          date: new Date().toISOString().split("T")[0],
+          supplierId: selectedSupplier,
+          supplierName: supplier?.name || "",
+          warehouseId: warehouseId,
+          warehouseName: "",
+          items: purchaseItems,
+          subtotal,
+          taxRate,
+          taxAmount,
+          shipping,
+          grandTotal,
+          paidAmount,
+          status,
+          paymentStatus: getPaymentStatus(),
+          notes,
+          createdAt: new Date().toISOString(),
+        }
+
+        setCreatedPurchase(completedPurchase)
+        setShowSuccessDialog(true)
+
+        // Reset form
+        setPurchaseItems([])
+        setSelectedSupplier("")
+        setPaidAmount(0)
+        setNotes("")
+        setReferenceNo(`PO-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 1000)).padStart(3, "0")}`)
+      } else {
+        console.error('Failed to create purchase order')
+        alert('Failed to create purchase order. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error creating purchase order:', error)
+      alert('Error creating purchase order. Please try again.')
+    }
   }
 
   const handlePrintReceipt = () => {
@@ -538,7 +472,7 @@ export default function AddPurchasePage() {
                           <SelectValue placeholder="Select supplier" />
                         </SelectTrigger>
                         <SelectContent>
-                          {suppliers.map((supplier:any) => (
+                          {suppliers?.map((supplier:any) => (
                             <SelectItem key={supplier.id} value={supplier.id}>
                               {supplier.name}
                             </SelectItem>
@@ -913,7 +847,7 @@ export default function AddPurchasePage() {
             <Button variant="outline">Save as Draft</Button>
             <Button
               onClick={handleSubmit}
-              disabled={purchaseItems.length === 0 || !selectedSupplier || !selectedWarehouse}
+              disabled={purchaseItems.length === 0 || !selectedSupplier}
             >
               <Check className="mr-2 h-4 w-4" />
               Create Purchase Order

@@ -14,10 +14,10 @@ export function useOnlineStatus(url = "https://ping-v6lv.onrender.com/", interva
       try {
         const res = await fetch(url, { method: "GET" })
         setOnline(res.ok)
-        console.log(res.ok ? "online" : "offline")
+        
       } catch (error) {
         setOnline(false)
-        console.log("offline")
+        
       } finally {
         setLoading(false)
       }
