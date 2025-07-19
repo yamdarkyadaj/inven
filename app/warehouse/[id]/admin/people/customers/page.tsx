@@ -68,20 +68,7 @@ export default function CustomersPage() {
     return matchesSearch && matchesStatus
   })
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "active":
-        return (
-          <Badge variant="default" className="bg-green-600">
-            Active
-          </Badge>
-        )
-      case "inactive":
-        return <Badge variant="destructive">Inactive</Badge>
-      default:
-        return <Badge variant="outline">{status}</Badge>
-    }
-  }
+ 
 
   return (
     <>
@@ -92,11 +79,7 @@ export default function CustomersPage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="/people">People</BreadcrumbLink>
+                  <BreadcrumbLink href={`${endPoint}/dashboard`}>Home</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>

@@ -149,7 +149,7 @@ export default function ReceiptSettingsPage() {
 
   const handleExportSettings = () => {
     const dataStr = JSON.stringify(settings, null, 2)
-    const dataBlob = new Blob([dataStr], { type: "application/json" })
+    const dataBlob = new Blob([dataStr], { type: "application/pdf" })
     const url = URL.createObjectURL(dataBlob)
     const link = document.createElement("a")
     link.href = url

@@ -23,6 +23,7 @@ import { useParams, useRouter } from "next/navigation"
 import React, { useState, useEffect } from "react"
 import toast from "react-hot-toast"
 import { Loading } from "@/components/loading"
+import { useSession } from "next-auth/react"
 
 interface Product {
   id: string
@@ -43,6 +44,8 @@ export default function EditProductPage() {
   const router = useRouter()
   const productId = params.productId as string
   const warehouseId = getWareHouseId()
+  const [endPoint, setEndPoint] = useState("")
+  const {data:session} = useSession()
 
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -73,10 +76,12 @@ export default function EditProductPage() {
         setProductUnit(productData.unit)
         setProductTaxRate(productData.taxRate.toString())
         setProductQuantity(productData.quantity.toString())
+    setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
+
       } catch (error) {
         console.error("Error fetching product:", error)
         toast.error("Failed to load product data")
-        router.push(`/warehouse/${warehouseId}/admin/products/list`)
+        router.push(`${endPoint}/products/list`)
       } finally {
         setLoading(false)
       }
@@ -106,7 +111,7 @@ export default function EditProductPage() {
 
       if (response.status === 200) {
         toast.success("Product updated successfully")
-        router.push(`/warehouse/${warehouseId}/admin/products/list`)
+        router.push(`${endPoint}/products/list`)
       }
     } catch (error) {
       console.error("Error updating product:", error)
@@ -124,7 +129,7 @@ export default function EditProductPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
         <h2 className="text-xl font-semibold">Product not found</h2>
-        <Link href={`/warehouse/${warehouseId}/admin/products/list`}>
+        <Link href={`${endPoint}/products/list`}>
           <Button variant="outline">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Products
@@ -143,11 +148,11 @@ export default function EditProductPage() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
+                <BreadcrumbLink href={`${endPoint}/dashboard`}>Home</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink href={`/warehouse/${warehouseId}/admin/products/list`}>Products</BreadcrumbLink>
+                <BreadcrumbLink href={`${endPoint}/products/list`}>Products</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
@@ -345,7 +350,7 @@ export default function EditProductPage() {
 
           {/* Action Buttons */}
           <div className="flex justify-end gap-4 mt-8">
-            <Link href={`/warehouse/${warehouseId}/admin/products/list`}>
+            <Link href={`${endPoint}/products/list`}>
               <Button type="button" variant="outline">Cancel</Button>
             </Link>
             <Button 

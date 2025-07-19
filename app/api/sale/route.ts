@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
 
 const prisma = new PrismaClient()
@@ -17,7 +17,8 @@ export async function POST(req:NextRequest){
         balance,
         notes,
         cashier,
-        warehouseId
+        warehouseId,
+        customer
     } = await req.json()
 
    try {
@@ -35,7 +36,8 @@ export async function POST(req:NextRequest){
             grandTotal,
             paidAmount:grandTotal - balance,
             balance,
-            warehousesId:warehouseId
+            warehousesId:warehouseId,
+            selectedCustomerId:customer.id
         }
     })
 

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -23,12 +23,16 @@ import fetchData from "@/hooks/fetch-data"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { getWareHouseId } from "@/hooks/get-werehouseId"
+import { useSession } from "next-auth/react"
 
 // Sample warehouses data
 
 export default function AddUserPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [endPoint, setEndPoint] = useState("")
+  const {data:session} = useSession()
+
   const warehouseId = getWareHouseId()
   const initField = {
     username: "",
@@ -40,7 +44,9 @@ export default function AddUserPage() {
     warehouse:warehouseId,
   }
   const [formData, setFormData] = useState(initField)
-
+  useEffect(()=>{
+      setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
+    },[session,warehouseId])
  
   
     if (!warehouseId) return <h1>Loading...</h1>
@@ -103,15 +109,11 @@ export default function AddUserPage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
+                  <BreadcrumbLink href={`${endPoint}/dashboard`}>Home</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/people">People</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="/people/users">Users</BreadcrumbLink>
+                  <BreadcrumbLink href={`${endPoint}/people/users`}>Users</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>

@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -24,6 +24,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { UserPlus, Save, ArrowLeft, Check } from "lucide-react"
 import axios from "axios"
 import { getWareHouseId } from "@/hooks/get-werehouseId"
+import { useSession } from "next-auth/react"
 
 interface Customer {
   name: string
@@ -36,6 +37,9 @@ interface Customer {
 }
 
 export default function AddCustomerPage() {
+  const [endPoint, setEndPoint] = useState("")
+  const {data:session} = useSession()
+    
   const warehouseId = getWareHouseId()
   const init = {
     name: "",
@@ -47,6 +51,10 @@ export default function AddCustomerPage() {
     warehouseId
   }
   const [formData, setFormData] = useState(init)
+
+  useEffect(()=>{
+      setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
+    },[session,warehouseId])
 
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -98,15 +106,11 @@ export default function AddCustomerPage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
+                  <BreadcrumbLink href={`${endPoint}/dashboard`}>Home</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/people">People</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="/people/customers">Customers</BreadcrumbLink>
+                  <BreadcrumbLink href={`${endPoint}/people/customers`}>Customers</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
@@ -124,7 +128,7 @@ export default function AddCustomerPage() {
               <h1 className="text-2xl font-semibold text-blue-600">Add New Customer</h1>
             </div>
             <Button variant="outline" asChild>
-              <a href="/people/customers">
+              <a href={`${endPoint}/people/customers`}>
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Customers
               </a>

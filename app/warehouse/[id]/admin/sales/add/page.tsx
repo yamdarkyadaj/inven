@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -46,6 +46,7 @@ import { Loading } from "@/components/loading"
 import fetchWareHouseData from "@/hooks/fetch-invidual-data"
 import axios from "axios"
 import { SystemStatus } from "@/components/system-status"
+import { useSession } from "next-auth/react"
 
 // Sample data with updated pricing structure matching Prisma schema
 
@@ -116,7 +117,7 @@ export default function AddSalePage() {
   const [saleItems, setSaleItems] = useState<SaleItem[]>([])
   const [selectedCustomer, setSelectedCustomer] = useState("")
   const [selectedProductId, setSelectedProductId] = useState("")
-  const [quantity, setQuantity] = useState(1)
+  const [quantity, setQuantity] = useState(0)
   const [discount, setDiscount] = useState(0)
   const [priceType, setPriceType] = useState<"wholesale" | "retail">("retail")
   const [taxRate, setTaxRate] = useState(0)
@@ -125,6 +126,7 @@ export default function AddSalePage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [completedSale, setCompletedSale] = useState<CompletedSale | null>(null)
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
+  const [endPoint, setEndPoint] = useState("")
 
   
   // Multiple payment methods state
@@ -135,18 +137,26 @@ export default function AddSalePage() {
   const [currentPaymentAmount, setCurrentPaymentAmount] = useState<any>("")
   const [currentPaymentReference, setCurrentPaymentReference] = useState("")
   const [currentPaymentNotes, setCurrentPaymentNotes] = useState("")
+  const {data:session} = useSession() 
 
   const router = useRouter()
   const { printReceipt } = usePrintReceipt()
   const warehouseId = getWareHouseId()
+
         
         const {data:products,loading,error} = fetchWareHouseData("/api/product/list",{warehouseId})
         const {data:customers,loading:loadingCustomers,error:errorCustomers} = fetchWareHouseData("/api/customer/list",{warehouseId})
+
+        useEffect(()=>{
+          setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
+        },[session,warehouseId])
+
 
          if(!products && !customers) return (
           <Loading/>
          )
 
+         
          console.log(customers)
   const selectedProduct = products?.find((p:any) => p.id === selectedProductId)
   const selectedCustomerData = customers?.find((c:any) => c.id === selectedCustomer)
@@ -443,7 +453,7 @@ export default function AddSalePage() {
 
   const handleViewSales = () => {
     handleCloseSuccessDialog()
-    router.push("/sales/list")
+    router.push(`${endPoint}/sales/list`)
   }
 
   return (
@@ -455,11 +465,11 @@ export default function AddSalePage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
+                  <BreadcrumbLink href={`${endPoint}/dashboard`}>Home</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/sales/list">Sales</BreadcrumbLink>
+                  <BreadcrumbLink href={`${endPoint}/sales/list`}>Sales</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
@@ -616,7 +626,7 @@ export default function AddSalePage() {
                         <Input
                           id="quantity"
                           type="number"
-                          min="1"
+                         
                           max={selectedProduct.quantity}
                           value={quantity}
                           onChange={(e) => setQuantity(Number.parseInt(e.target.value) || 1)}
@@ -918,7 +928,6 @@ export default function AddSalePage() {
 
           {/* Action Buttons */}
           <div className="flex justify-end gap-4">
-            <Button variant="outline">Save Draft</Button>
 
             <Button
               onClick={handleFormSubmit}

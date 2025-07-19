@@ -1,0 +1,296 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client_ {
+    provider = "prisma-client-js"
+    output = "./generated/online"
+}
+
+// Offline database (SQLite) - Main database
+datasource db_ {
+    provider = "postgresql"
+    url      = env("DATABASE_URL_ONLINE")
+}
+
+enum mode_online {
+    dark
+    light
+}
+
+enum role_online {
+    admin
+    sales
+    purchase
+}
+
+enum unit_online {
+    kg
+    piece
+    liter
+    meter
+}
+
+enum type_online {
+    COMPANY
+    INDIVIDUAL
+    GOVERNMENT
+    NON_PROFIT
+    retal
+    wholesale
+}
+
+model superAdmin_online {
+    id           String    @id @default(uuid())
+    userName     String
+    email        String    @unique
+    password     String
+    role         String
+    lastLogin    DateTime?
+    warehousesId String?
+    sync         Boolean   @default(false) // Sync field
+    syncedAt     DateTime? // When last synced
+    createdAt    DateTime  @default(now())
+    updatedAt    DateTime  @updatedAt
+}
+
+model users_online {
+    id                  String             @id @default(uuid())
+    email               String
+    userName            String             @unique
+    phoneNumber         String
+    password            String
+    role                role_online
+    lastLogin           DateTime?
+    createdAt           DateTime           @default(now())
+    updatedAt           DateTime           @updatedAt
+    sync                Boolean            @default(false) // Sync field
+    syncedAt            DateTime? // When last synced
+    Warehouses_online   Warehouses_online? @relation(fields: [warehouses_onlineId], references: [warehouseCode])
+    warehouses_onlineId String?
+}
+
+model Settings_online {
+    setting_id      Int       @id
+    companyName     String
+    companyEmail    String
+    phoneNumber     String
+    websiteURL      String
+    address         String
+    logoUrl         String
+    defaultCurrency String
+    taxRate         Int
+    mode            mode_online
+    itermsPerPage   Int
+    createdAt       DateTime  @default(now())
+    updatedAt       DateTime  @updatedAt
+    sync            Boolean   @default(false) // Sync field
+    syncedAt        DateTime? // When last synced
+}
+
+model Warehouses_online {
+    id              String                   @id @default(uuid())
+    warehouseCode   String                   @unique
+    name            String
+    phoneNumber     String
+    email           String
+    description     String?
+    address         String
+    users           users_online[]
+    products        Product_online[]
+    customer        Customer_online[]
+    saleItem        SaleItem_online[]
+    sale            Sale_online[]
+    paymentMethod   PaymentMethod_online[]
+    purchase        Purchase_online[]
+    purchaseItem    PurchaseItem_online[]
+    supplier        Supplier_online[]
+    receiptSettings ReceiptSettings_online[]
+    sync            Boolean                  @default(false) // Sync field
+    syncedAt        DateTime? // When last synced
+}
+
+model Sale_online {
+    id                  String                 @id @default(cuid())
+    saleItems           SaleItem_online[]
+    subTotal            Float
+    notes               String?
+    amountPaid          Float?
+    grandTotal          Float
+    paidAmount          Float
+    balance             Float
+    createdAt           DateTime               @default(now())
+    updatedAt           DateTime               @updatedAt
+    invoiceNo           String                 @unique
+    paymentMethod       PaymentMethod_online[]
+    sync                Boolean                @default(false) // Sync field
+    syncedAt            DateTime? // When last synced
+    Warehouses_online   Warehouses_online?     @relation(fields: [warehouses_onlineId], references: [warehouseCode])
+    warehouses_onlineId String?
+    Customer_online     Customer_online?       @relation(fields: [customer_onlineId], references: [id])
+    customer_onlineId   String?
+}
+
+model SaleItem_online {
+    id                  String             @id @default(cuid())
+   
+    productName         String
+    cost                Float
+    selectedPrice       Float
+    priceType           String
+    quantity            Int
+    discount            Float
+    total               Float
+    profit              Float
+   
+    sync                Boolean            @default(false) // Sync field
+    syncedAt            DateTime? // When last synced
+    
+    Warehouses_online   Warehouses_online? @relation(fields: [warehouses_onlineId], references: [warehouseCode])
+    warehouses_onlineId String?
+    Sale_online         Sale_online?       @relation(fields: [sale_onlineId], references: [invoiceNo])
+    sale_onlineId       String?
+    Customer_online     Customer_online?   @relation(fields: [customer_onlineId], references: [id])
+    customer_onlineId   String?
+    Product_online      Product_online?    @relation(fields: [product_onlineId], references: [id])
+    product_onlineId    String?
+}
+
+model Purchase_online {
+    id           String                @id @default(cuid())
+    purchaseItem PurchaseItem_online[]
+    taxRate      Float
+    subTotal     Float
+    notes        String?
+    amountPaid   Float?
+    grandTotal   Float
+    paidAmount   Float
+    balance      Float
+    createdAt    DateTime              @default(now())
+    updatedAt    DateTime              @updatedAt
+    referenceNo  String                @unique
+    sync                Boolean            @default(false) // Sync field
+    syncedAt            DateTime?
+    Warehouses_online   Warehouses_online? @relation(fields: [warehouses_onlineId], references: [warehouseCode])
+    warehouses_onlineId String?
+    Supplier_online     Supplier_online?   @relation(fields: [supplier_onlineId], references: [id])
+    supplier_onlineId   String?
+}
+
+model PurchaseItem_online {
+    id                   String      @id @default(cuid())
+    productId            String?
+    cost                 Float
+    selectedPrice        Float
+    priceType            String
+    quantity             Int
+    discount             Float
+    total                Float
+    profit               Float
+    sync                 Boolean     @default(false) // Sync field
+    syncedAt             DateTime? // When last synced
+    customRetailPrice    Float?
+    customWholesalePrice Float?
+    createdAt            DateTime    @default(now())
+    updatedAt            DateTime    @updatedAt
+
+    Warehouses_online   Warehouses_online? @relation(fields: [warehouses_onlineId], references: [warehouseCode])
+    warehouses_onlineId String?
+    Purchase_online     Purchase_online?   @relation(fields: [purchase_onlineId], references: [referenceNo])
+    purchase_onlineId   String?
+    Product_online      Product_online?    @relation(fields: [product_onlineId], references: [id])
+    product_onlineId    String?
+}
+
+model Customer_online {
+    id                  String             @id @default(uuid())
+    name                String
+    type                String
+    companyName         String?
+    email               String?
+    address             String?
+    phone               String
+    Sale                Sale_online[]
+    saleItem            SaleItem_online[]
+    createdAt           DateTime           @default(now())
+    updatedAt           DateTime           @updatedAt
+    sync                Boolean            @default(false) // Sync field
+    syncedAt            DateTime? // When last synced
+    Warehouses_online   Warehouses_online? @relation(fields: [warehouses_onlineId], references: [warehouseCode])
+    warehouses_onlineId String?
+}
+
+model Supplier_online {
+    id                  String             @id @default(uuid())
+    name                String
+    type                String
+    companyName         String?
+    email               String
+    address             String
+    phone               String
+    purchase            Purchase_online[]
+    createdAt           DateTime           @default(now())
+    updatedAt           DateTime           @updatedAt
+    sync                Boolean            @default(false) // Sync field
+    syncedAt            DateTime? // When last synced
+    Warehouses_online   Warehouses_online? @relation(fields: [warehouses_onlineId], references: [warehouseCode])
+    warehouses_onlineId String?
+}
+
+model Product_online {
+    id                  String                @id @default(uuid())
+    name                String
+    barcode             String
+    wholeSalePrice      Float
+    retailPrice         Float
+    cost                Float
+    quantity            Int
+    taxRate             Int
+    unit                unit_online
+    description         String
+    SaleItem            SaleItem_online[]
+    purchaseItem        PurchaseItem_online[]
+    createdAt           DateTime              @default(now())
+    updatedAt           DateTime              @updatedAt
+    sync                Boolean               @default(false) // Sync field
+    syncedAt            DateTime? // When last synced
+    Warehouses_online   Warehouses_online?    @relation(fields: [warehouses_onlineId], references: [warehouseCode])
+    warehouses_onlineId String?
+}
+
+model PaymentMethod_online {
+    id                  String             @id @default(uuid())
+    method              String
+    amount              Int
+    // notes        String?
+    createdAt           DateTime           @default(now())
+    updatedAt           DateTime           @updatedAt
+    sync                Boolean            @default(false) // Sync field
+    syncedAt            DateTime? // When last synced
+    Warehouses_online   Warehouses_online? @relation(fields: [warehouses_onlineId], references: [warehouseCode])
+    warehouses_onlineId String?
+    Sale_online         Sale_online?       @relation(fields: [sale_onlineId], references: [invoiceNo])
+    sale_onlineId       String?
+}
+
+model ReceiptSettings_online {
+    id                  String             @id @default(uuid())
+    companyName         String
+    businessName        String
+    address             String
+    city                String
+    state               String
+    country             String
+    phone               String
+    email               String
+    website             String
+   
+    createdAt           DateTime           @default(now())
+    updatedAt           DateTime           @updatedAt
+    sync                Boolean            @default(false) // Sync field
+    syncedAt            DateTime? // When last synced
+    Warehouses_online   Warehouses_online? @relation(fields: [warehouses_onlineId], references: [warehouseCode])
+    warehouses_onlineId String? @unique
+}

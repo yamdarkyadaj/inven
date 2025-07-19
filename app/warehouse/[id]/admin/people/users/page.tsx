@@ -120,12 +120,8 @@ export default function UsersPage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="/people">People</BreadcrumbLink>
-                </BreadcrumbItem>
+                  <BreadcrumbLink href={`${endpoint}/dashboard`}>Home</BreadcrumbLink>
+                </BreadcrumbItem>    
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   <BreadcrumbPage>Users</BreadcrumbPage>

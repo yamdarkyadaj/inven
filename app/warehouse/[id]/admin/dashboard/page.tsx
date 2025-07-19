@@ -105,20 +105,18 @@ interface DashboardData {
 
 export default function DashboardPage() {
   const [endPoint, setEndPoint] = useState("")
+  const {data:session} = useSession()
   
   
   const warehouseId = getWareHouseId()
-
-  const {data:dashboardData,loading,error} = fetchWareHouseData("/api/warehouse/dashboard",{warehouseId})
-  const {data:session} = useSession()
-      
-      useEffect(()=>{
-        setEndPoint(`/warehouse/{warehouseId}/{session?.user?.role}`)
-      },[session,warehouseId])
-
-
  
 
+
+  const {data:dashboardData,loading,error} = fetchWareHouseData("/api/warehouse/dashboard",{warehouseId})
+  useEffect(()=>{
+    setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
+  },[session,warehouseId])
+  
   if (loading) {
     return (
       <>
@@ -177,6 +175,8 @@ export default function DashboardPage() {
     )
   }
 
+ 
+ 
   return (
     <>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
@@ -325,7 +325,7 @@ export default function DashboardPage() {
                       <YAxis />
                       <Tooltip
                         formatter={(value, name) => [
-                          name === "revenue" ? `{Number(value).toLocaleString()}` : value,
+                          name === "revenue" ? `${Number(value).toLocaleString()}` : value,
                           name === "revenue" ? "Revenue" : "Sales",
                         ]}
                       />
@@ -550,25 +550,25 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <Link href={`{endPoint}/sales/add`}>
+                <Link href={`${endPoint}/sales/add`}>
                   <Button className="h-20 flex-col gap-2 bg-transparent w-full" variant="outline">
                     <ShoppingCart className="h-6 w-6" />
                     <span>New Sale</span>
                   </Button>
                 </Link>
-                <Link href={`{endPoint}/products/add`}>
+                <Link href={`${endPoint}/products/add`}>
                   <Button className="h-20 flex-col gap-2 bg-transparent w-full" variant="outline">
                     <Package className="h-6 w-6" />
                     <span>Add Product</span>
                   </Button>
                 </Link>
-                <Link href={`{endPoint}/people/customers/add`}>
+                <Link href={`${endPoint}/people/customers/add`}>
                   <Button className="h-20 flex-col gap-2 bg-transparent w-full" variant="outline">
                     <Users className="h-6 w-6" />
                     <span>Add Customer</span>
                   </Button>
                 </Link>
-                <Link href={`{endPoint}/sales/list`}>
+                <Link href={`${endPoint}/sales/list`}>
                   <Button className="h-20 flex-col gap-2 bg-transparent w-full" variant="outline">
                     <BarChart3 className="h-6 w-6" />
                     <span>View Sales</span>

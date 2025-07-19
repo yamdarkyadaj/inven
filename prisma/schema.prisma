@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  output = "generated/offline"
 }
 
 // Offline database (SQLite) - Main database
@@ -51,6 +52,9 @@ model superAdmin {
   warehousesId String?
   sync         Boolean   @default(false) // Sync field
   syncedAt     DateTime? // When last synced
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
 }
 
 model users {
@@ -63,6 +67,8 @@ model users {
   warehouses   Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
   warehousesId String?
   lastLogin    DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   sync         Boolean     @default(false) // Sync field
   syncedAt     DateTime? // When last synced
 }
@@ -79,6 +85,8 @@ model Settings {
   taxRate         Int
   mode            mode
   itermsPerPage   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   sync            Boolean   @default(false) // Sync field
   syncedAt        DateTime? // When last synced
 }
@@ -117,7 +125,8 @@ model Sale {
   grandTotal         Float
   paidAmount         Float
   balance            Float
-  createdAt          DateTime        @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   warehousesId       String?
   warehouses         Warehouses?     @relation(fields: [warehousesId], references: [warehouseCode])
   invoiceNo          String          @unique
@@ -144,6 +153,8 @@ model SaleItem {
   warehousesId  String?
   sync          Boolean     @default(false) // Sync field
   syncedAt      DateTime? // When last synced
+  Customer      Customer?   @relation(fields: [customerId], references: [id])
+  customerId    String?
 }
 
 model Purchase {
@@ -156,7 +167,8 @@ model Purchase {
   grandTotal   Float
   paidAmount   Float
   balance      Float
-  createdAt    DateTime       @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   warehousesId String?
   warehouses   Warehouses?    @relation(fields: [warehousesId], references: [warehouseCode])
   referenceNo  String         @unique
@@ -185,6 +197,11 @@ model PurchaseItem {
   syncedAt      DateTime? // When last synced
   Purchase      Purchase?   @relation(fields: [purchaseId], references: [referenceNo])
   purchaseId    String?
+  customRetailPrice Float?
+  customWholesalePrice Float?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
 }
 
 model Customer {
@@ -198,6 +215,9 @@ model Customer {
   Warehouses   Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
   warehousesId String
   Sale         Sale[]
+  saleItem     SaleItem[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   sync         Boolean     @default(false) // Sync field
   syncedAt     DateTime? // When last synced
 }
@@ -213,6 +233,8 @@ model Supplier {
   Warehouses   Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
   warehousesId String
   purchase     Purchase[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   sync         Boolean     @default(false) // Sync field
   syncedAt     DateTime? // When last synced
 }
@@ -220,7 +242,7 @@ model Supplier {
 model Product {
   id             String         @id @default(uuid())
   name           String
-  barcode        String        
+  barcode        String
   wholeSalePrice Float
   retailPrice    Float
   cost           Float
@@ -232,6 +254,8 @@ model Product {
   warehousesId   String?
   SaleItem       SaleItem[]
   purchaseItem   PurchaseItem[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   sync           Boolean        @default(false) // Sync field
   syncedAt       DateTime? // When last synced
 }
@@ -245,6 +269,8 @@ model PaymentMethod {
   warehousesId String?
   Sale         Sale?       @relation(fields: [saleId], references: [invoiceNo])
   saleId       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   sync         Boolean     @default(false) // Sync field
   syncedAt     DateTime? // When last synced
 }
@@ -261,5 +287,9 @@ model ReceiptSettings {
   email        String
   website      String
   Warehouses   Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
-  warehousesId String @unique
+  warehousesId String      @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sync         Boolean     @default(false) // Sync field
+  syncedAt     DateTime? // When last synced
 }

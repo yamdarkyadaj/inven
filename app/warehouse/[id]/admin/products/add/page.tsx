@@ -21,7 +21,8 @@ import { getWareHouseId } from "@/hooks/get-werehouseId"
 import axios from "axios"
 import { error } from "console"
 import { Scan, Plus } from "lucide-react"
-import React, { useState } from "react"
+import { useSession } from "next-auth/react"
+import React, { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
 export default function AddProductPage() {
@@ -35,8 +36,13 @@ export default function AddProductPage() {
   const [productUnit,setProductUnit] = useState("")
   const [productTaxRate,setProductTaxRate] = useState("0")
   const [productQuantity,setProductQuantity] = useState("")
-
+  const [endPoint, setEndPoint] = useState("")
+  const {data:session} = useSession()
   const warehouseId = getWareHouseId()
+
+  useEffect(()=>{
+      setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
+    },[session,warehouseId])
 
   async function handleFormSubmit(e:React.FormEvent<HTMLFormElement>){
     e.preventDefault()
@@ -75,11 +81,11 @@ export default function AddProductPage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
+                  <BreadcrumbLink href={`${endPoint}/dashboard`}>Home</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/products/list">Products</BreadcrumbLink>
+                  <BreadcrumbLink href={`${endPoint}/products/list`}>Products</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>

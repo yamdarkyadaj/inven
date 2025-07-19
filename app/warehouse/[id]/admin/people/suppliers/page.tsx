@@ -132,7 +132,7 @@ export default function SuppliersPage() {
                 <BreadcrumbItem>
                   <BreadcrumbLink href={`${endPoint}/dashboard`}>Dashboard</BreadcrumbLink>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator />
+                
                 
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>

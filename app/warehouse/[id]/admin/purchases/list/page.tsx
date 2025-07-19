@@ -48,6 +48,7 @@ import {
   AlertCircle,
 } from "lucide-react"
 import { formatCurrency } from "@/lib/utils"
+import { useSession } from "next-auth/react"
 
 
 
@@ -56,10 +57,15 @@ export default function ViewPurchasesPage() {
   const [statusFilter, setStatusFilter] = useState("all")
   const [paymentFilter, setPaymentFilter] = useState("all")
   const [dateFilter, setDateFilter] = useState("all")
+   const [endPoint, setEndPoint] = useState("")
+    const {data:session} = useSession()
   const router = useRouter()
 
   const warehouseId = getWareHouseId()
   const { data: purchases, loading, error } = fetchWareHouseData("/api/purchase/list", { warehouseId })
+  useEffect(()=>{
+    setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
+  },[session,warehouseId])
 
   if (loading) return <Loading />
   if (error) return <div>Error loading purchases</div>
@@ -249,11 +255,11 @@ export default function ViewPurchasesPage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
+                  <BreadcrumbLink href={`${endPoint}/dashboard`}>Home</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/purchases/list">Purchases</BreadcrumbLink>
+                  <BreadcrumbLink href={`${endPoint}/purchases/list`}>Purchases</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
@@ -280,7 +286,7 @@ export default function ViewPurchasesPage() {
                 Export
               </Button>
               <Button asChild>
-                <a href={`/warehouse/${warehouseId}/admin/purchases/add`}>
+                <a href={`${endPoint}/purchases/add`}>
                   <Plus className="mr-2 h-4 w-4" />
                   Add Purchase
                 </a>
@@ -432,7 +438,7 @@ export default function ViewPurchasesPage() {
                   </p>
                   {(purchases?.length || 0) === 0 && (
                     <Button asChild className="mt-4">
-                      <a href={`/warehouse/${warehouseId}/admin/purchases/add`}>
+                      <a href={`${endPoint}/purchases/add`}>
                         <Plus className="mr-2 h-4 w-4" />
                         Add Purchase
                       </a>
@@ -485,7 +491,7 @@ export default function ViewPurchasesPage() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                              <DropdownMenuItem onClick={() => router.push(`/warehouse/${warehouseId}/admin/purchases/${purchase.id}`)}>
+                              <DropdownMenuItem onClick={() => router.push(`${endPoint}/purchases/${purchase.id}`)}>
                                 <Eye className="mr-2 h-4 w-4" />
                                 View Details
                               </DropdownMenuItem>

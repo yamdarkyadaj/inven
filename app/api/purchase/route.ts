@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
 
 const prisma = new PrismaClient()
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
                 }
             })
 
-            console.log(items[i].productId)
+           
 
             // Update product quantity (increase stock for purchases)
             await prisma.product.update({

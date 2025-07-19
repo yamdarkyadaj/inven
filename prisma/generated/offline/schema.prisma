@@ -1,0 +1,293 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "generated/offline"
+}
+
+// Offline database (SQLite) - Main database
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum mode {
+  dark
+  light
+}
+
+enum role {
+  admin
+  sales
+  purchase
+}
+
+enum unit {
+  kg
+  piece
+  liter
+  meter
+}
+
+enum type {
+  COMPANY
+  INDIVIDUAL
+  GOVERNMENT
+  NON_PROFIT
+  retal
+  wholesale
+}
+
+model superAdmin {
+  id           String    @id @default(uuid())
+  userName     String
+  email        String    @unique
+  password     String
+  role         String
+  lastLogin    DateTime?
+  warehousesId String?
+  sync         Boolean   @default(false) // Sync field
+  syncedAt     DateTime? // When last synced
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model users {
+  id           String      @id @default(uuid())
+  email        String
+  userName     String      @unique
+  phoneNumber  String
+  password     String
+  role         role
+  warehouses   Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
+  warehousesId String?
+  lastLogin    DateTime?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  sync         Boolean     @default(false) // Sync field
+  syncedAt     DateTime? // When last synced
+}
+
+model Settings {
+  setting_id      Int       @id
+  companyName     String
+  companyEmail    String
+  phoneNumber     String
+  websiteURL      String
+  address         String
+  logoUrl         String
+  defaultCurrency String
+  taxRate         Int
+  mode            mode
+  itermsPerPage   Int
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  sync            Boolean   @default(false) // Sync field
+  syncedAt        DateTime? // When last synced
+}
+
+model Warehouses {
+  id              String            @id @default(uuid())
+  warehouseCode   String            @unique
+  name            String
+  phoneNumber     String
+  email           String
+  description     String?
+  address         String
+  users           users[]
+  products        Product[]
+  customer        Customer[]
+  saleItem        SaleItem[]
+  sale            Sale[]
+  paymentMethod   PaymentMethod[]
+  purchase        Purchase[]
+  purchaseItem    PurchaseItem[]
+  supplier        Supplier[]
+  receiptSettings ReceiptSettings[]
+  sync            Boolean           @default(false) // Sync field
+  syncedAt        DateTime? // When last synced
+}
+
+model Sale {
+  id                 String          @id @default(cuid())
+  saleItems          SaleItem[]
+  selectedCustomerId String? // reference to Customer
+  selectedCustomer   Customer?       @relation(fields: [selectedCustomerId], references: [id])
+  taxRate            Float
+  subTotal           Float
+  notes              String?
+  amountPaid         Float?
+  grandTotal         Float
+  paidAmount         Float
+  balance            Float
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  warehousesId       String?
+  warehouses         Warehouses?     @relation(fields: [warehousesId], references: [warehouseCode])
+  invoiceNo          String          @unique
+  paymentMethod      PaymentMethod[]
+  sync               Boolean         @default(false) // Sync field
+  syncedAt           DateTime? // When last synced
+}
+
+model SaleItem {
+  id            String      @id @default(cuid())
+  saleId        String?
+  sale          Sale?       @relation(fields: [saleId], references: [invoiceNo])
+  productId     String?
+  product       Product?    @relation(fields: [productId], references: [id])
+  productName   String
+  cost          Float
+  selectedPrice Float
+  priceType     String
+  quantity      Int
+  discount      Float
+  total         Float
+  profit        Float
+  Warehouses    Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
+  warehousesId  String?
+  sync          Boolean     @default(false) // Sync field
+  syncedAt      DateTime? // When last synced
+  Customer      Customer?   @relation(fields: [customerId], references: [id])
+  customerId    String?
+}
+
+model Purchase {
+  id           String         @id @default(cuid())
+  purchaseItem PurchaseItem[]
+  taxRate      Float
+  subTotal     Float
+  notes        String?
+  amountPaid   Float?
+  grandTotal   Float
+  paidAmount   Float
+  balance      Float
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  warehousesId String?
+  warehouses   Warehouses?    @relation(fields: [warehousesId], references: [warehouseCode])
+  referenceNo  String         @unique
+
+  sync       Boolean   @default(false) // Sync field
+  syncedAt   DateTime?
+  Supplier   Supplier? @relation(fields: [supplierId], references: [id])
+  supplierId String?
+}
+
+model PurchaseItem {
+  id                   String      @id @default(cuid())
+  productId            String?
+  product              Product?    @relation(fields: [productId], references: [id])
+  productName          String
+  cost                 Float
+  selectedPrice        Float
+  priceType            String
+  quantity             Int
+  discount             Float
+  total                Float
+  profit               Float
+  Warehouses           Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
+  warehousesId         String?
+  sync                 Boolean     @default(false) // Sync field
+  syncedAt             DateTime? // When last synced
+  Purchase             Purchase?   @relation(fields: [purchaseId], references: [referenceNo])
+  purchaseId           String?
+  customRetailPrice    Float?
+  customWholesalePrice Float?
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+}
+
+model Customer {
+  id           String      @id @default(uuid())
+  name         String
+  type         String
+  companyName  String?
+  email        String?
+  address      String?
+  phone        String
+  Warehouses   Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
+  warehousesId String
+  Sale         Sale[]
+  saleItem     SaleItem[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  sync         Boolean     @default(false) // Sync field
+  syncedAt     DateTime? // When last synced
+}
+
+model Supplier {
+  id           String      @id @default(uuid())
+  name         String
+  type         String
+  companyName  String?
+  email        String
+  address      String
+  phone        String
+  Warehouses   Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
+  warehousesId String
+  purchase     Purchase[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  sync         Boolean     @default(false) // Sync field
+  syncedAt     DateTime? // When last synced
+}
+
+model Product {
+  id             String         @id @default(uuid())
+  name           String
+  barcode        String
+  wholeSalePrice Float
+  retailPrice    Float
+  cost           Float
+  quantity       Int
+  taxRate        Int
+  unit           unit
+  description    String
+  warehouses     Warehouses?    @relation(fields: [warehousesId], references: [warehouseCode])
+  warehousesId   String?
+  SaleItem       SaleItem[]
+  purchaseItem   PurchaseItem[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  sync           Boolean        @default(false) // Sync field
+  syncedAt       DateTime? // When last synced
+}
+
+model PaymentMethod {
+  id           String      @id @default(uuid())
+  method       String
+  amount       Int
+  // notes        String?
+  Warehouses   Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
+  warehousesId String?
+  Sale         Sale?       @relation(fields: [saleId], references: [invoiceNo])
+  saleId       String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  sync         Boolean     @default(false) // Sync field
+  syncedAt     DateTime? // When last synced
+}
+
+model ReceiptSettings {
+  id           String      @id @default(uuid())
+  companyName  String
+  businessName String
+  address      String
+  city         String
+  state        String
+  country      String
+  phone        String
+  email        String
+  website      String
+  Warehouses   Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
+  warehousesId String      @unique
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  sync         Boolean     @default(false) // Sync field
+  syncedAt     DateTime? // When last synced
+}

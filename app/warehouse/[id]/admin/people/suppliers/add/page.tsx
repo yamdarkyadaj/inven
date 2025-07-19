@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 
 import {
@@ -23,11 +23,16 @@ import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Truck, Save, ArrowLeft, Check } from "lucide-react"
 import toast from "react-hot-toast"
+import { useSession } from "next-auth/react"
+import { getWareHouseId } from "@/hooks/get-werehouseId"
 
 export default function AddSupplierPage() {
   const params = useParams()
   const router = useRouter()
-  const warehouseId = params.id as string
+  const [endPoint, setEndPoint] = useState("")
+  const warehouseId = getWareHouseId()
+  
+    const {data:session} = useSession()
 
   const [formData, setFormData] = useState({
     name: "",
@@ -37,6 +42,11 @@ export default function AddSupplierPage() {
     address: "",
     type: "COMPANY",
   })
+
+   useEffect(()=>{
+      setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
+    },[session,warehouseId])
+    
 
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -89,7 +99,7 @@ export default function AddSupplierPage() {
   }
 
   const handleViewSuppliers = () => {
-    router.push(`/warehouse/${warehouseId}/admin/people/suppliers`)
+    router.push(`${endPoint}/people/suppliers`)
   }
 
   return (
@@ -101,15 +111,12 @@ export default function AddSupplierPage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href={`/warehouse/${warehouseId}/admin`}>Dashboard</BreadcrumbLink>
+                  <BreadcrumbLink href={`${endPoint}/dashboard`}>Dashboard</BreadcrumbLink>
                 </BreadcrumbItem>
+                
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href={`/warehouse/${warehouseId}/admin/people`}>People</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbLink href={`/warehouse/${warehouseId}/admin/people/suppliers`}>Suppliers</BreadcrumbLink>
+                  <BreadcrumbLink href={`${endPoint}/people/suppliers`}>Suppliers</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
