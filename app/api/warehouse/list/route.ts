@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/prisma/generated/offline";
+import { PrismaClient } from "@/prisma/generated/online";
 import { NextRequest, NextResponse } from "next/server";
 
 const prisma = new PrismaClient()
@@ -11,7 +11,7 @@ export async function POST(
 
     // Try to find warehouse by warehouseCode first (as used in navigation)
     // If not found, try by id
-    let warehouse = await prisma.warehouses.findUnique({
+    let warehouse = await prisma.warehouses_online.findUnique({
       where: {
         warehouseCode: id
       },
@@ -28,7 +28,7 @@ export async function POST(
 
     // If not found by code, try by id
     if (!warehouse) {
-      warehouse = await prisma.warehouses.findUnique({
+      warehouse = await prisma.warehouses_online.findUnique({
         where: {
           id: id
         },

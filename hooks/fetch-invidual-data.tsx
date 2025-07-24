@@ -6,9 +6,6 @@ const fetchWareHouseData = (url:any,response:any) => {
     const [loading,setLoading] = useState<any>(false)
     const [error,setError] = useState<any>(false)
     const [data,setData] = useState<any>(null)
-    
-   useEffect(()=>{
-    if(!url) return
 
     async function fetch() {
         setLoading(true)
@@ -21,12 +18,14 @@ const fetchWareHouseData = (url:any,response:any) => {
             setLoading(false)
         }
     }
-
+    
+   useEffect(()=>{
+    if(!url) return
     fetch()
 
    },[url])
    
-    return {data,loading,error}
+    return {data,loading,error,refetch: fetch}
 }
 
 export default fetchWareHouseData

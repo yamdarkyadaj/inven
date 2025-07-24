@@ -77,6 +77,7 @@ export async function PUT(
         unit,
         quantity: parseInt(quantity),
         description,
+        sync:false
       },
     });
 

@@ -66,6 +66,7 @@ interface SaleItem {
   total: number
   unit: string
   taxRate: number
+  limit:number
 }
 
 interface PaymentMethod {
@@ -210,6 +211,7 @@ export default function AddSalePage() {
         total: itemTotal,
         unit: selectedProduct.unit,
         taxRate: selectedProduct.taxRate,
+        limit:selectedProduct.quantity
       }
       setSaleItems([...saleItems, newItem])
     }
@@ -318,6 +320,8 @@ export default function AddSalePage() {
   const balance = grandTotal - totalPaid
 
   // Form submission handler
+
+  console.log(saleItems)
   const handleFormSubmit = async () => {
     if (saleItems?.length === 0 || !selectedCustomer) {
       alert("Please complete all required fields")
@@ -626,7 +630,7 @@ export default function AddSalePage() {
                         <Input
                           id="quantity"
                           type="number"
-                         
+                          min="1"
                           max={selectedProduct.quantity}
                           value={quantity}
                           onChange={(e) => setQuantity(Number.parseInt(e.target.value) || 1)}
@@ -637,7 +641,7 @@ export default function AddSalePage() {
                         <Input
                           id="discount"
                           type="number"
-                          min="0"
+                          min="1"
                           value={discount}
                           onChange={(e) => setDiscount(Number.parseFloat(e.target.value) || 0)}
                         />
@@ -723,6 +727,8 @@ export default function AddSalePage() {
                                   type="number"
                                   min="1"
                                   value={item.quantity}
+                                  max={item.limit}
+                                 
                                   onChange={(e) => updateItemQuantity(item.id, Number.parseInt(e.target.value) || 1)}
                                   className="w-16"
                                 />

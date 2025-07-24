@@ -17399,8 +17399,18 @@ export namespace Prisma {
 
   export type AggregateReceiptSettings = {
     _count: ReceiptSettingsCountAggregateOutputType | null
+    _avg: ReceiptSettingsAvgAggregateOutputType | null
+    _sum: ReceiptSettingsSumAggregateOutputType | null
     _min: ReceiptSettingsMinAggregateOutputType | null
     _max: ReceiptSettingsMaxAggregateOutputType | null
+  }
+
+  export type ReceiptSettingsAvgAggregateOutputType = {
+    printCopyCount: number | null
+  }
+
+  export type ReceiptSettingsSumAggregateOutputType = {
+    printCopyCount: number | null
   }
 
   export type ReceiptSettingsMinAggregateOutputType = {
@@ -17414,6 +17424,38 @@ export namespace Prisma {
     phone: string | null
     email: string | null
     website: string | null
+    receiptTitle: string | null
+    headerMessage: string | null
+    footerMessage: string | null
+    showLogo: boolean | null
+    logoUrl: string | null
+    showQrCode: boolean | null
+    qrCodeContent: string | null
+    customQrContent: string | null
+    showCustomerInfo: boolean | null
+    showCashierInfo: boolean | null
+    showItemCodes: boolean | null
+    showItemDescriptions: boolean | null
+    showTaxBreakdown: boolean | null
+    showPaymentMethods: boolean | null
+    showBalance: boolean | null
+    showTimestamp: boolean | null
+    use24HourFormat: boolean | null
+    showItemNumbers: boolean | null
+    showRunningTotal: boolean | null
+    paperSize: string | null
+    fontSize: string | null
+    printDensity: string | null
+    lineSpacing: string | null
+    primaryColor: string | null
+    accentColor: string | null
+    fontFamily: string | null
+    printCopyCount: number | null
+    autoPrint: boolean | null
+    language: string | null
+    currency: string | null
+    currencySymbol: string | null
+    currencyPosition: string | null
     warehousesId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -17432,6 +17474,38 @@ export namespace Prisma {
     phone: string | null
     email: string | null
     website: string | null
+    receiptTitle: string | null
+    headerMessage: string | null
+    footerMessage: string | null
+    showLogo: boolean | null
+    logoUrl: string | null
+    showQrCode: boolean | null
+    qrCodeContent: string | null
+    customQrContent: string | null
+    showCustomerInfo: boolean | null
+    showCashierInfo: boolean | null
+    showItemCodes: boolean | null
+    showItemDescriptions: boolean | null
+    showTaxBreakdown: boolean | null
+    showPaymentMethods: boolean | null
+    showBalance: boolean | null
+    showTimestamp: boolean | null
+    use24HourFormat: boolean | null
+    showItemNumbers: boolean | null
+    showRunningTotal: boolean | null
+    paperSize: string | null
+    fontSize: string | null
+    printDensity: string | null
+    lineSpacing: string | null
+    primaryColor: string | null
+    accentColor: string | null
+    fontFamily: string | null
+    printCopyCount: number | null
+    autoPrint: boolean | null
+    language: string | null
+    currency: string | null
+    currencySymbol: string | null
+    currencyPosition: string | null
     warehousesId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -17450,6 +17524,38 @@ export namespace Prisma {
     phone: number
     email: number
     website: number
+    receiptTitle: number
+    headerMessage: number
+    footerMessage: number
+    showLogo: number
+    logoUrl: number
+    showQrCode: number
+    qrCodeContent: number
+    customQrContent: number
+    showCustomerInfo: number
+    showCashierInfo: number
+    showItemCodes: number
+    showItemDescriptions: number
+    showTaxBreakdown: number
+    showPaymentMethods: number
+    showBalance: number
+    showTimestamp: number
+    use24HourFormat: number
+    showItemNumbers: number
+    showRunningTotal: number
+    paperSize: number
+    fontSize: number
+    printDensity: number
+    lineSpacing: number
+    primaryColor: number
+    accentColor: number
+    fontFamily: number
+    printCopyCount: number
+    autoPrint: number
+    language: number
+    currency: number
+    currencySymbol: number
+    currencyPosition: number
     warehousesId: number
     createdAt: number
     updatedAt: number
@@ -17458,6 +17564,14 @@ export namespace Prisma {
     _all: number
   }
 
+
+  export type ReceiptSettingsAvgAggregateInputType = {
+    printCopyCount?: true
+  }
+
+  export type ReceiptSettingsSumAggregateInputType = {
+    printCopyCount?: true
+  }
 
   export type ReceiptSettingsMinAggregateInputType = {
     id?: true
@@ -17470,6 +17584,38 @@ export namespace Prisma {
     phone?: true
     email?: true
     website?: true
+    receiptTitle?: true
+    headerMessage?: true
+    footerMessage?: true
+    showLogo?: true
+    logoUrl?: true
+    showQrCode?: true
+    qrCodeContent?: true
+    customQrContent?: true
+    showCustomerInfo?: true
+    showCashierInfo?: true
+    showItemCodes?: true
+    showItemDescriptions?: true
+    showTaxBreakdown?: true
+    showPaymentMethods?: true
+    showBalance?: true
+    showTimestamp?: true
+    use24HourFormat?: true
+    showItemNumbers?: true
+    showRunningTotal?: true
+    paperSize?: true
+    fontSize?: true
+    printDensity?: true
+    lineSpacing?: true
+    primaryColor?: true
+    accentColor?: true
+    fontFamily?: true
+    printCopyCount?: true
+    autoPrint?: true
+    language?: true
+    currency?: true
+    currencySymbol?: true
+    currencyPosition?: true
     warehousesId?: true
     createdAt?: true
     updatedAt?: true
@@ -17488,6 +17634,38 @@ export namespace Prisma {
     phone?: true
     email?: true
     website?: true
+    receiptTitle?: true
+    headerMessage?: true
+    footerMessage?: true
+    showLogo?: true
+    logoUrl?: true
+    showQrCode?: true
+    qrCodeContent?: true
+    customQrContent?: true
+    showCustomerInfo?: true
+    showCashierInfo?: true
+    showItemCodes?: true
+    showItemDescriptions?: true
+    showTaxBreakdown?: true
+    showPaymentMethods?: true
+    showBalance?: true
+    showTimestamp?: true
+    use24HourFormat?: true
+    showItemNumbers?: true
+    showRunningTotal?: true
+    paperSize?: true
+    fontSize?: true
+    printDensity?: true
+    lineSpacing?: true
+    primaryColor?: true
+    accentColor?: true
+    fontFamily?: true
+    printCopyCount?: true
+    autoPrint?: true
+    language?: true
+    currency?: true
+    currencySymbol?: true
+    currencyPosition?: true
     warehousesId?: true
     createdAt?: true
     updatedAt?: true
@@ -17506,6 +17684,38 @@ export namespace Prisma {
     phone?: true
     email?: true
     website?: true
+    receiptTitle?: true
+    headerMessage?: true
+    footerMessage?: true
+    showLogo?: true
+    logoUrl?: true
+    showQrCode?: true
+    qrCodeContent?: true
+    customQrContent?: true
+    showCustomerInfo?: true
+    showCashierInfo?: true
+    showItemCodes?: true
+    showItemDescriptions?: true
+    showTaxBreakdown?: true
+    showPaymentMethods?: true
+    showBalance?: true
+    showTimestamp?: true
+    use24HourFormat?: true
+    showItemNumbers?: true
+    showRunningTotal?: true
+    paperSize?: true
+    fontSize?: true
+    printDensity?: true
+    lineSpacing?: true
+    primaryColor?: true
+    accentColor?: true
+    fontFamily?: true
+    printCopyCount?: true
+    autoPrint?: true
+    language?: true
+    currency?: true
+    currencySymbol?: true
+    currencyPosition?: true
     warehousesId?: true
     createdAt?: true
     updatedAt?: true
@@ -17552,6 +17762,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: ReceiptSettingsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ReceiptSettingsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: ReceiptSettingsMinAggregateInputType
@@ -17582,6 +17804,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: ReceiptSettingsCountAggregateInputType | true
+    _avg?: ReceiptSettingsAvgAggregateInputType
+    _sum?: ReceiptSettingsSumAggregateInputType
     _min?: ReceiptSettingsMinAggregateInputType
     _max?: ReceiptSettingsMaxAggregateInputType
   }
@@ -17597,12 +17821,46 @@ export namespace Prisma {
     phone: string
     email: string
     website: string
+    receiptTitle: string | null
+    headerMessage: string | null
+    footerMessage: string | null
+    showLogo: boolean | null
+    logoUrl: string | null
+    showQrCode: boolean | null
+    qrCodeContent: string | null
+    customQrContent: string | null
+    showCustomerInfo: boolean | null
+    showCashierInfo: boolean | null
+    showItemCodes: boolean | null
+    showItemDescriptions: boolean | null
+    showTaxBreakdown: boolean | null
+    showPaymentMethods: boolean | null
+    showBalance: boolean | null
+    showTimestamp: boolean | null
+    use24HourFormat: boolean | null
+    showItemNumbers: boolean | null
+    showRunningTotal: boolean | null
+    paperSize: string | null
+    fontSize: string | null
+    printDensity: string | null
+    lineSpacing: string | null
+    primaryColor: string | null
+    accentColor: string | null
+    fontFamily: string | null
+    printCopyCount: number | null
+    autoPrint: boolean | null
+    language: string | null
+    currency: string | null
+    currencySymbol: string | null
+    currencyPosition: string | null
     warehousesId: string
     createdAt: Date
     updatedAt: Date
     sync: boolean
     syncedAt: Date | null
     _count: ReceiptSettingsCountAggregateOutputType | null
+    _avg: ReceiptSettingsAvgAggregateOutputType | null
+    _sum: ReceiptSettingsSumAggregateOutputType | null
     _min: ReceiptSettingsMinAggregateOutputType | null
     _max: ReceiptSettingsMaxAggregateOutputType | null
   }
@@ -17632,6 +17890,38 @@ export namespace Prisma {
     phone?: boolean
     email?: boolean
     website?: boolean
+    receiptTitle?: boolean
+    headerMessage?: boolean
+    footerMessage?: boolean
+    showLogo?: boolean
+    logoUrl?: boolean
+    showQrCode?: boolean
+    qrCodeContent?: boolean
+    customQrContent?: boolean
+    showCustomerInfo?: boolean
+    showCashierInfo?: boolean
+    showItemCodes?: boolean
+    showItemDescriptions?: boolean
+    showTaxBreakdown?: boolean
+    showPaymentMethods?: boolean
+    showBalance?: boolean
+    showTimestamp?: boolean
+    use24HourFormat?: boolean
+    showItemNumbers?: boolean
+    showRunningTotal?: boolean
+    paperSize?: boolean
+    fontSize?: boolean
+    printDensity?: boolean
+    lineSpacing?: boolean
+    primaryColor?: boolean
+    accentColor?: boolean
+    fontFamily?: boolean
+    printCopyCount?: boolean
+    autoPrint?: boolean
+    language?: boolean
+    currency?: boolean
+    currencySymbol?: boolean
+    currencyPosition?: boolean
     warehousesId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17651,6 +17941,38 @@ export namespace Prisma {
     phone?: boolean
     email?: boolean
     website?: boolean
+    receiptTitle?: boolean
+    headerMessage?: boolean
+    footerMessage?: boolean
+    showLogo?: boolean
+    logoUrl?: boolean
+    showQrCode?: boolean
+    qrCodeContent?: boolean
+    customQrContent?: boolean
+    showCustomerInfo?: boolean
+    showCashierInfo?: boolean
+    showItemCodes?: boolean
+    showItemDescriptions?: boolean
+    showTaxBreakdown?: boolean
+    showPaymentMethods?: boolean
+    showBalance?: boolean
+    showTimestamp?: boolean
+    use24HourFormat?: boolean
+    showItemNumbers?: boolean
+    showRunningTotal?: boolean
+    paperSize?: boolean
+    fontSize?: boolean
+    printDensity?: boolean
+    lineSpacing?: boolean
+    primaryColor?: boolean
+    accentColor?: boolean
+    fontFamily?: boolean
+    printCopyCount?: boolean
+    autoPrint?: boolean
+    language?: boolean
+    currency?: boolean
+    currencySymbol?: boolean
+    currencyPosition?: boolean
     warehousesId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17670,6 +17992,38 @@ export namespace Prisma {
     phone?: boolean
     email?: boolean
     website?: boolean
+    receiptTitle?: boolean
+    headerMessage?: boolean
+    footerMessage?: boolean
+    showLogo?: boolean
+    logoUrl?: boolean
+    showQrCode?: boolean
+    qrCodeContent?: boolean
+    customQrContent?: boolean
+    showCustomerInfo?: boolean
+    showCashierInfo?: boolean
+    showItemCodes?: boolean
+    showItemDescriptions?: boolean
+    showTaxBreakdown?: boolean
+    showPaymentMethods?: boolean
+    showBalance?: boolean
+    showTimestamp?: boolean
+    use24HourFormat?: boolean
+    showItemNumbers?: boolean
+    showRunningTotal?: boolean
+    paperSize?: boolean
+    fontSize?: boolean
+    printDensity?: boolean
+    lineSpacing?: boolean
+    primaryColor?: boolean
+    accentColor?: boolean
+    fontFamily?: boolean
+    printCopyCount?: boolean
+    autoPrint?: boolean
+    language?: boolean
+    currency?: boolean
+    currencySymbol?: boolean
+    currencyPosition?: boolean
     warehousesId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17689,6 +18043,38 @@ export namespace Prisma {
     phone?: boolean
     email?: boolean
     website?: boolean
+    receiptTitle?: boolean
+    headerMessage?: boolean
+    footerMessage?: boolean
+    showLogo?: boolean
+    logoUrl?: boolean
+    showQrCode?: boolean
+    qrCodeContent?: boolean
+    customQrContent?: boolean
+    showCustomerInfo?: boolean
+    showCashierInfo?: boolean
+    showItemCodes?: boolean
+    showItemDescriptions?: boolean
+    showTaxBreakdown?: boolean
+    showPaymentMethods?: boolean
+    showBalance?: boolean
+    showTimestamp?: boolean
+    use24HourFormat?: boolean
+    showItemNumbers?: boolean
+    showRunningTotal?: boolean
+    paperSize?: boolean
+    fontSize?: boolean
+    printDensity?: boolean
+    lineSpacing?: boolean
+    primaryColor?: boolean
+    accentColor?: boolean
+    fontFamily?: boolean
+    printCopyCount?: boolean
+    autoPrint?: boolean
+    language?: boolean
+    currency?: boolean
+    currencySymbol?: boolean
+    currencyPosition?: boolean
     warehousesId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17696,7 +18082,7 @@ export namespace Prisma {
     syncedAt?: boolean
   }
 
-  export type ReceiptSettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyName" | "businessName" | "address" | "city" | "state" | "country" | "phone" | "email" | "website" | "warehousesId" | "createdAt" | "updatedAt" | "sync" | "syncedAt", ExtArgs["result"]["receiptSettings"]>
+  export type ReceiptSettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyName" | "businessName" | "address" | "city" | "state" | "country" | "phone" | "email" | "website" | "receiptTitle" | "headerMessage" | "footerMessage" | "showLogo" | "logoUrl" | "showQrCode" | "qrCodeContent" | "customQrContent" | "showCustomerInfo" | "showCashierInfo" | "showItemCodes" | "showItemDescriptions" | "showTaxBreakdown" | "showPaymentMethods" | "showBalance" | "showTimestamp" | "use24HourFormat" | "showItemNumbers" | "showRunningTotal" | "paperSize" | "fontSize" | "printDensity" | "lineSpacing" | "primaryColor" | "accentColor" | "fontFamily" | "printCopyCount" | "autoPrint" | "language" | "currency" | "currencySymbol" | "currencyPosition" | "warehousesId" | "createdAt" | "updatedAt" | "sync" | "syncedAt", ExtArgs["result"]["receiptSettings"]>
   export type ReceiptSettingsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Warehouses?: boolean | ReceiptSettings$WarehousesArgs<ExtArgs>
   }
@@ -17723,6 +18109,38 @@ export namespace Prisma {
       phone: string
       email: string
       website: string
+      receiptTitle: string | null
+      headerMessage: string | null
+      footerMessage: string | null
+      showLogo: boolean | null
+      logoUrl: string | null
+      showQrCode: boolean | null
+      qrCodeContent: string | null
+      customQrContent: string | null
+      showCustomerInfo: boolean | null
+      showCashierInfo: boolean | null
+      showItemCodes: boolean | null
+      showItemDescriptions: boolean | null
+      showTaxBreakdown: boolean | null
+      showPaymentMethods: boolean | null
+      showBalance: boolean | null
+      showTimestamp: boolean | null
+      use24HourFormat: boolean | null
+      showItemNumbers: boolean | null
+      showRunningTotal: boolean | null
+      paperSize: string | null
+      fontSize: string | null
+      printDensity: string | null
+      lineSpacing: string | null
+      primaryColor: string | null
+      accentColor: string | null
+      fontFamily: string | null
+      printCopyCount: number | null
+      autoPrint: boolean | null
+      language: string | null
+      currency: string | null
+      currencySymbol: string | null
+      currencyPosition: string | null
       warehousesId: string
       createdAt: Date
       updatedAt: Date
@@ -18162,6 +18580,38 @@ export namespace Prisma {
     readonly phone: FieldRef<"ReceiptSettings", 'String'>
     readonly email: FieldRef<"ReceiptSettings", 'String'>
     readonly website: FieldRef<"ReceiptSettings", 'String'>
+    readonly receiptTitle: FieldRef<"ReceiptSettings", 'String'>
+    readonly headerMessage: FieldRef<"ReceiptSettings", 'String'>
+    readonly footerMessage: FieldRef<"ReceiptSettings", 'String'>
+    readonly showLogo: FieldRef<"ReceiptSettings", 'Boolean'>
+    readonly logoUrl: FieldRef<"ReceiptSettings", 'String'>
+    readonly showQrCode: FieldRef<"ReceiptSettings", 'Boolean'>
+    readonly qrCodeContent: FieldRef<"ReceiptSettings", 'String'>
+    readonly customQrContent: FieldRef<"ReceiptSettings", 'String'>
+    readonly showCustomerInfo: FieldRef<"ReceiptSettings", 'Boolean'>
+    readonly showCashierInfo: FieldRef<"ReceiptSettings", 'Boolean'>
+    readonly showItemCodes: FieldRef<"ReceiptSettings", 'Boolean'>
+    readonly showItemDescriptions: FieldRef<"ReceiptSettings", 'Boolean'>
+    readonly showTaxBreakdown: FieldRef<"ReceiptSettings", 'Boolean'>
+    readonly showPaymentMethods: FieldRef<"ReceiptSettings", 'Boolean'>
+    readonly showBalance: FieldRef<"ReceiptSettings", 'Boolean'>
+    readonly showTimestamp: FieldRef<"ReceiptSettings", 'Boolean'>
+    readonly use24HourFormat: FieldRef<"ReceiptSettings", 'Boolean'>
+    readonly showItemNumbers: FieldRef<"ReceiptSettings", 'Boolean'>
+    readonly showRunningTotal: FieldRef<"ReceiptSettings", 'Boolean'>
+    readonly paperSize: FieldRef<"ReceiptSettings", 'String'>
+    readonly fontSize: FieldRef<"ReceiptSettings", 'String'>
+    readonly printDensity: FieldRef<"ReceiptSettings", 'String'>
+    readonly lineSpacing: FieldRef<"ReceiptSettings", 'String'>
+    readonly primaryColor: FieldRef<"ReceiptSettings", 'String'>
+    readonly accentColor: FieldRef<"ReceiptSettings", 'String'>
+    readonly fontFamily: FieldRef<"ReceiptSettings", 'String'>
+    readonly printCopyCount: FieldRef<"ReceiptSettings", 'Int'>
+    readonly autoPrint: FieldRef<"ReceiptSettings", 'Boolean'>
+    readonly language: FieldRef<"ReceiptSettings", 'String'>
+    readonly currency: FieldRef<"ReceiptSettings", 'String'>
+    readonly currencySymbol: FieldRef<"ReceiptSettings", 'String'>
+    readonly currencyPosition: FieldRef<"ReceiptSettings", 'String'>
     readonly warehousesId: FieldRef<"ReceiptSettings", 'String'>
     readonly createdAt: FieldRef<"ReceiptSettings", 'DateTime'>
     readonly updatedAt: FieldRef<"ReceiptSettings", 'DateTime'>
@@ -18855,6 +19305,38 @@ export namespace Prisma {
     phone: 'phone',
     email: 'email',
     website: 'website',
+    receiptTitle: 'receiptTitle',
+    headerMessage: 'headerMessage',
+    footerMessage: 'footerMessage',
+    showLogo: 'showLogo',
+    logoUrl: 'logoUrl',
+    showQrCode: 'showQrCode',
+    qrCodeContent: 'qrCodeContent',
+    customQrContent: 'customQrContent',
+    showCustomerInfo: 'showCustomerInfo',
+    showCashierInfo: 'showCashierInfo',
+    showItemCodes: 'showItemCodes',
+    showItemDescriptions: 'showItemDescriptions',
+    showTaxBreakdown: 'showTaxBreakdown',
+    showPaymentMethods: 'showPaymentMethods',
+    showBalance: 'showBalance',
+    showTimestamp: 'showTimestamp',
+    use24HourFormat: 'use24HourFormat',
+    showItemNumbers: 'showItemNumbers',
+    showRunningTotal: 'showRunningTotal',
+    paperSize: 'paperSize',
+    fontSize: 'fontSize',
+    printDensity: 'printDensity',
+    lineSpacing: 'lineSpacing',
+    primaryColor: 'primaryColor',
+    accentColor: 'accentColor',
+    fontFamily: 'fontFamily',
+    printCopyCount: 'printCopyCount',
+    autoPrint: 'autoPrint',
+    language: 'language',
+    currency: 'currency',
+    currencySymbol: 'currencySymbol',
+    currencyPosition: 'currencyPosition',
     warehousesId: 'warehousesId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -20249,6 +20731,38 @@ export namespace Prisma {
     phone?: StringFilter<"ReceiptSettings"> | string
     email?: StringFilter<"ReceiptSettings"> | string
     website?: StringFilter<"ReceiptSettings"> | string
+    receiptTitle?: StringNullableFilter<"ReceiptSettings"> | string | null
+    headerMessage?: StringNullableFilter<"ReceiptSettings"> | string | null
+    footerMessage?: StringNullableFilter<"ReceiptSettings"> | string | null
+    showLogo?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    logoUrl?: StringNullableFilter<"ReceiptSettings"> | string | null
+    showQrCode?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    qrCodeContent?: StringNullableFilter<"ReceiptSettings"> | string | null
+    customQrContent?: StringNullableFilter<"ReceiptSettings"> | string | null
+    showCustomerInfo?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showCashierInfo?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showItemCodes?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showItemDescriptions?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showTaxBreakdown?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showPaymentMethods?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showBalance?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showTimestamp?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    use24HourFormat?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showItemNumbers?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showRunningTotal?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    paperSize?: StringNullableFilter<"ReceiptSettings"> | string | null
+    fontSize?: StringNullableFilter<"ReceiptSettings"> | string | null
+    printDensity?: StringNullableFilter<"ReceiptSettings"> | string | null
+    lineSpacing?: StringNullableFilter<"ReceiptSettings"> | string | null
+    primaryColor?: StringNullableFilter<"ReceiptSettings"> | string | null
+    accentColor?: StringNullableFilter<"ReceiptSettings"> | string | null
+    fontFamily?: StringNullableFilter<"ReceiptSettings"> | string | null
+    printCopyCount?: IntNullableFilter<"ReceiptSettings"> | number | null
+    autoPrint?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    language?: StringNullableFilter<"ReceiptSettings"> | string | null
+    currency?: StringNullableFilter<"ReceiptSettings"> | string | null
+    currencySymbol?: StringNullableFilter<"ReceiptSettings"> | string | null
+    currencyPosition?: StringNullableFilter<"ReceiptSettings"> | string | null
     warehousesId?: StringFilter<"ReceiptSettings"> | string
     createdAt?: DateTimeFilter<"ReceiptSettings"> | Date | string
     updatedAt?: DateTimeFilter<"ReceiptSettings"> | Date | string
@@ -20268,6 +20782,38 @@ export namespace Prisma {
     phone?: SortOrder
     email?: SortOrder
     website?: SortOrder
+    receiptTitle?: SortOrderInput | SortOrder
+    headerMessage?: SortOrderInput | SortOrder
+    footerMessage?: SortOrderInput | SortOrder
+    showLogo?: SortOrderInput | SortOrder
+    logoUrl?: SortOrderInput | SortOrder
+    showQrCode?: SortOrderInput | SortOrder
+    qrCodeContent?: SortOrderInput | SortOrder
+    customQrContent?: SortOrderInput | SortOrder
+    showCustomerInfo?: SortOrderInput | SortOrder
+    showCashierInfo?: SortOrderInput | SortOrder
+    showItemCodes?: SortOrderInput | SortOrder
+    showItemDescriptions?: SortOrderInput | SortOrder
+    showTaxBreakdown?: SortOrderInput | SortOrder
+    showPaymentMethods?: SortOrderInput | SortOrder
+    showBalance?: SortOrderInput | SortOrder
+    showTimestamp?: SortOrderInput | SortOrder
+    use24HourFormat?: SortOrderInput | SortOrder
+    showItemNumbers?: SortOrderInput | SortOrder
+    showRunningTotal?: SortOrderInput | SortOrder
+    paperSize?: SortOrderInput | SortOrder
+    fontSize?: SortOrderInput | SortOrder
+    printDensity?: SortOrderInput | SortOrder
+    lineSpacing?: SortOrderInput | SortOrder
+    primaryColor?: SortOrderInput | SortOrder
+    accentColor?: SortOrderInput | SortOrder
+    fontFamily?: SortOrderInput | SortOrder
+    printCopyCount?: SortOrderInput | SortOrder
+    autoPrint?: SortOrderInput | SortOrder
+    language?: SortOrderInput | SortOrder
+    currency?: SortOrderInput | SortOrder
+    currencySymbol?: SortOrderInput | SortOrder
+    currencyPosition?: SortOrderInput | SortOrder
     warehousesId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -20291,6 +20837,38 @@ export namespace Prisma {
     phone?: StringFilter<"ReceiptSettings"> | string
     email?: StringFilter<"ReceiptSettings"> | string
     website?: StringFilter<"ReceiptSettings"> | string
+    receiptTitle?: StringNullableFilter<"ReceiptSettings"> | string | null
+    headerMessage?: StringNullableFilter<"ReceiptSettings"> | string | null
+    footerMessage?: StringNullableFilter<"ReceiptSettings"> | string | null
+    showLogo?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    logoUrl?: StringNullableFilter<"ReceiptSettings"> | string | null
+    showQrCode?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    qrCodeContent?: StringNullableFilter<"ReceiptSettings"> | string | null
+    customQrContent?: StringNullableFilter<"ReceiptSettings"> | string | null
+    showCustomerInfo?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showCashierInfo?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showItemCodes?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showItemDescriptions?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showTaxBreakdown?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showPaymentMethods?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showBalance?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showTimestamp?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    use24HourFormat?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showItemNumbers?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showRunningTotal?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    paperSize?: StringNullableFilter<"ReceiptSettings"> | string | null
+    fontSize?: StringNullableFilter<"ReceiptSettings"> | string | null
+    printDensity?: StringNullableFilter<"ReceiptSettings"> | string | null
+    lineSpacing?: StringNullableFilter<"ReceiptSettings"> | string | null
+    primaryColor?: StringNullableFilter<"ReceiptSettings"> | string | null
+    accentColor?: StringNullableFilter<"ReceiptSettings"> | string | null
+    fontFamily?: StringNullableFilter<"ReceiptSettings"> | string | null
+    printCopyCount?: IntNullableFilter<"ReceiptSettings"> | number | null
+    autoPrint?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    language?: StringNullableFilter<"ReceiptSettings"> | string | null
+    currency?: StringNullableFilter<"ReceiptSettings"> | string | null
+    currencySymbol?: StringNullableFilter<"ReceiptSettings"> | string | null
+    currencyPosition?: StringNullableFilter<"ReceiptSettings"> | string | null
     createdAt?: DateTimeFilter<"ReceiptSettings"> | Date | string
     updatedAt?: DateTimeFilter<"ReceiptSettings"> | Date | string
     sync?: BoolFilter<"ReceiptSettings"> | boolean
@@ -20309,14 +20887,48 @@ export namespace Prisma {
     phone?: SortOrder
     email?: SortOrder
     website?: SortOrder
+    receiptTitle?: SortOrderInput | SortOrder
+    headerMessage?: SortOrderInput | SortOrder
+    footerMessage?: SortOrderInput | SortOrder
+    showLogo?: SortOrderInput | SortOrder
+    logoUrl?: SortOrderInput | SortOrder
+    showQrCode?: SortOrderInput | SortOrder
+    qrCodeContent?: SortOrderInput | SortOrder
+    customQrContent?: SortOrderInput | SortOrder
+    showCustomerInfo?: SortOrderInput | SortOrder
+    showCashierInfo?: SortOrderInput | SortOrder
+    showItemCodes?: SortOrderInput | SortOrder
+    showItemDescriptions?: SortOrderInput | SortOrder
+    showTaxBreakdown?: SortOrderInput | SortOrder
+    showPaymentMethods?: SortOrderInput | SortOrder
+    showBalance?: SortOrderInput | SortOrder
+    showTimestamp?: SortOrderInput | SortOrder
+    use24HourFormat?: SortOrderInput | SortOrder
+    showItemNumbers?: SortOrderInput | SortOrder
+    showRunningTotal?: SortOrderInput | SortOrder
+    paperSize?: SortOrderInput | SortOrder
+    fontSize?: SortOrderInput | SortOrder
+    printDensity?: SortOrderInput | SortOrder
+    lineSpacing?: SortOrderInput | SortOrder
+    primaryColor?: SortOrderInput | SortOrder
+    accentColor?: SortOrderInput | SortOrder
+    fontFamily?: SortOrderInput | SortOrder
+    printCopyCount?: SortOrderInput | SortOrder
+    autoPrint?: SortOrderInput | SortOrder
+    language?: SortOrderInput | SortOrder
+    currency?: SortOrderInput | SortOrder
+    currencySymbol?: SortOrderInput | SortOrder
+    currencyPosition?: SortOrderInput | SortOrder
     warehousesId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
     _count?: ReceiptSettingsCountOrderByAggregateInput
+    _avg?: ReceiptSettingsAvgOrderByAggregateInput
     _max?: ReceiptSettingsMaxOrderByAggregateInput
     _min?: ReceiptSettingsMinOrderByAggregateInput
+    _sum?: ReceiptSettingsSumOrderByAggregateInput
   }
 
   export type ReceiptSettingsScalarWhereWithAggregatesInput = {
@@ -20333,6 +20945,38 @@ export namespace Prisma {
     phone?: StringWithAggregatesFilter<"ReceiptSettings"> | string
     email?: StringWithAggregatesFilter<"ReceiptSettings"> | string
     website?: StringWithAggregatesFilter<"ReceiptSettings"> | string
+    receiptTitle?: StringNullableWithAggregatesFilter<"ReceiptSettings"> | string | null
+    headerMessage?: StringNullableWithAggregatesFilter<"ReceiptSettings"> | string | null
+    footerMessage?: StringNullableWithAggregatesFilter<"ReceiptSettings"> | string | null
+    showLogo?: BoolNullableWithAggregatesFilter<"ReceiptSettings"> | boolean | null
+    logoUrl?: StringNullableWithAggregatesFilter<"ReceiptSettings"> | string | null
+    showQrCode?: BoolNullableWithAggregatesFilter<"ReceiptSettings"> | boolean | null
+    qrCodeContent?: StringNullableWithAggregatesFilter<"ReceiptSettings"> | string | null
+    customQrContent?: StringNullableWithAggregatesFilter<"ReceiptSettings"> | string | null
+    showCustomerInfo?: BoolNullableWithAggregatesFilter<"ReceiptSettings"> | boolean | null
+    showCashierInfo?: BoolNullableWithAggregatesFilter<"ReceiptSettings"> | boolean | null
+    showItemCodes?: BoolNullableWithAggregatesFilter<"ReceiptSettings"> | boolean | null
+    showItemDescriptions?: BoolNullableWithAggregatesFilter<"ReceiptSettings"> | boolean | null
+    showTaxBreakdown?: BoolNullableWithAggregatesFilter<"ReceiptSettings"> | boolean | null
+    showPaymentMethods?: BoolNullableWithAggregatesFilter<"ReceiptSettings"> | boolean | null
+    showBalance?: BoolNullableWithAggregatesFilter<"ReceiptSettings"> | boolean | null
+    showTimestamp?: BoolNullableWithAggregatesFilter<"ReceiptSettings"> | boolean | null
+    use24HourFormat?: BoolNullableWithAggregatesFilter<"ReceiptSettings"> | boolean | null
+    showItemNumbers?: BoolNullableWithAggregatesFilter<"ReceiptSettings"> | boolean | null
+    showRunningTotal?: BoolNullableWithAggregatesFilter<"ReceiptSettings"> | boolean | null
+    paperSize?: StringNullableWithAggregatesFilter<"ReceiptSettings"> | string | null
+    fontSize?: StringNullableWithAggregatesFilter<"ReceiptSettings"> | string | null
+    printDensity?: StringNullableWithAggregatesFilter<"ReceiptSettings"> | string | null
+    lineSpacing?: StringNullableWithAggregatesFilter<"ReceiptSettings"> | string | null
+    primaryColor?: StringNullableWithAggregatesFilter<"ReceiptSettings"> | string | null
+    accentColor?: StringNullableWithAggregatesFilter<"ReceiptSettings"> | string | null
+    fontFamily?: StringNullableWithAggregatesFilter<"ReceiptSettings"> | string | null
+    printCopyCount?: IntNullableWithAggregatesFilter<"ReceiptSettings"> | number | null
+    autoPrint?: BoolNullableWithAggregatesFilter<"ReceiptSettings"> | boolean | null
+    language?: StringNullableWithAggregatesFilter<"ReceiptSettings"> | string | null
+    currency?: StringNullableWithAggregatesFilter<"ReceiptSettings"> | string | null
+    currencySymbol?: StringNullableWithAggregatesFilter<"ReceiptSettings"> | string | null
+    currencyPosition?: StringNullableWithAggregatesFilter<"ReceiptSettings"> | string | null
     warehousesId?: StringWithAggregatesFilter<"ReceiptSettings"> | string
     createdAt?: DateTimeWithAggregatesFilter<"ReceiptSettings"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ReceiptSettings"> | Date | string
@@ -21764,6 +22408,38 @@ export namespace Prisma {
     phone: string
     email: string
     website: string
+    receiptTitle?: string | null
+    headerMessage?: string | null
+    footerMessage?: string | null
+    showLogo?: boolean | null
+    logoUrl?: string | null
+    showQrCode?: boolean | null
+    qrCodeContent?: string | null
+    customQrContent?: string | null
+    showCustomerInfo?: boolean | null
+    showCashierInfo?: boolean | null
+    showItemCodes?: boolean | null
+    showItemDescriptions?: boolean | null
+    showTaxBreakdown?: boolean | null
+    showPaymentMethods?: boolean | null
+    showBalance?: boolean | null
+    showTimestamp?: boolean | null
+    use24HourFormat?: boolean | null
+    showItemNumbers?: boolean | null
+    showRunningTotal?: boolean | null
+    paperSize?: string | null
+    fontSize?: string | null
+    printDensity?: string | null
+    lineSpacing?: string | null
+    primaryColor?: string | null
+    accentColor?: string | null
+    fontFamily?: string | null
+    printCopyCount?: number | null
+    autoPrint?: boolean | null
+    language?: string | null
+    currency?: string | null
+    currencySymbol?: string | null
+    currencyPosition?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sync?: boolean
@@ -21782,6 +22458,38 @@ export namespace Prisma {
     phone: string
     email: string
     website: string
+    receiptTitle?: string | null
+    headerMessage?: string | null
+    footerMessage?: string | null
+    showLogo?: boolean | null
+    logoUrl?: string | null
+    showQrCode?: boolean | null
+    qrCodeContent?: string | null
+    customQrContent?: string | null
+    showCustomerInfo?: boolean | null
+    showCashierInfo?: boolean | null
+    showItemCodes?: boolean | null
+    showItemDescriptions?: boolean | null
+    showTaxBreakdown?: boolean | null
+    showPaymentMethods?: boolean | null
+    showBalance?: boolean | null
+    showTimestamp?: boolean | null
+    use24HourFormat?: boolean | null
+    showItemNumbers?: boolean | null
+    showRunningTotal?: boolean | null
+    paperSize?: string | null
+    fontSize?: string | null
+    printDensity?: string | null
+    lineSpacing?: string | null
+    primaryColor?: string | null
+    accentColor?: string | null
+    fontFamily?: string | null
+    printCopyCount?: number | null
+    autoPrint?: boolean | null
+    language?: string | null
+    currency?: string | null
+    currencySymbol?: string | null
+    currencyPosition?: string | null
     warehousesId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -21800,6 +22508,38 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     website?: StringFieldUpdateOperationsInput | string
+    receiptTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    headerMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    footerMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    showLogo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    showQrCode?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    qrCodeContent?: NullableStringFieldUpdateOperationsInput | string | null
+    customQrContent?: NullableStringFieldUpdateOperationsInput | string | null
+    showCustomerInfo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showCashierInfo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemCodes?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemDescriptions?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showTaxBreakdown?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showPaymentMethods?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showBalance?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showTimestamp?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    use24HourFormat?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemNumbers?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showRunningTotal?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    paperSize?: NullableStringFieldUpdateOperationsInput | string | null
+    fontSize?: NullableStringFieldUpdateOperationsInput | string | null
+    printDensity?: NullableStringFieldUpdateOperationsInput | string | null
+    lineSpacing?: NullableStringFieldUpdateOperationsInput | string | null
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    accentColor?: NullableStringFieldUpdateOperationsInput | string | null
+    fontFamily?: NullableStringFieldUpdateOperationsInput | string | null
+    printCopyCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autoPrint?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    language?: NullableStringFieldUpdateOperationsInput | string | null
+    currency?: NullableStringFieldUpdateOperationsInput | string | null
+    currencySymbol?: NullableStringFieldUpdateOperationsInput | string | null
+    currencyPosition?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
@@ -21818,6 +22558,38 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     website?: StringFieldUpdateOperationsInput | string
+    receiptTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    headerMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    footerMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    showLogo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    showQrCode?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    qrCodeContent?: NullableStringFieldUpdateOperationsInput | string | null
+    customQrContent?: NullableStringFieldUpdateOperationsInput | string | null
+    showCustomerInfo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showCashierInfo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemCodes?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemDescriptions?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showTaxBreakdown?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showPaymentMethods?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showBalance?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showTimestamp?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    use24HourFormat?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemNumbers?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showRunningTotal?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    paperSize?: NullableStringFieldUpdateOperationsInput | string | null
+    fontSize?: NullableStringFieldUpdateOperationsInput | string | null
+    printDensity?: NullableStringFieldUpdateOperationsInput | string | null
+    lineSpacing?: NullableStringFieldUpdateOperationsInput | string | null
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    accentColor?: NullableStringFieldUpdateOperationsInput | string | null
+    fontFamily?: NullableStringFieldUpdateOperationsInput | string | null
+    printCopyCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autoPrint?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    language?: NullableStringFieldUpdateOperationsInput | string | null
+    currency?: NullableStringFieldUpdateOperationsInput | string | null
+    currencySymbol?: NullableStringFieldUpdateOperationsInput | string | null
+    currencyPosition?: NullableStringFieldUpdateOperationsInput | string | null
     warehousesId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21836,6 +22608,38 @@ export namespace Prisma {
     phone: string
     email: string
     website: string
+    receiptTitle?: string | null
+    headerMessage?: string | null
+    footerMessage?: string | null
+    showLogo?: boolean | null
+    logoUrl?: string | null
+    showQrCode?: boolean | null
+    qrCodeContent?: string | null
+    customQrContent?: string | null
+    showCustomerInfo?: boolean | null
+    showCashierInfo?: boolean | null
+    showItemCodes?: boolean | null
+    showItemDescriptions?: boolean | null
+    showTaxBreakdown?: boolean | null
+    showPaymentMethods?: boolean | null
+    showBalance?: boolean | null
+    showTimestamp?: boolean | null
+    use24HourFormat?: boolean | null
+    showItemNumbers?: boolean | null
+    showRunningTotal?: boolean | null
+    paperSize?: string | null
+    fontSize?: string | null
+    printDensity?: string | null
+    lineSpacing?: string | null
+    primaryColor?: string | null
+    accentColor?: string | null
+    fontFamily?: string | null
+    printCopyCount?: number | null
+    autoPrint?: boolean | null
+    language?: string | null
+    currency?: string | null
+    currencySymbol?: string | null
+    currencyPosition?: string | null
     warehousesId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -21854,6 +22658,38 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     website?: StringFieldUpdateOperationsInput | string
+    receiptTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    headerMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    footerMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    showLogo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    showQrCode?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    qrCodeContent?: NullableStringFieldUpdateOperationsInput | string | null
+    customQrContent?: NullableStringFieldUpdateOperationsInput | string | null
+    showCustomerInfo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showCashierInfo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemCodes?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemDescriptions?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showTaxBreakdown?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showPaymentMethods?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showBalance?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showTimestamp?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    use24HourFormat?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemNumbers?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showRunningTotal?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    paperSize?: NullableStringFieldUpdateOperationsInput | string | null
+    fontSize?: NullableStringFieldUpdateOperationsInput | string | null
+    printDensity?: NullableStringFieldUpdateOperationsInput | string | null
+    lineSpacing?: NullableStringFieldUpdateOperationsInput | string | null
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    accentColor?: NullableStringFieldUpdateOperationsInput | string | null
+    fontFamily?: NullableStringFieldUpdateOperationsInput | string | null
+    printCopyCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autoPrint?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    language?: NullableStringFieldUpdateOperationsInput | string | null
+    currency?: NullableStringFieldUpdateOperationsInput | string | null
+    currencySymbol?: NullableStringFieldUpdateOperationsInput | string | null
+    currencyPosition?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
@@ -21871,6 +22707,38 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     website?: StringFieldUpdateOperationsInput | string
+    receiptTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    headerMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    footerMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    showLogo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    showQrCode?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    qrCodeContent?: NullableStringFieldUpdateOperationsInput | string | null
+    customQrContent?: NullableStringFieldUpdateOperationsInput | string | null
+    showCustomerInfo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showCashierInfo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemCodes?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemDescriptions?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showTaxBreakdown?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showPaymentMethods?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showBalance?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showTimestamp?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    use24HourFormat?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemNumbers?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showRunningTotal?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    paperSize?: NullableStringFieldUpdateOperationsInput | string | null
+    fontSize?: NullableStringFieldUpdateOperationsInput | string | null
+    printDensity?: NullableStringFieldUpdateOperationsInput | string | null
+    lineSpacing?: NullableStringFieldUpdateOperationsInput | string | null
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    accentColor?: NullableStringFieldUpdateOperationsInput | string | null
+    fontFamily?: NullableStringFieldUpdateOperationsInput | string | null
+    printCopyCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autoPrint?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    language?: NullableStringFieldUpdateOperationsInput | string | null
+    currency?: NullableStringFieldUpdateOperationsInput | string | null
+    currencySymbol?: NullableStringFieldUpdateOperationsInput | string | null
+    currencyPosition?: NullableStringFieldUpdateOperationsInput | string | null
     warehousesId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22968,6 +23836,22 @@ export namespace Prisma {
     amount?: SortOrder
   }
 
+  export type BoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type ReceiptSettingsCountOrderByAggregateInput = {
     id?: SortOrder
     companyName?: SortOrder
@@ -22979,11 +23863,47 @@ export namespace Prisma {
     phone?: SortOrder
     email?: SortOrder
     website?: SortOrder
+    receiptTitle?: SortOrder
+    headerMessage?: SortOrder
+    footerMessage?: SortOrder
+    showLogo?: SortOrder
+    logoUrl?: SortOrder
+    showQrCode?: SortOrder
+    qrCodeContent?: SortOrder
+    customQrContent?: SortOrder
+    showCustomerInfo?: SortOrder
+    showCashierInfo?: SortOrder
+    showItemCodes?: SortOrder
+    showItemDescriptions?: SortOrder
+    showTaxBreakdown?: SortOrder
+    showPaymentMethods?: SortOrder
+    showBalance?: SortOrder
+    showTimestamp?: SortOrder
+    use24HourFormat?: SortOrder
+    showItemNumbers?: SortOrder
+    showRunningTotal?: SortOrder
+    paperSize?: SortOrder
+    fontSize?: SortOrder
+    printDensity?: SortOrder
+    lineSpacing?: SortOrder
+    primaryColor?: SortOrder
+    accentColor?: SortOrder
+    fontFamily?: SortOrder
+    printCopyCount?: SortOrder
+    autoPrint?: SortOrder
+    language?: SortOrder
+    currency?: SortOrder
+    currencySymbol?: SortOrder
+    currencyPosition?: SortOrder
     warehousesId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+  }
+
+  export type ReceiptSettingsAvgOrderByAggregateInput = {
+    printCopyCount?: SortOrder
   }
 
   export type ReceiptSettingsMaxOrderByAggregateInput = {
@@ -22997,6 +23917,38 @@ export namespace Prisma {
     phone?: SortOrder
     email?: SortOrder
     website?: SortOrder
+    receiptTitle?: SortOrder
+    headerMessage?: SortOrder
+    footerMessage?: SortOrder
+    showLogo?: SortOrder
+    logoUrl?: SortOrder
+    showQrCode?: SortOrder
+    qrCodeContent?: SortOrder
+    customQrContent?: SortOrder
+    showCustomerInfo?: SortOrder
+    showCashierInfo?: SortOrder
+    showItemCodes?: SortOrder
+    showItemDescriptions?: SortOrder
+    showTaxBreakdown?: SortOrder
+    showPaymentMethods?: SortOrder
+    showBalance?: SortOrder
+    showTimestamp?: SortOrder
+    use24HourFormat?: SortOrder
+    showItemNumbers?: SortOrder
+    showRunningTotal?: SortOrder
+    paperSize?: SortOrder
+    fontSize?: SortOrder
+    printDensity?: SortOrder
+    lineSpacing?: SortOrder
+    primaryColor?: SortOrder
+    accentColor?: SortOrder
+    fontFamily?: SortOrder
+    printCopyCount?: SortOrder
+    autoPrint?: SortOrder
+    language?: SortOrder
+    currency?: SortOrder
+    currencySymbol?: SortOrder
+    currencyPosition?: SortOrder
     warehousesId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -23015,11 +23967,71 @@ export namespace Prisma {
     phone?: SortOrder
     email?: SortOrder
     website?: SortOrder
+    receiptTitle?: SortOrder
+    headerMessage?: SortOrder
+    footerMessage?: SortOrder
+    showLogo?: SortOrder
+    logoUrl?: SortOrder
+    showQrCode?: SortOrder
+    qrCodeContent?: SortOrder
+    customQrContent?: SortOrder
+    showCustomerInfo?: SortOrder
+    showCashierInfo?: SortOrder
+    showItemCodes?: SortOrder
+    showItemDescriptions?: SortOrder
+    showTaxBreakdown?: SortOrder
+    showPaymentMethods?: SortOrder
+    showBalance?: SortOrder
+    showTimestamp?: SortOrder
+    use24HourFormat?: SortOrder
+    showItemNumbers?: SortOrder
+    showRunningTotal?: SortOrder
+    paperSize?: SortOrder
+    fontSize?: SortOrder
+    printDensity?: SortOrder
+    lineSpacing?: SortOrder
+    primaryColor?: SortOrder
+    accentColor?: SortOrder
+    fontFamily?: SortOrder
+    printCopyCount?: SortOrder
+    autoPrint?: SortOrder
+    language?: SortOrder
+    currency?: SortOrder
+    currencySymbol?: SortOrder
+    currencyPosition?: SortOrder
     warehousesId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+  }
+
+  export type ReceiptSettingsSumOrderByAggregateInput = {
+    printCopyCount?: SortOrder
+  }
+
+  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -24112,6 +25124,18 @@ export namespace Prisma {
     connect?: WarehousesWhereUniqueInput
   }
 
+  export type NullableBoolFieldUpdateOperationsInput = {
+    set?: boolean | null
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type WarehousesUpdateOneWithoutReceiptSettingsNestedInput = {
     create?: XOR<WarehousesCreateWithoutReceiptSettingsInput, WarehousesUncheckedCreateWithoutReceiptSettingsInput>
     connectOrCreate?: WarehousesCreateOrConnectWithoutReceiptSettingsInput
@@ -24388,6 +25412,35 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumunitFilter<$PrismaModel>
     _max?: NestedEnumunitFilter<$PrismaModel>
+  }
+
+  export type NestedBoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
+  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type WarehousesCreateWithoutUsersInput = {
@@ -24889,6 +25942,38 @@ export namespace Prisma {
     phone: string
     email: string
     website: string
+    receiptTitle?: string | null
+    headerMessage?: string | null
+    footerMessage?: string | null
+    showLogo?: boolean | null
+    logoUrl?: string | null
+    showQrCode?: boolean | null
+    qrCodeContent?: string | null
+    customQrContent?: string | null
+    showCustomerInfo?: boolean | null
+    showCashierInfo?: boolean | null
+    showItemCodes?: boolean | null
+    showItemDescriptions?: boolean | null
+    showTaxBreakdown?: boolean | null
+    showPaymentMethods?: boolean | null
+    showBalance?: boolean | null
+    showTimestamp?: boolean | null
+    use24HourFormat?: boolean | null
+    showItemNumbers?: boolean | null
+    showRunningTotal?: boolean | null
+    paperSize?: string | null
+    fontSize?: string | null
+    printDensity?: string | null
+    lineSpacing?: string | null
+    primaryColor?: string | null
+    accentColor?: string | null
+    fontFamily?: string | null
+    printCopyCount?: number | null
+    autoPrint?: boolean | null
+    language?: string | null
+    currency?: string | null
+    currencySymbol?: string | null
+    currencyPosition?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sync?: boolean
@@ -24906,6 +25991,38 @@ export namespace Prisma {
     phone: string
     email: string
     website: string
+    receiptTitle?: string | null
+    headerMessage?: string | null
+    footerMessage?: string | null
+    showLogo?: boolean | null
+    logoUrl?: string | null
+    showQrCode?: boolean | null
+    qrCodeContent?: string | null
+    customQrContent?: string | null
+    showCustomerInfo?: boolean | null
+    showCashierInfo?: boolean | null
+    showItemCodes?: boolean | null
+    showItemDescriptions?: boolean | null
+    showTaxBreakdown?: boolean | null
+    showPaymentMethods?: boolean | null
+    showBalance?: boolean | null
+    showTimestamp?: boolean | null
+    use24HourFormat?: boolean | null
+    showItemNumbers?: boolean | null
+    showRunningTotal?: boolean | null
+    paperSize?: string | null
+    fontSize?: string | null
+    printDensity?: string | null
+    lineSpacing?: string | null
+    primaryColor?: string | null
+    accentColor?: string | null
+    fontFamily?: string | null
+    printCopyCount?: number | null
+    autoPrint?: boolean | null
+    language?: string | null
+    currency?: string | null
+    currencySymbol?: string | null
+    currencyPosition?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sync?: boolean
@@ -25273,6 +26390,38 @@ export namespace Prisma {
     phone?: StringFilter<"ReceiptSettings"> | string
     email?: StringFilter<"ReceiptSettings"> | string
     website?: StringFilter<"ReceiptSettings"> | string
+    receiptTitle?: StringNullableFilter<"ReceiptSettings"> | string | null
+    headerMessage?: StringNullableFilter<"ReceiptSettings"> | string | null
+    footerMessage?: StringNullableFilter<"ReceiptSettings"> | string | null
+    showLogo?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    logoUrl?: StringNullableFilter<"ReceiptSettings"> | string | null
+    showQrCode?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    qrCodeContent?: StringNullableFilter<"ReceiptSettings"> | string | null
+    customQrContent?: StringNullableFilter<"ReceiptSettings"> | string | null
+    showCustomerInfo?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showCashierInfo?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showItemCodes?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showItemDescriptions?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showTaxBreakdown?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showPaymentMethods?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showBalance?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showTimestamp?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    use24HourFormat?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showItemNumbers?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    showRunningTotal?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    paperSize?: StringNullableFilter<"ReceiptSettings"> | string | null
+    fontSize?: StringNullableFilter<"ReceiptSettings"> | string | null
+    printDensity?: StringNullableFilter<"ReceiptSettings"> | string | null
+    lineSpacing?: StringNullableFilter<"ReceiptSettings"> | string | null
+    primaryColor?: StringNullableFilter<"ReceiptSettings"> | string | null
+    accentColor?: StringNullableFilter<"ReceiptSettings"> | string | null
+    fontFamily?: StringNullableFilter<"ReceiptSettings"> | string | null
+    printCopyCount?: IntNullableFilter<"ReceiptSettings"> | number | null
+    autoPrint?: BoolNullableFilter<"ReceiptSettings"> | boolean | null
+    language?: StringNullableFilter<"ReceiptSettings"> | string | null
+    currency?: StringNullableFilter<"ReceiptSettings"> | string | null
+    currencySymbol?: StringNullableFilter<"ReceiptSettings"> | string | null
+    currencyPosition?: StringNullableFilter<"ReceiptSettings"> | string | null
     warehousesId?: StringFilter<"ReceiptSettings"> | string
     createdAt?: DateTimeFilter<"ReceiptSettings"> | Date | string
     updatedAt?: DateTimeFilter<"ReceiptSettings"> | Date | string
@@ -27510,6 +28659,38 @@ export namespace Prisma {
     phone: string
     email: string
     website: string
+    receiptTitle?: string | null
+    headerMessage?: string | null
+    footerMessage?: string | null
+    showLogo?: boolean | null
+    logoUrl?: string | null
+    showQrCode?: boolean | null
+    qrCodeContent?: string | null
+    customQrContent?: string | null
+    showCustomerInfo?: boolean | null
+    showCashierInfo?: boolean | null
+    showItemCodes?: boolean | null
+    showItemDescriptions?: boolean | null
+    showTaxBreakdown?: boolean | null
+    showPaymentMethods?: boolean | null
+    showBalance?: boolean | null
+    showTimestamp?: boolean | null
+    use24HourFormat?: boolean | null
+    showItemNumbers?: boolean | null
+    showRunningTotal?: boolean | null
+    paperSize?: string | null
+    fontSize?: string | null
+    printDensity?: string | null
+    lineSpacing?: string | null
+    primaryColor?: string | null
+    accentColor?: string | null
+    fontFamily?: string | null
+    printCopyCount?: number | null
+    autoPrint?: boolean | null
+    language?: string | null
+    currency?: string | null
+    currencySymbol?: string | null
+    currencyPosition?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sync?: boolean
@@ -27966,6 +29147,38 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     website?: StringFieldUpdateOperationsInput | string
+    receiptTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    headerMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    footerMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    showLogo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    showQrCode?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    qrCodeContent?: NullableStringFieldUpdateOperationsInput | string | null
+    customQrContent?: NullableStringFieldUpdateOperationsInput | string | null
+    showCustomerInfo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showCashierInfo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemCodes?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemDescriptions?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showTaxBreakdown?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showPaymentMethods?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showBalance?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showTimestamp?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    use24HourFormat?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemNumbers?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showRunningTotal?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    paperSize?: NullableStringFieldUpdateOperationsInput | string | null
+    fontSize?: NullableStringFieldUpdateOperationsInput | string | null
+    printDensity?: NullableStringFieldUpdateOperationsInput | string | null
+    lineSpacing?: NullableStringFieldUpdateOperationsInput | string | null
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    accentColor?: NullableStringFieldUpdateOperationsInput | string | null
+    fontFamily?: NullableStringFieldUpdateOperationsInput | string | null
+    printCopyCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autoPrint?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    language?: NullableStringFieldUpdateOperationsInput | string | null
+    currency?: NullableStringFieldUpdateOperationsInput | string | null
+    currencySymbol?: NullableStringFieldUpdateOperationsInput | string | null
+    currencyPosition?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
@@ -27983,6 +29196,38 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     website?: StringFieldUpdateOperationsInput | string
+    receiptTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    headerMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    footerMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    showLogo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    showQrCode?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    qrCodeContent?: NullableStringFieldUpdateOperationsInput | string | null
+    customQrContent?: NullableStringFieldUpdateOperationsInput | string | null
+    showCustomerInfo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showCashierInfo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemCodes?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemDescriptions?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showTaxBreakdown?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showPaymentMethods?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showBalance?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showTimestamp?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    use24HourFormat?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemNumbers?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showRunningTotal?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    paperSize?: NullableStringFieldUpdateOperationsInput | string | null
+    fontSize?: NullableStringFieldUpdateOperationsInput | string | null
+    printDensity?: NullableStringFieldUpdateOperationsInput | string | null
+    lineSpacing?: NullableStringFieldUpdateOperationsInput | string | null
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    accentColor?: NullableStringFieldUpdateOperationsInput | string | null
+    fontFamily?: NullableStringFieldUpdateOperationsInput | string | null
+    printCopyCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autoPrint?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    language?: NullableStringFieldUpdateOperationsInput | string | null
+    currency?: NullableStringFieldUpdateOperationsInput | string | null
+    currencySymbol?: NullableStringFieldUpdateOperationsInput | string | null
+    currencyPosition?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
@@ -28000,6 +29245,38 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     website?: StringFieldUpdateOperationsInput | string
+    receiptTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    headerMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    footerMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    showLogo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    showQrCode?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    qrCodeContent?: NullableStringFieldUpdateOperationsInput | string | null
+    customQrContent?: NullableStringFieldUpdateOperationsInput | string | null
+    showCustomerInfo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showCashierInfo?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemCodes?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemDescriptions?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showTaxBreakdown?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showPaymentMethods?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showBalance?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showTimestamp?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    use24HourFormat?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showItemNumbers?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    showRunningTotal?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    paperSize?: NullableStringFieldUpdateOperationsInput | string | null
+    fontSize?: NullableStringFieldUpdateOperationsInput | string | null
+    printDensity?: NullableStringFieldUpdateOperationsInput | string | null
+    lineSpacing?: NullableStringFieldUpdateOperationsInput | string | null
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    accentColor?: NullableStringFieldUpdateOperationsInput | string | null
+    fontFamily?: NullableStringFieldUpdateOperationsInput | string | null
+    printCopyCount?: NullableIntFieldUpdateOperationsInput | number | null
+    autoPrint?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    language?: NullableStringFieldUpdateOperationsInput | string | null
+    currency?: NullableStringFieldUpdateOperationsInput | string | null
+    currencySymbol?: NullableStringFieldUpdateOperationsInput | string | null
+    currencyPosition?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean

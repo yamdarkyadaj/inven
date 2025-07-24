@@ -70,7 +70,9 @@ export async function POST(req: NextRequest) {
                 data: {
                     quantity: {
                         increment: items[i].quantity
-                    }
+                        
+                    },
+                    sync:false
                 }
             })
         }

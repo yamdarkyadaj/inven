@@ -46,6 +46,7 @@ import {
   DollarSign,
   Package,
   AlertCircle,
+  RefreshCcw,
 } from "lucide-react"
 import { formatCurrency } from "@/lib/utils"
 import { useSession } from "next-auth/react"
@@ -62,7 +63,7 @@ export default function ViewPurchasesPage() {
   const router = useRouter()
 
   const warehouseId = getWareHouseId()
-  const { data: purchases, loading, error } = fetchWareHouseData("/api/purchase/list", { warehouseId })
+  const { data: purchases, loading, error,refetch } = fetchWareHouseData("/api/purchase/list", { warehouseId })
   useEffect(()=>{
     setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
   },[session,warehouseId])
@@ -73,9 +74,31 @@ export default function ViewPurchasesPage() {
 
 
 
-  const handleDelete = (purchaseId: string) => {
-    // Delete functionality - placeholder for now
-    console.log("Delete purchase:", purchaseId)
+  const handleDelete = async (referenceNo: string) => {
+    if (!confirm("Are you sure you want to delete this purchase? This will remove the products from stock.")) {
+      return
+    }
+
+    try {
+      const response = await fetch("/api/purchase/delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ referenceNo }),
+      })
+
+      if (response.ok) {
+        alert("Purchase deleted successfully and products removed from stock!")
+        refetch()
+      } else {
+        const error = await response.json()
+        alert(`Error: ${error.error}`)
+      }
+    } catch (error) {
+      alert("Error deleting purchase")
+      console.error(error)
+    }
   }
 
   const filteredPurchases = purchases?.filter((purchase: any) => {
@@ -504,7 +527,7 @@ export default function ViewPurchasesPage() {
                                 Edit Purchase
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
-                              <DropdownMenuItem className="text-red-600" onClick={() => handleDelete(purchase.id)}>
+                              <DropdownMenuItem className="text-red-600" onClick={() => handleDelete(purchase.referenceNo)}>
                                 <Trash2 className="mr-2 h-4 w-4" />
                                 Delete Purchase
                               </DropdownMenuItem>

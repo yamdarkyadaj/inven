@@ -57,69 +57,7 @@ import { Loading } from "@/components/loading"
 
 
 
-// Sample warehouses data
-// const warehousesData = [
-//   {
-//     id: "WH-001",
-//     code: "MAIN",
-//     name: "Main Warehouse",
-//     address: "123 Warehouse District, Industrial Area, City 12345",
-//     phone: "+1234567890",
-//     email: "main@inventorypro.com",
-//     manager: "John Manager",
-//     capacity: 10000,
-//     currentStock: 7500,
-//     totalProducts: 1234,
-//     assignedUsers: 8,
-//     status: "active",
-//     createdDate: "2024-01-01",
-//   },
-//   {
-//     id: "WH-002",
-//     code: "BRANCH",
-//     name: "Branch Warehouse",
-//     address: "456 Commerce Street, Business District, City 54321",
-//     phone: "+1234567891",
-//     email: "branch@inventorypro.com",
-//     manager: "Jane Branch",
-//     capacity: 5000,
-//     currentStock: 3200,
-//     totalProducts: 856,
-//     assignedUsers: 5,
-//     status: "active",
-//     createdDate: "2024-01-15",
-//   },
-//   {
-//     id: "WH-003",
-//     code: "STORAGE",
-//     name: "Storage Facility",
-//     address: "789 Storage Lane, Logistics Hub, City 67890",
-//     phone: "+1234567892",
-//     email: "storage@inventorypro.com",
-//     manager: "Mike Storage",
-//     capacity: 15000,
-//     currentStock: 12000,
-//     totalProducts: 2100,
-//     assignedUsers: 12,
-//     status: "active",
-//     createdDate: "2024-02-01",
-//   },
-//   {
-//     id: "WH-004",
-//     code: "TEMP",
-//     name: "Temporary Warehouse",
-//     address: "321 Temp Road, Overflow Area, City 09876",
-//     phone: "+1234567893",
-//     email: "temp@inventorypro.com",
-//     manager: "Sarah Temp",
-//     capacity: 2000,
-//     currentStock: 500,
-//     totalProducts: 150,
-//     assignedUsers: 2,
-//     status: "inactive",
-//     createdDate: "2024-03-01",
-//   },
-// ]
+
 
 export default function WarehousesListPage() {
   const [searchTerm, setSearchTerm] = useState("")

@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/prisma/generated/offline";
+import { PrismaClient } from "@/prisma/generated/online";
 import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient()
@@ -14,19 +14,19 @@ export async function GET() {
       totalCustomers,
       recentSales
     ] = await Promise.all([
-      prisma.users.count(),
-      prisma.warehouses.count(),
-      prisma.product.count(),
-      prisma.sale.count(),
-      prisma.customer.count(),
-      prisma.sale.findMany({
+      prisma.users_online.count(),
+      prisma.warehouses_online.count(),
+      prisma.product_online.count(),
+      prisma.sale_online.count(),
+      prisma.customer_online.count(),
+      prisma.sale_online.findMany({
         take: 5,
         orderBy: { createdAt: 'desc' },
         include: {
-          selectedCustomer: true,
+          Customer_online:true,
           saleItems: {
             include: {
-              product: true
+              Product_online: true
             }
           }
         }
@@ -34,7 +34,7 @@ export async function GET() {
     ])
 
     // Calculate total sales amount
-    const totalSalesAmount = await prisma.sale.aggregate({
+    const totalSalesAmount = await prisma.sale_online.aggregate({
       _sum: {
         grandTotal: true
       }

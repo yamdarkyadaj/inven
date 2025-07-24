@@ -9,6 +9,14 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+} from "@heroui/modal";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -36,13 +44,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Package, Search, Filter, Plus, MoreHorizontal, Edit, Trash2, Eye, Download, Upload } from "lucide-react"
+import { Package, Search, Filter, Plus, MoreHorizontal, Edit, Trash2, Eye, Download, Upload, Trash, Activity } from "lucide-react"
 import { getWareHouseId } from "@/hooks/get-werehouseId"
 import fetchWareHouseData from "@/hooks/fetch-invidual-data"
 import { Loading } from "@/components/loading"
 import { formatCurrency } from "@/lib/utils"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
+import axios from "axios";
 
 
 
@@ -51,11 +60,13 @@ export default function ListProductsPage() {
   const [categoryFilter, setCategoryFilter] = useState("all")
   const [statusFilter, setStatusFilter] = useState("all")
    const [endpoint,setEndPoint] = useState("")
+const [openModalId, setOpenModalId] = useState(null);
+
     const {data:session} = useSession()
 
   const warehouseId = getWareHouseId()
 
-  const {data:productsData,loading,error} = fetchWareHouseData("/api/product/list",{warehouseId})
+  const {data:productsData,loading,error,refetch} = fetchWareHouseData("/api/product/list",{warehouseId})
   useEffect(()=>{
     setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
   },[session,warehouseId])
@@ -65,6 +76,27 @@ export default function ListProductsPage() {
     <Loading/>
   )
 
+  const handleOpen = (id:any) => {
+    setOpenModalId(id);
+    
+
+  };
+
+  const handleClose = () => {
+    setOpenModalId(null);
+  };
+
+
+  const handleDelete = async (productId: string) => {
+     console.log(productId)
+  
+     await axios.post("/api/product/delete",{productId})
+     
+  
+     setOpenModalId(null);
+     refetch()
+    }
+  
   
 
   // useEffect(()=>{
@@ -230,6 +262,7 @@ export default function ListProductsPage() {
                     <TableHead>Stock</TableHead>
                     <TableHead>Supplier</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
+                    {/* <TableHead>Delete</TableHead> */}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -258,6 +291,12 @@ export default function ListProductsPage() {
                               View Details
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild>
+                              <Link href={`${endpoint}/products/${product.id}/stock-tracking`}>
+                                <Activity className="mr-2 h-4 w-4" />
+                                Stock Tracking
+                              </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
                               <Link href={`/warehouse/${warehouseId}/admin/products/edit/${product.id}`}>
                                 <Edit className="mr-2 h-4 w-4" />
                                 Edit Product
@@ -265,28 +304,43 @@ export default function ListProductsPage() {
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem className="text-red-600">
-                          <Dialog>
-                            <DialogTrigger asChild>
-                              <Button variant="outline">Open</Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                              <DialogHeader>
-                                <DialogTitle>Simple Dialog</DialogTitle>
-                                <DialogDescription>This should stay open when you click inside</DialogDescription>
-                              </DialogHeader>
-                              
-                              <DialogFooter>
-                                <DialogClose asChild>
-                                  <Button type="button">Close</Button>
-                                </DialogClose>
-                              </DialogFooter>
-                            </DialogContent>
-                          </Dialog>
-
+                            
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>
+                      {/* <TableCell>
+                      <Button className="bg-red-500" variant="ghost" size="sm" onClick={() => handleOpen(product.id)} >
+                              <Trash className="h-4 w-4" />
+                                <Modal
+                                    isOpen={openModalId === product.id}
+                                    onOpenChange={handleClose}
+                                    backdrop="opaque"
+                                    classNames={{
+                                      backdrop: "bg-linear-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20",
+                                    }}
+                                  >
+                                    <ModalContent>
+                                      {(onClose) => (
+                                        <>
+                                          <ModalHeader>{product.name}</ModalHeader>
+                                          <ModalBody>
+                                            <p>{product.name}</p>
+                                          </ModalBody>
+                                          <ModalFooter>
+                                            <Button color="danger" onClick={onClose}>
+                                              Close
+                                            </Button>
+                                            <Button color="primary" onClick={() => {handleDelete(product.id)}}>
+                                              Delete
+                                            </Button>
+                                          </ModalFooter>
+                                        </>
+                                      )}
+                                    </ModalContent>
+                                  </Modal>
+                          </Button>
+                      </TableCell> */}
                     </TableRow>
                   ))}
                 </TableBody>

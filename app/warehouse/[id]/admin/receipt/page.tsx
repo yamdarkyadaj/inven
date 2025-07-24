@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -37,11 +37,15 @@ import {
   CheckCircle,
   ImageIcon,
   X,
+  Settings,
+  Palette,
+  FileText,
+  Monitor,
 } from "lucide-react"
 import axios from "axios"
 import { getWareHouseId } from "@/hooks/get-werehouseId"
 
-// Sample receipt settings data
+// Default receipt settings
 const defaultReceiptSettings = {
   // Company Information
   companyName: "INVENTORY PRO",
@@ -54,7 +58,6 @@ const defaultReceiptSettings = {
   email: "info@inventorypro.com",
   website: "www.inventorypro.com",
  
-
   // Receipt Settings
   receiptTitle: "SALES INVOICE",
   headerMessage: "",
@@ -103,11 +106,39 @@ const defaultReceiptSettings = {
 export default function ReceiptSettingsPage() {
   const [settings, setSettings] = useState(defaultReceiptSettings)
   const [isLoading, setIsLoading] = useState(false)
+  const [isFetchingSettings, setIsFetchingSettings] = useState(true)
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
   const [hasChanges, setHasChanges] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const warehousesId = getWareHouseId()
+
+  // Fetch existing settings on component mount
+  useEffect(() => {
+    const fetchSettings = async () => {
+      if (!warehousesId) return
+      
+      try {
+        setIsFetchingSettings(true)
+        const response = await axios.get(`/api/receipt?warehousesId=${warehousesId}`)
+        
+        if (response.data) {
+          // Merge fetched settings with defaults to ensure all fields are present
+          setSettings(prev => ({
+            ...prev,
+            ...response.data
+          }))
+        }
+      } catch (error) {
+        console.error("Error fetching receipt settings:", error)
+        // Use default settings if fetch fails
+      } finally {
+        setIsFetchingSettings(false)
+      }
+    }
+
+    fetchSettings()
+  }, [warehousesId])
 
   const updateSetting = (key: string, value: any) => {
     setSettings((prev) => ({ ...prev, [key]: value }))
@@ -117,14 +148,7 @@ export default function ReceiptSettingsPage() {
   const handleSave = async () => {
     setIsLoading(true)
     try {
-      // Simulate API call to save settings
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      // In real app, this would be an API call
-      console.log("Saving receipt settings:", settings)
-
-      await axios.post("/api/receipt",{...settings,warehousesId})
-
+      await axios.post("/api/receipt", { ...settings, warehousesId })
       setHasChanges(false)
       setShowSuccessDialog(true)
     } catch (error) {
@@ -149,7 +173,7 @@ export default function ReceiptSettingsPage() {
 
   const handleExportSettings = () => {
     const dataStr = JSON.stringify(settings, null, 2)
-    const dataBlob = new Blob([dataStr], { type: "application/pdf" })
+    const dataBlob = new Blob([dataStr], { type: "application/json" })
     const url = URL.createObjectURL(dataBlob)
     const link = document.createElement("a")
     link.href = url
@@ -179,7 +203,9 @@ export default function ReceiptSettingsPage() {
   const sampleReceiptData = {
     invoiceNo: "INV-000123",
     date: new Date().toLocaleDateString(),
-    time: new Date().toLocaleTimeString(),
+    time: new Date().toLocaleTimeString([], { 
+      hour12: !settings.use24HourFormat 
+    }),
     customer: "John Doe",
     cashier: "Admin User",
     items: [
@@ -193,6 +219,17 @@ export default function ReceiptSettingsPage() {
     paid: 1646.7,
     balance: 0,
     paymentMethod: "CASH",
+  }
+
+  if (isFetchingSettings) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4" />
+          <p>Loading receipt settings...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -247,7 +284,10 @@ export default function ReceiptSettingsPage() {
           <Tabs defaultValue="company" className="space-y-4">
             <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="company">Company Info</TabsTrigger>
-              
+              <TabsTrigger value="receipt">Receipt Layout</TabsTrigger>
+              <TabsTrigger value="display">Display Options</TabsTrigger>
+              <TabsTrigger value="format">Format & Style</TabsTrigger>
+              <TabsTrigger value="advanced">Advanced</TabsTrigger>
             </TabsList>
 
             {/* Company Information Tab */}
@@ -292,7 +332,7 @@ export default function ReceiptSettingsPage() {
                     />
                   </div>
 
-                  <div className="grid gap-4 md:grid-cols-4">
+                  <div className="grid gap-4 md:grid-cols-3">
                     <div className="space-y-2">
                       <Label htmlFor="city">City</Label>
                       <Input
@@ -311,7 +351,6 @@ export default function ReceiptSettingsPage() {
                         placeholder="State"
                       />
                     </div>
-                    
                     <div className="space-y-2">
                       <Label htmlFor="country">Country</Label>
                       <Input
@@ -357,6 +396,457 @@ export default function ReceiptSettingsPage() {
                         onChange={(e) => updateSetting("website", e.target.value)}
                         placeholder="www.example.com"
                       />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Receipt Layout Tab */}
+            <TabsContent value="receipt" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="h-5 w-5" />
+                    Receipt Layout & Content
+                  </CardTitle>
+                  <CardDescription>Configure what appears on your receipts</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="receiptTitle">Receipt Title</Label>
+                    <Input
+                      id="receiptTitle"
+                      value={settings.receiptTitle}
+                      onChange={(e) => updateSetting("receiptTitle", e.target.value)}
+                      placeholder="SALES INVOICE"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="headerMessage">Header Message</Label>
+                    <Textarea
+                      id="headerMessage"
+                      value={settings.headerMessage}
+                      onChange={(e) => updateSetting("headerMessage", e.target.value)}
+                      placeholder="Optional message at the top of receipt"
+                      rows={2}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="footerMessage">Footer Message</Label>
+                    <Textarea
+                      id="footerMessage"
+                      value={settings.footerMessage}
+                      onChange={(e) => updateSetting("footerMessage", e.target.value)}
+                      placeholder="Thank you message"
+                      rows={2}
+                    />
+                  </div>
+
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="showLogo">Show Logo</Label>
+                        <Switch
+                          id="showLogo"
+                          checked={settings.showLogo}
+                          onCheckedChange={(checked) => updateSetting("showLogo", checked)}
+                        />
+                      </div>
+
+                      {settings.showLogo && (
+                        <div className="space-y-2">
+                          <Label htmlFor="logoUpload">Logo Image</Label>
+                          <div className="flex gap-2">
+                            <Input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleLogoUpload}
+                              className="flex-1"
+                            />
+                            {settings.logoUrl && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => updateSetting("logoUrl", "")}
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </div>
+                          {settings.logoUrl && (
+                            <div className="mt-2">
+                              <img
+                                src={settings.logoUrl}
+                                alt="Logo preview"
+                                className="h-16 w-auto border rounded"
+                              />
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="showQrCode">Show QR Code</Label>
+                        <Switch
+                          id="showQrCode"
+                          checked={settings.showQrCode}
+                          onCheckedChange={(checked) => updateSetting("showQrCode", checked)}
+                        />
+                      </div>
+
+                      {settings.showQrCode && (
+                        <div className="space-y-2">
+                          <Label htmlFor="qrCodeContent">QR Code Content</Label>
+                          <Select
+                            value={settings.qrCodeContent}
+                            onValueChange={(value) => updateSetting("qrCodeContent", value)}
+                          >
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="website">Website URL</SelectItem>
+                              <SelectItem value="contact">Contact Info</SelectItem>
+                              <SelectItem value="custom">Custom Text</SelectItem>
+                            </SelectContent>
+                          </Select>
+
+                          {settings.qrCodeContent === "custom" && (
+                            <div className="space-y-2">
+                              <Label htmlFor="customQrContent">Custom QR Content</Label>
+                              <Input
+                                id="customQrContent"
+                                value={settings.customQrContent}
+                                onChange={(e) => updateSetting("customQrContent", e.target.value)}
+                                placeholder="Enter custom text for QR code"
+                              />
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Display Options Tab */}
+            <TabsContent value="display" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Monitor className="h-5 w-5" />
+                    Display Options
+                  </CardTitle>
+                  <CardDescription>Choose what information to show on receipts</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="showCustomerInfo">Customer Information</Label>
+                        <Switch
+                          id="showCustomerInfo"
+                          checked={settings.showCustomerInfo}
+                          onCheckedChange={(checked) => updateSetting("showCustomerInfo", checked)}
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="showCashierInfo">Cashier Information</Label>
+                        <Switch
+                          id="showCashierInfo"
+                          checked={settings.showCashierInfo}
+                          onCheckedChange={(checked) => updateSetting("showCashierInfo", checked)}
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="showItemCodes">Item Codes</Label>
+                        <Switch
+                          id="showItemCodes"
+                          checked={settings.showItemCodes}
+                          onCheckedChange={(checked) => updateSetting("showItemCodes", checked)}
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="showItemDescriptions">Item Descriptions</Label>
+                        <Switch
+                          id="showItemDescriptions"
+                          checked={settings.showItemDescriptions}
+                          onCheckedChange={(checked) => updateSetting("showItemDescriptions", checked)}
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="showItemNumbers">Item Numbers</Label>
+                        <Switch
+                          id="showItemNumbers"
+                          checked={settings.showItemNumbers}
+                          onCheckedChange={(checked) => updateSetting("showItemNumbers", checked)}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="showTaxBreakdown">Tax Breakdown</Label>
+                        <Switch
+                          id="showTaxBreakdown"
+                          checked={settings.showTaxBreakdown}
+                          onCheckedChange={(checked) => updateSetting("showTaxBreakdown", checked)}
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="showPaymentMethods">Payment Methods</Label>
+                        <Switch
+                          id="showPaymentMethods"
+                          checked={settings.showPaymentMethods}
+                          onCheckedChange={(checked) => updateSetting("showPaymentMethods", checked)}
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="showBalance">Balance</Label>
+                        <Switch
+                          id="showBalance"
+                          checked={settings.showBalance}
+                          onCheckedChange={(checked) => updateSetting("showBalance", checked)}
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="showTimestamp">Timestamp</Label>
+                        <Switch
+                          id="showTimestamp"
+                          checked={settings.showTimestamp}
+                          onCheckedChange={(checked) => updateSetting("showTimestamp", checked)}
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="showRunningTotal">Running Total</Label>
+                        <Switch
+                          id="showRunningTotal"
+                          checked={settings.showRunningTotal}
+                          onCheckedChange={(checked) => updateSetting("showRunningTotal", checked)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Format & Style Tab */}
+            <TabsContent value="format" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Palette className="h-5 w-5" />
+                    Format & Style
+                  </CardTitle>
+                  <CardDescription>Customize the appearance of your receipts</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="paperSize">Paper Size</Label>
+                        <Select
+                          value={settings.paperSize}
+                          onValueChange={(value) => updateSetting("paperSize", value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="57mm">57mm (Small)</SelectItem>
+                            <SelectItem value="80mm">80mm (Standard)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="fontSize">Font Size</Label>
+                        <Select
+                          value={settings.fontSize}
+                          onValueChange={(value) => updateSetting("fontSize", value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="small">Small</SelectItem>
+                            <SelectItem value="normal">Normal</SelectItem>
+                            <SelectItem value="large">Large</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="fontFamily">Font Family</Label>
+                        <Select
+                          value={settings.fontFamily}
+                          onValueChange={(value) => updateSetting("fontFamily", value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="monospace">Monospace</SelectItem>
+                            <SelectItem value="sans-serif">Sans Serif</SelectItem>
+                            <SelectItem value="serif">Serif</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="printDensity">Print Density</Label>
+                        <Select
+                          value={settings.printDensity}
+                          onValueChange={(value) => updateSetting("printDensity", value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="light">Light</SelectItem>
+                            <SelectItem value="normal">Normal</SelectItem>
+                            <SelectItem value="dark">Dark</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="lineSpacing">Line Spacing</Label>
+                        <Select
+                          value={settings.lineSpacing}
+                          onValueChange={(value) => updateSetting("lineSpacing", value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="compact">Compact</SelectItem>
+                            <SelectItem value="normal">Normal</SelectItem>
+                            <SelectItem value="wide">Wide</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="primaryColor">Primary Color</Label>
+                        <Input
+                          id="primaryColor"
+                          type="color"
+                          value={settings.primaryColor}
+                          onChange={(e) => updateSetting("primaryColor", e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Advanced Tab */}
+            <TabsContent value="advanced" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Settings className="h-5 w-5" />
+                    Advanced Settings
+                  </CardTitle>
+                  <CardDescription>Advanced printing and localization options</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="printCopyCount">Print Copies</Label>
+                        <Input
+                          id="printCopyCount"
+                          type="number"
+                          min="1"
+                          max="10"
+                          value={settings.printCopyCount}
+                          onChange={(e) => updateSetting("printCopyCount", parseInt(e.target.value) || 1)}
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="autoPrint">Auto Print</Label>
+                        <Switch
+                          id="autoPrint"
+                          checked={settings.autoPrint}
+                          onCheckedChange={(checked) => updateSetting("autoPrint", checked)}
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="use24HourFormat">24 Hour Format</Label>
+                        <Switch
+                          id="use24HourFormat"
+                          checked={settings.use24HourFormat}
+                          onCheckedChange={(checked) => updateSetting("use24HourFormat", checked)}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="currency">Currency</Label>
+                        <Select
+                          value={settings.currency}
+                          onValueChange={(value) => updateSetting("currency", value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="USD">USD - US Dollar</SelectItem>
+                            <SelectItem value="EUR">EUR - Euro</SelectItem>
+                            <SelectItem value="GBP">GBP - British Pound</SelectItem>
+                            <SelectItem value="NGN">NGN - Nigerian Naira</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="currencySymbol">Currency Symbol</Label>
+                        <Input
+                          id="currencySymbol"
+                          value={settings.currencySymbol}
+                          onChange={(e) => updateSetting("currencySymbol", e.target.value)}
+                          placeholder="$"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="currencyPosition">Currency Position</Label>
+                        <Select
+                          value={settings.currencyPosition}
+                          onValueChange={(value) => updateSetting("currencyPosition", value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="before">Before Amount ($100)</SelectItem>
+                            <SelectItem value="after">After Amount (100$)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
                   </div>
                 </CardContent>
@@ -425,21 +915,29 @@ export default function ReceiptSettingsPage() {
             </DialogHeader>
 
             {/* Receipt Preview */}
-            <div className="bg-white p-4 border rounded-lg font-mono text-sm max-h-96 overflow-y-auto">
+            <div 
+              className="bg-white p-4 border rounded-lg text-sm max-h-96 overflow-y-auto"
+              style={{
+                fontFamily: settings.fontFamily === 'monospace' ? 'monospace' : settings.fontFamily === 'serif' ? 'serif' : 'sans-serif',
+                fontSize: settings.fontSize === 'small' ? '10px' : settings.fontSize === 'large' ? '14px' : '12px',
+                color: settings.primaryColor
+              }}
+            >
               {/* Header */}
               <div className="text-center mb-4">
                 {settings.showLogo && settings.logoUrl && (
                   <div className="mb-2">
-                    <img src={settings.logoUrl || "/placeholder.svg"} alt="Logo" className="h-8 mx-auto" />
+                    <img src={settings.logoUrl} alt="Logo" className="h-8 mx-auto" />
                   </div>
                 )}
                 <div className="font-bold text-lg">{settings.companyName}</div>
                 {settings.businessName && <div className="text-xs">{settings.businessName}</div>}
                 <div className="text-xs mt-2">
                   <div>{settings.address}</div>
-                  
+                  <div>{settings.city}, {settings.state} {settings.country}</div>
                   {settings.phone && <div>Tel: {settings.phone}</div>}
                   {settings.email && <div>Email: {settings.email}</div>}
+                  {settings.website && <div>Web: {settings.website}</div>}
                 </div>
               </div>
 
@@ -493,8 +991,7 @@ export default function ReceiptSettingsPage() {
                       <span className="truncate flex-1 mr-2">{item.name}</span>
                       <span className="w-8 text-center">{item.quantity}</span>
                       <span className="w-16 text-right">
-                        {settings.currencySymbol}
-                        {item.total.toFixed(2)}
+                        {settings.currencyPosition === 'before' ? settings.currencySymbol : ''}{item.total.toFixed(2)}{settings.currencyPosition === 'after' ? settings.currencySymbol : ''}
                       </span>
                     </div>
                   </div>
@@ -506,39 +1003,34 @@ export default function ReceiptSettingsPage() {
                 <div className="flex justify-between">
                   <span>TOTAL:</span>
                   <span>
-                    {settings.currencySymbol}
-                    {sampleReceiptData.subtotal.toFixed(2)}
+                    {settings.currencyPosition === 'before' ? settings.currencySymbol : ''}{sampleReceiptData.subtotal.toFixed(2)}{settings.currencyPosition === 'after' ? settings.currencySymbol : ''}
                   </span>
                 </div>
                 {settings.showTaxBreakdown && (
                   <div className="flex justify-between">
                     <span>TAX:</span>
                     <span>
-                      {settings.currencySymbol}
-                      {sampleReceiptData.tax.toFixed(2)}
+                      {settings.currencyPosition === 'before' ? settings.currencySymbol : ''}{sampleReceiptData.tax.toFixed(2)}{settings.currencyPosition === 'after' ? settings.currencySymbol : ''}
                     </span>
                   </div>
                 )}
                 <div className="flex justify-between font-bold">
                   <span>PAYABLE:</span>
                   <span>
-                    {settings.currencySymbol}
-                    {sampleReceiptData.total.toFixed(2)}
+                    {settings.currencyPosition === 'before' ? settings.currencySymbol : ''}{sampleReceiptData.total.toFixed(2)}{settings.currencyPosition === 'after' ? settings.currencySymbol : ''}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span>PAID:</span>
                   <span>
-                    {settings.currencySymbol}
-                    {sampleReceiptData.paid.toFixed(2)}
+                    {settings.currencyPosition === 'before' ? settings.currencySymbol : ''}{sampleReceiptData.paid.toFixed(2)}{settings.currencyPosition === 'after' ? settings.currencySymbol : ''}
                   </span>
                 </div>
                 {settings.showBalance && (
                   <div className="flex justify-between">
                     <span>BALANCE:</span>
                     <span>
-                      {settings.currencySymbol}
-                      {sampleReceiptData.balance.toFixed(2)}
+                      {settings.currencyPosition === 'before' ? settings.currencySymbol : ''}{sampleReceiptData.balance.toFixed(2)}{settings.currencyPosition === 'after' ? settings.currencySymbol : ''}
                     </span>
                   </div>
                 )}

@@ -24,6 +24,7 @@ import axios from "axios"
 import toast from "react-hot-toast"
 import { getWareHouseId } from "@/hooks/get-werehouseId"
 import { useSession } from "next-auth/react"
+import { useOnlineStatus } from "@/hooks/check-online"
 
 // Sample warehouses data
 
@@ -32,6 +33,8 @@ export default function AddUserPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [endPoint, setEndPoint] = useState("")
   const {data:session} = useSession()
+
+  const {online} = useOnlineStatus()
 
   const warehouseId = getWareHouseId()
   const initField = {
@@ -98,6 +101,23 @@ export default function AddUserPage() {
 
     // 
 
+  }
+
+  if(!online){
+    return(
+      <>
+        <div className="flex flex-1 items-center justify-center">
+                  <Card className="w-96">
+                    <CardHeader>
+                      <CardTitle className="text-red-600">Error</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p>{'Create User When Online'}</p>
+                    </CardContent>
+                  </Card>
+                </div>
+      </>
+    )
   }
 
   return (

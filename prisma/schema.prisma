@@ -286,6 +286,49 @@ model ReceiptSettings {
   phone        String
   email        String
   website      String
+  
+  // Receipt Configuration
+  receiptTitle        String?
+  headerMessage       String?
+  footerMessage       String?
+  showLogo           Boolean? @default(true)
+  logoUrl            String?
+  showQrCode         Boolean? @default(true)
+  qrCodeContent      String?  @default("website")
+  customQrContent    String?
+  
+  // Display Options
+  showCustomerInfo    Boolean? @default(true)
+  showCashierInfo     Boolean? @default(true)
+  showItemCodes       Boolean? @default(true)
+  showItemDescriptions Boolean? @default(true)
+  showTaxBreakdown    Boolean? @default(true)
+  showPaymentMethods  Boolean? @default(true)
+  showBalance         Boolean? @default(true)
+  showTimestamp       Boolean? @default(true)
+  use24HourFormat     Boolean? @default(false)
+  showItemNumbers     Boolean? @default(true)
+  showRunningTotal    Boolean? @default(false)
+  
+  // Format Settings
+  paperSize          String?  @default("80mm")
+  fontSize           String?  @default("normal")
+  printDensity       String?  @default("normal")
+  lineSpacing        String?  @default("normal")
+  
+  // Branding
+  primaryColor       String?  @default("#000000")
+  accentColor        String?  @default("#666666")
+  fontFamily         String?  @default("monospace")
+  
+  // Additional Settings
+  printCopyCount     Int?     @default(1)
+  autoPrint          Boolean? @default(false)
+  language           String?  @default("en")
+  currency           String?  @default("NGN")
+  currencySymbol     String?  @default("₦")
+  currencyPosition   String?  @default("before")
+  
   Warehouses   Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
   warehousesId String      @unique
   createdAt DateTime @default(now())

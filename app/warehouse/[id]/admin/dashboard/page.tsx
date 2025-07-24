@@ -194,6 +194,8 @@ export default function DashboardPage() {
           <SystemStatus/>
         </header>
 
+       
+
         <div className="flex flex-1 flex-col gap-6 p-6">
           {/* Header */}
           <div className="flex items-center justify-between">
@@ -378,7 +380,7 @@ export default function DashboardPage() {
                           dataKey="value"
                         >
                           {dashboardData.customerTypes.map((entry:any, index:any) => (
-                            <Cell key={`cell-{index}`} fill={entry.color} />
+                            <Cell key={`cell-${index}`} fill={entry.color} />
                           ))}
                         </Pie>
                         <Tooltip />

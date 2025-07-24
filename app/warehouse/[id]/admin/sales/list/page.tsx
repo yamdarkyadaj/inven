@@ -18,7 +18,7 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { ShoppingCart, Plus, Search, Edit, Eye, Printer, Calendar, DollarSign, User } from "lucide-react"
+import { ShoppingCart, Plus, Search, Edit, Eye, Printer, Calendar, DollarSign, User, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { usePrintReceipt } from "@/hooks/use-print-receipt"
@@ -111,6 +111,33 @@ export default function SalesListPage() {
     
         printReceipt(receiptData, paperWidth)
       }
+
+  const handleDelete = async (invoiceNo: string) => {
+    if (!confirm("Are you sure you want to delete this sale? This will return the products back to stock.")) {
+      return
+    }
+
+    try {
+      const response = await fetch("/api/sale/delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ invoiceNo }),
+      })
+
+      if (response.ok) {
+        alert("Sale deleted successfully and products returned to stock!")
+        window.location.reload()
+      } else {
+        const error = await response.json()
+        alert(`Error: ${error.error}`)
+      }
+    } catch (error) {
+      alert("Error deleting sale")
+      console.error(error)
+    }
+  }
 
 
   const totalSales = filteredSales.reduce((sum:any, sale:any) => sum + sale.total, 0)
@@ -288,6 +315,9 @@ export default function SalesListPage() {
                           </Button>
                           <Button variant="ghost" size="sm" onClick={() => handleEdit(sale.invoiceNo)}>
                             <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm" onClick={() => handleDelete(sale.invoiceNo)} className="text-red-600 hover:text-red-700">
+                            <Trash2 className="h-4 w-4" />
                           </Button>
                           <div className="flex gap-2">
                                 <DropdownMenu>

@@ -41,6 +41,13 @@ export async function POST(req:NextRequest){
         }
     })
 
+    for(let j = 0; j < items.length; j++){
+        if(items[j].quantity < 0){
+            return NextResponse.json("Ivalid",{status:500})
+        }
+        
+    }
+
     
     for (let i = 0; i < items.length; i++) {
         const savedSales = await prisma.saleItem.create({
@@ -62,8 +69,11 @@ export async function POST(req:NextRequest){
         await prisma.product.update({
             where:{id:items[i].productId},
             data:{quantity:{
-                decrement:items[i].quantity
-            }}
+                decrement:items[i].quantity,
+                
+            },
+            sync:false
+        }
         })
     }
 
@@ -89,4 +99,26 @@ export async function POST(req:NextRequest){
     console.log(error)
     NextResponse.json(error,{status:500})
    }
+}
+
+
+export async function DELETE(req:NextRequest){
+    const {saleId} = await req.json()
+    try {
+        const findSale = await prisma.sale.findMany({
+            where:{invoiceNo:saleId}
+        })
+        if(!findSale){
+            return NextResponse.json("Error",{status:500})
+        }
+
+        await prisma.sale.delete({
+            where:{invoiceNo:saleId}
+        })
+        return NextResponse.json("Done",{status:200})
+
+    } catch (error) {
+        return NextResponse.json(error,{status:500})
+        
+    }
 }

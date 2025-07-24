@@ -1,11 +1,11 @@
-import { PrismaClient } from "@/prisma/generated/offline";
+import { PrismaClient } from "@/prisma/generated/online";
 import { NextRequest, NextResponse } from "next/server";
 
 const prisma = new PrismaClient()
 
 export async function GET(){
    try {
-    const warehouses = await prisma.warehouses.findMany()
+    const warehouses = await prisma.warehouses_online.findMany()
 
     return NextResponse.json(warehouses,{status:200})
    } catch (error) {
@@ -19,7 +19,7 @@ export async function POST(req:NextRequest){
     const data = await req.json()
     const {code,name,phone,email,description,address} = data.formData
     try {
-     const warehouses = await prisma.warehouses.create({
+     const warehouses = await prisma.warehouses_online.create({
         data:{
             name,
             warehouseCode:code,
@@ -30,9 +30,9 @@ export async function POST(req:NextRequest){
         }
      })
 
-     await prisma.receiptSettings.create({
+     await prisma.receiptSettings_online.create({
         data:{
-            warehousesId:warehouses.warehouseCode,
+            warehouses_onlineId:warehouses.warehouseCode,
             phone:"",
             email:"",
             state:"",
@@ -62,7 +62,7 @@ export async function PUT(req:NextRequest){
 
     const {warehouseCode,name,phoneNumber,email,description,address} = data
     try {
-     const warehouses = await prisma.warehouses.update({
+     const warehouses = await prisma.warehouses_online.update({
         where:{
             warehouseCode
         },

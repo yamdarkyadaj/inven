@@ -8,15 +8,46 @@ import { siteConfig } from "@/config/site";
 import { title, subtitle } from "@/components/primitives";
 import { GithubIcon } from "@/components/icons";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import fetchData from "@/hooks/fetch-data";
+import { dataSyncService } from "@/lib/sync-service";
+import axios from "axios";
+import { useOnlineStatus } from "@/hooks/check-online";
 
 
 export default function Home() {
 
+  const { online } = useOnlineStatus();
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  useEffect(() => {
+    async function syncNow() {
+      try {
+        const res = await axios.post("/api/sync", { online });
+        const dat = await axios.get("/api/sync");
+        console.log(dat.data)
+        console.log("Sync result:", res.data);
+      } catch (error) {
+        console.error("Sync error:", error);
+      }
+    }
 
-  
+    // Start interval only if online
+    if (online) {
+      syncNow(); // Run once immediately
+      intervalRef.current = setInterval(syncNow, 1000 * 30); // every 5 minutes
+    }
+
+    // Cleanup when offline or unmounted
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [online]);
+
+ 
 
  
   

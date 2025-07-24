@@ -74,7 +74,7 @@ export async function PATCH(req: NextRequest) {
         // Update the product prices
         const updatedProduct = await prisma.product.update({
             where: { id: existingProduct.id },
-            data: updateData
+            data: {...updateData,sync:false}
         })
 
         console.log(updateData)
