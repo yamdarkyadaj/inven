@@ -41,10 +41,20 @@ import {
   Upload,
   Building2,
   Loader2,
+  Activity,
 } from "lucide-react"
 import toast from "react-hot-toast"
 import fetchWareHouseData from "@/hooks/fetch-invidual-data"
 import { useSession } from "next-auth/react"
+import Link from "next/link"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
 interface Supplier {
   id: string
@@ -72,8 +82,10 @@ export default function SuppliersPage() {
  
   const [searchTerm, setSearchTerm] = useState("")
   const [typeFilter, setTypeFilter] = useState("all")
+  const [deleteSupplierId, setDeleteSupplierId] = useState<string | null>(null)
+  const [deleting, setDeleting] = useState(false)
 
-  const {data:suppliers,loading,error} = fetchWareHouseData("/api/supplier/list",{warehouseId})
+  const {data:suppliers,loading,error,refetch} = fetchWareHouseData("/api/supplier/list",{warehouseId})
 
   if(!suppliers) return ""
 
@@ -115,6 +127,29 @@ export default function SuppliersPage() {
   const clearFilters = () => {
     setSearchTerm("")
     setTypeFilter("all")
+  }
+
+  const handleDeleteSupplier = async (supplierId: string) => {
+    setDeleting(true)
+    try {
+      const response = await fetch(`/api/supplier/${supplierId}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to delete supplier')
+      }
+
+      toast.success('Supplier deleted successfully!')
+      refetch()
+      setDeleteSupplierId(null)
+    } catch (error: any) {
+      console.error('Error deleting supplier:', error)
+      toast.error(error.message || 'Failed to delete supplier')
+    } finally {
+      setDeleting(false)
+    }
   }
 
   const totalSuppliers = suppliers?.length
@@ -339,16 +374,23 @@ export default function SuppliersPage() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                              <DropdownMenuItem>
-                                <Eye className="mr-2 h-4 w-4" />
-                                View Details
+                              <DropdownMenuItem asChild>
+                                <Link href={`${endPoint}/people/suppliers/activities/${supplier.id}`}>
+                                  <Activity className="mr-2 h-4 w-4" />
+                                  View Activities
+                                </Link>
                               </DropdownMenuItem>
-                              <DropdownMenuItem>
-                                <Edit className="mr-2 h-4 w-4" />
-                                Edit Supplier
+                              <DropdownMenuItem asChild>
+                                <Link href={`${endPoint}/people/suppliers/edit/${supplier.id}`}>
+                                  <Edit className="mr-2 h-4 w-4" />
+                                  Edit Supplier
+                                </Link>
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
-                              <DropdownMenuItem className="text-red-600">
+                              <DropdownMenuItem 
+                                className="text-red-600"
+                                onClick={() => setDeleteSupplierId(supplier.id)}
+                              >
                                 <Trash2 className="mr-2 h-4 w-4" />
                                 Delete Supplier
                               </DropdownMenuItem>
@@ -362,6 +404,31 @@ export default function SuppliersPage() {
               )}
             </CardContent>
           </Card>
+
+          {/* Delete Confirmation Dialog */}
+          <Dialog open={!!deleteSupplierId} onOpenChange={() => setDeleteSupplierId(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Are you absolutely sure?</DialogTitle>
+                <DialogDescription>
+                  This action cannot be undone. This will permanently delete the supplier
+                  and remove their data from our servers. Note: Suppliers with existing purchases cannot be deleted.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button variant="outline" disabled={deleting} onClick={() => setDeleteSupplierId(null)}>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => deleteSupplierId && handleDeleteSupplier(deleteSupplierId)}
+                  disabled={deleting}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  {deleting ? "Deleting..." : "Delete"}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </>
   )

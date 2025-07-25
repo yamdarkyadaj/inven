@@ -6,12 +6,14 @@ const fetchWareHouseData = (url:any,response:any) => {
     const [loading,setLoading] = useState<any>(false)
     const [error,setError] = useState<any>(false)
     const [data,setData] = useState<any>(null)
-
-    async function fetch() {
+    
+    const fetchData = async () => {
+        if(!url) return
         setLoading(true)
         try {   
             const rep = await axios.post(url,response)
             setData(rep.data)
+            setError(false)
         } catch (error) {
             setError(true)    
         }finally{
@@ -20,12 +22,14 @@ const fetchWareHouseData = (url:any,response:any) => {
     }
     
    useEffect(()=>{
-    if(!url) return
-    fetch()
-
+    fetchData()
    },[url])
    
-    return {data,loading,error,refetch: fetch}
+    const refetch = () => {
+        fetchData()
+    }
+   
+    return {data,loading,error,refetch}
 }
 
 export default fetchWareHouseData

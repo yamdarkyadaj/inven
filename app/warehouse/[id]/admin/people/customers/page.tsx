@@ -27,17 +27,28 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { UserCheck, Search, Filter, Plus, MoreHorizontal, Edit, Trash2, Eye, Download, Upload } from "lucide-react"
+import { UserCheck, Search, Filter, Plus, MoreHorizontal, Edit, Trash2, Eye, Download, Upload, Activity } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { getWareHouseId } from "@/hooks/get-werehouseId"
 import fetchWareHouseData from "@/hooks/fetch-invidual-data"
 import { Loading } from "@/components/loading"
 import Link from "next/link"
+import toast from "react-hot-toast"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
 
 export default function CustomersPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
+  const [deleteCustomerId, setDeleteCustomerId] = useState<string | null>(null)
+  const [deleting, setDeleting] = useState(false)
   
   const warehouseId = getWareHouseId()
     
@@ -45,7 +56,7 @@ export default function CustomersPage() {
   
    
   
-    const {data:customersData,loading,error} = fetchWareHouseData("/api/customer/list",{warehouseId})
+    const {data:customersData,loading,error,refetch} = fetchWareHouseData("/api/customer/list",{warehouseId})
     const [endPoint, setEndPoint] = useState("")
     const {data:session} = useSession()
     
@@ -67,6 +78,29 @@ export default function CustomersPage() {
 
     return matchesSearch && matchesStatus
   })
+
+  const handleDeleteCustomer = async (customerId: string) => {
+    setDeleting(true)
+    try {
+      const response = await fetch(`/api/customer/${customerId}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to delete customer')
+      }
+
+      toast.success('Customer deleted successfully!')
+      refetch()
+      setDeleteCustomerId(null)
+    } catch (error: any) {
+      console.error('Error deleting customer:', error)
+      toast.error(error.message || 'Failed to delete customer')
+    } finally {
+      setDeleting(false)
+    }
+  }
 
  
 
@@ -194,16 +228,23 @@ export default function CustomersPage() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem>
-                              <Eye className="mr-2 h-4 w-4" />
-                              View Details
+                            <DropdownMenuItem asChild>
+                              <Link href={`${endPoint}/people/customers/activities/${customer.id}`}>
+                                <Activity className="mr-2 h-4 w-4" />
+                                View Activities
+                              </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Edit className="mr-2 h-4 w-4" />
-                              Edit Customer
+                            <DropdownMenuItem asChild>
+                              <Link href={`${endPoint}/people/customers/edit/${customer.id}`}>
+                                <Edit className="mr-2 h-4 w-4" />
+                                Edit Customer
+                              </Link>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem className="text-red-600">
+                            <DropdownMenuItem 
+                              className="text-red-600"
+                              onClick={() => setDeleteCustomerId(customer.id)}
+                            >
                               <Trash2 className="mr-2 h-4 w-4" />
                               Delete Customer
                             </DropdownMenuItem>
@@ -216,6 +257,31 @@ export default function CustomersPage() {
               </Table>
             </CardContent>
           </Card>
+
+          {/* Delete Confirmation Dialog */}
+          <Dialog open={!!deleteCustomerId} onOpenChange={() => setDeleteCustomerId(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Are you absolutely sure?</DialogTitle>
+                <DialogDescription>
+                  This action cannot be undone. This will permanently delete the customer
+                  and remove their data from our servers. Note: Customers with existing sales cannot be deleted.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button variant="outline" disabled={deleting} onClick={() => setDeleteCustomerId(null)}>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => deleteCustomerId && handleDeleteCustomer(deleteCustomerId)}
+                  disabled={deleting}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  {deleting ? "Deleting..." : "Delete"}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </>
   )
