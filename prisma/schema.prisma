@@ -54,6 +54,7 @@ model superAdmin {
   syncedAt     DateTime? // When last synced
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  isDeleted    Boolean @default(false)
   
 }
 
@@ -71,6 +72,7 @@ model users {
   updatedAt DateTime @updatedAt
   sync         Boolean     @default(false) // Sync field
   syncedAt     DateTime? // When last synced
+  isDeleted    Boolean @default(false)
 }
 
 model Settings {
@@ -89,6 +91,7 @@ model Settings {
   updatedAt DateTime @updatedAt
   sync            Boolean   @default(false) // Sync field
   syncedAt        DateTime? // When last synced
+  isDeleted    Boolean @default(false)
 }
 
 model Warehouses {
@@ -111,6 +114,7 @@ model Warehouses {
   receiptSettings ReceiptSettings[]
   sync            Boolean           @default(false) // Sync field
   syncedAt        DateTime? // When last synced
+  isDeleted    Boolean @default(false)
 }
 
 model Sale {
@@ -133,6 +137,7 @@ model Sale {
   paymentMethod      PaymentMethod[]
   sync               Boolean         @default(false) // Sync field
   syncedAt           DateTime? // When last synced
+  isDeleted    Boolean @default(false)
 }
 
 model SaleItem {
@@ -155,6 +160,7 @@ model SaleItem {
   syncedAt      DateTime? // When last synced
   Customer      Customer?   @relation(fields: [customerId], references: [id])
   customerId    String?
+  isDeleted    Boolean @default(false)
 }
 
 model Purchase {
@@ -177,6 +183,7 @@ model Purchase {
   syncedAt   DateTime?
   Supplier   Supplier? @relation(fields: [supplierId], references: [id])
   supplierId String?
+  isDeleted    Boolean @default(false)
 }
 
 model PurchaseItem {
@@ -201,6 +208,7 @@ model PurchaseItem {
   customWholesalePrice Float?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  isDeleted    Boolean @default(false)
   
 }
 
@@ -220,6 +228,7 @@ model Customer {
   updatedAt DateTime @updatedAt
   sync         Boolean     @default(false) // Sync field
   syncedAt     DateTime? // When last synced
+  isDeleted    Boolean @default(false)
 }
 
 model Supplier {
@@ -237,6 +246,7 @@ model Supplier {
   updatedAt DateTime @updatedAt
   sync         Boolean     @default(false) // Sync field
   syncedAt     DateTime? // When last synced
+  isDeleted    Boolean @default(false)
 }
 
 model Product {
@@ -258,6 +268,7 @@ model Product {
   updatedAt DateTime @updatedAt
   sync           Boolean        @default(false) // Sync field
   syncedAt       DateTime? // When last synced
+  isDeleted    Boolean @default(false)
 }
 
 model PaymentMethod {
@@ -273,6 +284,7 @@ model PaymentMethod {
   updatedAt DateTime @updatedAt
   sync         Boolean     @default(false) // Sync field
   syncedAt     DateTime? // When last synced
+  isDeleted    Boolean @default(false)
 }
 
 model ReceiptSettings {
@@ -335,4 +347,5 @@ model ReceiptSettings {
   updatedAt DateTime @updatedAt
   sync         Boolean     @default(false) // Sync field
   syncedAt     DateTime? // When last synced
+  isDeleted    Boolean @default(false)
 }

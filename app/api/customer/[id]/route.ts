@@ -9,7 +9,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
         const { id } = await context.params
         const customer = await prisma.customer.findUnique({
             where: {
-                id: id
+                id: id,isDeleted:false
             }
         })
 

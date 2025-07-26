@@ -54,6 +54,7 @@ model superAdmin_online {
   syncedAt     DateTime? // When last synced
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+  isDeleted    Boolean   @default(false)
 }
 
 model users_online {
@@ -70,6 +71,7 @@ model users_online {
   syncedAt            DateTime? // When last synced
   Warehouses_online   Warehouses_online? @relation(fields: [warehouses_onlineId], references: [warehouseCode])
   warehouses_onlineId String?
+  isDeleted           Boolean            @default(false)
 }
 
 model Settings_online {
@@ -88,6 +90,7 @@ model Settings_online {
   updatedAt       DateTime    @updatedAt
   sync            Boolean     @default(false) // Sync field
   syncedAt        DateTime? // When last synced
+  isDeleted       Boolean     @default(false)
 }
 
 model Warehouses_online {
@@ -110,6 +113,7 @@ model Warehouses_online {
   receiptSettings ReceiptSettings_online[]
   sync            Boolean                  @default(false) // Sync field
   syncedAt        DateTime? // When last synced
+  isDeleted       Boolean                  @default(false)
 }
 
 model Sale_online {
@@ -131,6 +135,7 @@ model Sale_online {
   warehouses_onlineId String?
   Customer_online     Customer_online?       @relation(fields: [customer_onlineId], references: [id])
   customer_onlineId   String?
+  isDeleted           Boolean                @default(false)
 }
 
 model SaleItem_online {
@@ -156,6 +161,7 @@ model SaleItem_online {
   customer_onlineId   String?
   Product_online      Product_online?    @relation(fields: [product_onlineId], references: [id])
   product_onlineId    String?
+  isDeleted           Boolean            @default(false)
 }
 
 model Purchase_online {
@@ -177,6 +183,7 @@ model Purchase_online {
   warehouses_onlineId String?
   Supplier_online     Supplier_online?      @relation(fields: [supplier_onlineId], references: [id])
   supplier_onlineId   String?
+  isDeleted           Boolean               @default(false)
 }
 
 model PurchaseItem_online {
@@ -202,6 +209,7 @@ model PurchaseItem_online {
   purchase_onlineId   String?
   Product_online      Product_online?    @relation(fields: [product_onlineId], references: [id])
   product_onlineId    String?
+  isDeleted           Boolean            @default(false)
 }
 
 model Customer_online {
@@ -220,6 +228,7 @@ model Customer_online {
   syncedAt            DateTime? // When last synced
   Warehouses_online   Warehouses_online? @relation(fields: [warehouses_onlineId], references: [warehouseCode])
   warehouses_onlineId String?
+  isDeleted           Boolean            @default(false)
 }
 
 model Supplier_online {
@@ -237,6 +246,7 @@ model Supplier_online {
   syncedAt            DateTime? // When last synced
   Warehouses_online   Warehouses_online? @relation(fields: [warehouses_onlineId], references: [warehouseCode])
   warehouses_onlineId String?
+  isDeleted           Boolean            @default(false)
 }
 
 model Product_online {
@@ -258,6 +268,7 @@ model Product_online {
   syncedAt            DateTime? // When last synced
   Warehouses_online   Warehouses_online?    @relation(fields: [warehouses_onlineId], references: [warehouseCode])
   warehouses_onlineId String?
+  isDeleted           Boolean               @default(false)
 }
 
 model PaymentMethod_online {
@@ -273,6 +284,7 @@ model PaymentMethod_online {
   warehouses_onlineId String?
   Sale_online         Sale_online?       @relation(fields: [sale_onlineId], references: [invoiceNo])
   sale_onlineId       String?
+  isDeleted           Boolean            @default(false)
 }
 
 model ReceiptSettings_online {
@@ -336,4 +348,5 @@ model ReceiptSettings_online {
   updatedAt DateTime  @updatedAt
   sync      Boolean   @default(false) // Sync field
   syncedAt  DateTime? // When last synced
+  isDeleted Boolean   @default(false)
 }

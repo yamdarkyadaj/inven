@@ -12,7 +12,7 @@ export async function POST(req:NextRequest){
     try {
 
         const data = await prisma.receiptSettings.findMany({
-            where:{warehousesId}
+            where:{warehousesId,isDeleted:false}
         })
         
         return NextResponse.json(warehousesId,{status:200})

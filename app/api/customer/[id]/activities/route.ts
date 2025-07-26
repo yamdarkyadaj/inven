@@ -10,7 +10,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 
         // Fetch customer details
         const customer = await prisma.customer.findUnique({
-            where: { id: customerId }
+            where: { id: customerId,isDeleted:false }
         })
 
         if (!customer) {
@@ -20,7 +20,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
         // Fetch customer sales with items
         const sales = await prisma.sale.findMany({
             where: {
-                selectedCustomerId: customerId
+                selectedCustomerId: customerId,isDeleted:false
             },
             include: {
                 saleItems: {

@@ -131,7 +131,8 @@ exports.Prisma.SuperAdminScalarFieldEnum = {
   sync: 'sync',
   syncedAt: 'syncedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.UsersScalarFieldEnum = {
@@ -146,7 +147,8 @@ exports.Prisma.UsersScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   sync: 'sync',
-  syncedAt: 'syncedAt'
+  syncedAt: 'syncedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.SettingsScalarFieldEnum = {
@@ -164,7 +166,8 @@ exports.Prisma.SettingsScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   sync: 'sync',
-  syncedAt: 'syncedAt'
+  syncedAt: 'syncedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.WarehousesScalarFieldEnum = {
@@ -176,7 +179,8 @@ exports.Prisma.WarehousesScalarFieldEnum = {
   description: 'description',
   address: 'address',
   sync: 'sync',
-  syncedAt: 'syncedAt'
+  syncedAt: 'syncedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.SaleScalarFieldEnum = {
@@ -194,7 +198,8 @@ exports.Prisma.SaleScalarFieldEnum = {
   warehousesId: 'warehousesId',
   invoiceNo: 'invoiceNo',
   sync: 'sync',
-  syncedAt: 'syncedAt'
+  syncedAt: 'syncedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.SaleItemScalarFieldEnum = {
@@ -212,7 +217,8 @@ exports.Prisma.SaleItemScalarFieldEnum = {
   warehousesId: 'warehousesId',
   sync: 'sync',
   syncedAt: 'syncedAt',
-  customerId: 'customerId'
+  customerId: 'customerId',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.PurchaseScalarFieldEnum = {
@@ -230,7 +236,8 @@ exports.Prisma.PurchaseScalarFieldEnum = {
   referenceNo: 'referenceNo',
   sync: 'sync',
   syncedAt: 'syncedAt',
-  supplierId: 'supplierId'
+  supplierId: 'supplierId',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.PurchaseItemScalarFieldEnum = {
@@ -251,7 +258,8 @@ exports.Prisma.PurchaseItemScalarFieldEnum = {
   customRetailPrice: 'customRetailPrice',
   customWholesalePrice: 'customWholesalePrice',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.CustomerScalarFieldEnum = {
@@ -266,7 +274,8 @@ exports.Prisma.CustomerScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   sync: 'sync',
-  syncedAt: 'syncedAt'
+  syncedAt: 'syncedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.SupplierScalarFieldEnum = {
@@ -281,7 +290,8 @@ exports.Prisma.SupplierScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   sync: 'sync',
-  syncedAt: 'syncedAt'
+  syncedAt: 'syncedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.ProductScalarFieldEnum = {
@@ -299,7 +309,8 @@ exports.Prisma.ProductScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   sync: 'sync',
-  syncedAt: 'syncedAt'
+  syncedAt: 'syncedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.PaymentMethodScalarFieldEnum = {
@@ -311,7 +322,8 @@ exports.Prisma.PaymentMethodScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   sync: 'sync',
-  syncedAt: 'syncedAt'
+  syncedAt: 'syncedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.ReceiptSettingsScalarFieldEnum = {
@@ -361,7 +373,8 @@ exports.Prisma.ReceiptSettingsScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   sync: 'sync',
-  syncedAt: 'syncedAt'
+  syncedAt: 'syncedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.SortOrder = {

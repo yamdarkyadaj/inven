@@ -8,7 +8,7 @@ export async function GET(req:NextRequest){
     const warehouseId = await req.json()
     
     try {
-        const products = await prisma.product.findMany()
+        const products = await prisma.product.findMany({where:{isDeleted:false}})
 
         return NextResponse.json(products,{status:200})
     } catch (error) {
@@ -23,11 +23,11 @@ export async function POST(req:NextRequest){
     const {productName:name,productCode:barcode,productDescription:description,productQuantity:quantity,productTaxRate:taxRate,productUnit:unit,wholeSalePrice,retailPrice,costPrice:cost,warehouseId} = await req.json()
     try{
         
-        const warehouse = await prisma.warehouses.findUnique({where:{warehouseCode:warehouseId}})
+        const warehouse = await prisma.warehouses.findUnique({where:{warehouseCode:warehouseId,isDeleted:false}})
         
         if(!warehouse) return NextResponse.json("werehous does not exisi",{status:401})
             
-        const checkProduct = await prisma.product.findMany({where:{barcode,warehousesId:warehouseId}})
+        const checkProduct = await prisma.product.findMany({where:{barcode,warehousesId:warehouseId,isDeleted:false}})
        
         
         if(checkProduct.length > 0) return NextResponse.json("werehous Product Exist",{status:403})
@@ -100,9 +100,12 @@ export async function DELETE(req:NextRequest){
 
         if(!product) return NextResponse.json("product dose not exist",{status:402})
 
-        const deleteProduct = await prisma.product.delete({
+        const deleteProduct = await prisma.product.update({
             where:{
                 id:productId
+            },
+            data:{
+                isDeleted:true
             }
         })
 

@@ -13,7 +13,7 @@ export async function POST(
     // If not found, try by id
     let warehouse = await prisma.warehouses_online.findUnique({
       where: {
-        warehouseCode: id
+        warehouseCode: id,isDeleted:false
       },
       include: {
         users: true,
@@ -30,7 +30,7 @@ export async function POST(
     if (!warehouse) {
       warehouse = await prisma.warehouses_online.findUnique({
         where: {
-          id: id
+          id: id,isDeleted:false
         },
         include: {
           users: true,

@@ -2336,6 +2336,7 @@ export namespace Prisma {
     syncedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type SuperAdminMaxAggregateOutputType = {
@@ -2350,6 +2351,7 @@ export namespace Prisma {
     syncedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type SuperAdminCountAggregateOutputType = {
@@ -2364,6 +2366,7 @@ export namespace Prisma {
     syncedAt: number
     createdAt: number
     updatedAt: number
+    isDeleted: number
     _all: number
   }
 
@@ -2380,6 +2383,7 @@ export namespace Prisma {
     syncedAt?: true
     createdAt?: true
     updatedAt?: true
+    isDeleted?: true
   }
 
   export type SuperAdminMaxAggregateInputType = {
@@ -2394,6 +2398,7 @@ export namespace Prisma {
     syncedAt?: true
     createdAt?: true
     updatedAt?: true
+    isDeleted?: true
   }
 
   export type SuperAdminCountAggregateInputType = {
@@ -2408,6 +2413,7 @@ export namespace Prisma {
     syncedAt?: true
     createdAt?: true
     updatedAt?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -2495,6 +2501,7 @@ export namespace Prisma {
     syncedAt: Date | null
     createdAt: Date
     updatedAt: Date
+    isDeleted: boolean
     _count: SuperAdminCountAggregateOutputType | null
     _min: SuperAdminMinAggregateOutputType | null
     _max: SuperAdminMaxAggregateOutputType | null
@@ -2526,6 +2533,7 @@ export namespace Prisma {
     syncedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    isDeleted?: boolean
   }, ExtArgs["result"]["superAdmin"]>
 
   export type superAdminSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2540,6 +2548,7 @@ export namespace Prisma {
     syncedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    isDeleted?: boolean
   }, ExtArgs["result"]["superAdmin"]>
 
   export type superAdminSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2554,6 +2563,7 @@ export namespace Prisma {
     syncedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    isDeleted?: boolean
   }, ExtArgs["result"]["superAdmin"]>
 
   export type superAdminSelectScalar = {
@@ -2568,9 +2578,10 @@ export namespace Prisma {
     syncedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    isDeleted?: boolean
   }
 
-  export type superAdminOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userName" | "email" | "password" | "role" | "lastLogin" | "warehousesId" | "sync" | "syncedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["superAdmin"]>
+  export type superAdminOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userName" | "email" | "password" | "role" | "lastLogin" | "warehousesId" | "sync" | "syncedAt" | "createdAt" | "updatedAt" | "isDeleted", ExtArgs["result"]["superAdmin"]>
 
   export type $superAdminPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "superAdmin"
@@ -2587,6 +2598,7 @@ export namespace Prisma {
       syncedAt: Date | null
       createdAt: Date
       updatedAt: Date
+      isDeleted: boolean
     }, ExtArgs["result"]["superAdmin"]>
     composites: {}
   }
@@ -3021,6 +3033,7 @@ export namespace Prisma {
     readonly syncedAt: FieldRef<"superAdmin", 'DateTime'>
     readonly createdAt: FieldRef<"superAdmin", 'DateTime'>
     readonly updatedAt: FieldRef<"superAdmin", 'DateTime'>
+    readonly isDeleted: FieldRef<"superAdmin", 'Boolean'>
   }
     
 
@@ -3410,6 +3423,7 @@ export namespace Prisma {
     updatedAt: Date | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type UsersMaxAggregateOutputType = {
@@ -3425,6 +3439,7 @@ export namespace Prisma {
     updatedAt: Date | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type UsersCountAggregateOutputType = {
@@ -3440,6 +3455,7 @@ export namespace Prisma {
     updatedAt: number
     sync: number
     syncedAt: number
+    isDeleted: number
     _all: number
   }
 
@@ -3457,6 +3473,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type UsersMaxAggregateInputType = {
@@ -3472,6 +3489,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type UsersCountAggregateInputType = {
@@ -3487,6 +3505,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -3575,6 +3594,7 @@ export namespace Prisma {
     updatedAt: Date
     sync: boolean
     syncedAt: Date | null
+    isDeleted: boolean
     _count: UsersCountAggregateOutputType | null
     _min: UsersMinAggregateOutputType | null
     _max: UsersMaxAggregateOutputType | null
@@ -3607,6 +3627,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     warehouses?: boolean | users$warehousesArgs<ExtArgs>
   }, ExtArgs["result"]["users"]>
 
@@ -3623,6 +3644,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     warehouses?: boolean | users$warehousesArgs<ExtArgs>
   }, ExtArgs["result"]["users"]>
 
@@ -3639,6 +3661,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     warehouses?: boolean | users$warehousesArgs<ExtArgs>
   }, ExtArgs["result"]["users"]>
 
@@ -3655,9 +3678,10 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
   }
 
-  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "userName" | "phoneNumber" | "password" | "role" | "warehousesId" | "lastLogin" | "createdAt" | "updatedAt" | "sync" | "syncedAt", ExtArgs["result"]["users"]>
+  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "userName" | "phoneNumber" | "password" | "role" | "warehousesId" | "lastLogin" | "createdAt" | "updatedAt" | "sync" | "syncedAt" | "isDeleted", ExtArgs["result"]["users"]>
   export type usersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     warehouses?: boolean | users$warehousesArgs<ExtArgs>
   }
@@ -3686,6 +3710,7 @@ export namespace Prisma {
       updatedAt: Date
       sync: boolean
       syncedAt: Date | null
+      isDeleted: boolean
     }, ExtArgs["result"]["users"]>
     composites: {}
   }
@@ -4122,6 +4147,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"users", 'DateTime'>
     readonly sync: FieldRef<"users", 'Boolean'>
     readonly syncedAt: FieldRef<"users", 'DateTime'>
+    readonly isDeleted: FieldRef<"users", 'Boolean'>
   }
     
 
@@ -4595,6 +4621,7 @@ export namespace Prisma {
     updatedAt: Date | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type SettingsMaxAggregateOutputType = {
@@ -4613,6 +4640,7 @@ export namespace Prisma {
     updatedAt: Date | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type SettingsCountAggregateOutputType = {
@@ -4631,6 +4659,7 @@ export namespace Prisma {
     updatedAt: number
     sync: number
     syncedAt: number
+    isDeleted: number
     _all: number
   }
 
@@ -4663,6 +4692,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type SettingsMaxAggregateInputType = {
@@ -4681,6 +4711,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type SettingsCountAggregateInputType = {
@@ -4699,6 +4730,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -4804,6 +4836,7 @@ export namespace Prisma {
     updatedAt: Date
     sync: boolean
     syncedAt: Date | null
+    isDeleted: boolean
     _count: SettingsCountAggregateOutputType | null
     _avg: SettingsAvgAggregateOutputType | null
     _sum: SettingsSumAggregateOutputType | null
@@ -4841,6 +4874,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
   }, ExtArgs["result"]["settings"]>
 
   export type SettingsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4859,6 +4893,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
   }, ExtArgs["result"]["settings"]>
 
   export type SettingsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4877,6 +4912,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
   }, ExtArgs["result"]["settings"]>
 
   export type SettingsSelectScalar = {
@@ -4895,9 +4931,10 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
   }
 
-  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"setting_id" | "companyName" | "companyEmail" | "phoneNumber" | "websiteURL" | "address" | "logoUrl" | "defaultCurrency" | "taxRate" | "mode" | "itermsPerPage" | "createdAt" | "updatedAt" | "sync" | "syncedAt", ExtArgs["result"]["settings"]>
+  export type SettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"setting_id" | "companyName" | "companyEmail" | "phoneNumber" | "websiteURL" | "address" | "logoUrl" | "defaultCurrency" | "taxRate" | "mode" | "itermsPerPage" | "createdAt" | "updatedAt" | "sync" | "syncedAt" | "isDeleted", ExtArgs["result"]["settings"]>
 
   export type $SettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Settings"
@@ -4918,6 +4955,7 @@ export namespace Prisma {
       updatedAt: Date
       sync: boolean
       syncedAt: Date | null
+      isDeleted: boolean
     }, ExtArgs["result"]["settings"]>
     composites: {}
   }
@@ -5356,6 +5394,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Settings", 'DateTime'>
     readonly sync: FieldRef<"Settings", 'Boolean'>
     readonly syncedAt: FieldRef<"Settings", 'DateTime'>
+    readonly isDeleted: FieldRef<"Settings", 'Boolean'>
   }
     
 
@@ -5742,6 +5781,7 @@ export namespace Prisma {
     address: string | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type WarehousesMaxAggregateOutputType = {
@@ -5754,6 +5794,7 @@ export namespace Prisma {
     address: string | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type WarehousesCountAggregateOutputType = {
@@ -5766,6 +5807,7 @@ export namespace Prisma {
     address: number
     sync: number
     syncedAt: number
+    isDeleted: number
     _all: number
   }
 
@@ -5780,6 +5822,7 @@ export namespace Prisma {
     address?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type WarehousesMaxAggregateInputType = {
@@ -5792,6 +5835,7 @@ export namespace Prisma {
     address?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type WarehousesCountAggregateInputType = {
@@ -5804,6 +5848,7 @@ export namespace Prisma {
     address?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -5889,6 +5934,7 @@ export namespace Prisma {
     address: string
     sync: boolean
     syncedAt: Date | null
+    isDeleted: boolean
     _count: WarehousesCountAggregateOutputType | null
     _min: WarehousesMinAggregateOutputType | null
     _max: WarehousesMaxAggregateOutputType | null
@@ -5918,6 +5964,7 @@ export namespace Prisma {
     address?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     users?: boolean | Warehouses$usersArgs<ExtArgs>
     products?: boolean | Warehouses$productsArgs<ExtArgs>
     customer?: boolean | Warehouses$customerArgs<ExtArgs>
@@ -5941,6 +5988,7 @@ export namespace Prisma {
     address?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
   }, ExtArgs["result"]["warehouses"]>
 
   export type WarehousesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5953,6 +6001,7 @@ export namespace Prisma {
     address?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
   }, ExtArgs["result"]["warehouses"]>
 
   export type WarehousesSelectScalar = {
@@ -5965,9 +6014,10 @@ export namespace Prisma {
     address?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
   }
 
-  export type WarehousesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "warehouseCode" | "name" | "phoneNumber" | "email" | "description" | "address" | "sync" | "syncedAt", ExtArgs["result"]["warehouses"]>
+  export type WarehousesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "warehouseCode" | "name" | "phoneNumber" | "email" | "description" | "address" | "sync" | "syncedAt" | "isDeleted", ExtArgs["result"]["warehouses"]>
   export type WarehousesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | Warehouses$usersArgs<ExtArgs>
     products?: boolean | Warehouses$productsArgs<ExtArgs>
@@ -6008,6 +6058,7 @@ export namespace Prisma {
       address: string
       sync: boolean
       syncedAt: Date | null
+      isDeleted: boolean
     }, ExtArgs["result"]["warehouses"]>
     composites: {}
   }
@@ -6450,6 +6501,7 @@ export namespace Prisma {
     readonly address: FieldRef<"Warehouses", 'String'>
     readonly sync: FieldRef<"Warehouses", 'Boolean'>
     readonly syncedAt: FieldRef<"Warehouses", 'DateTime'>
+    readonly isDeleted: FieldRef<"Warehouses", 'Boolean'>
   }
     
 
@@ -7142,6 +7194,7 @@ export namespace Prisma {
     invoiceNo: string | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type SaleMaxAggregateOutputType = {
@@ -7160,6 +7213,7 @@ export namespace Prisma {
     invoiceNo: string | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type SaleCountAggregateOutputType = {
@@ -7178,6 +7232,7 @@ export namespace Prisma {
     invoiceNo: number
     sync: number
     syncedAt: number
+    isDeleted: number
     _all: number
   }
 
@@ -7216,6 +7271,7 @@ export namespace Prisma {
     invoiceNo?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type SaleMaxAggregateInputType = {
@@ -7234,6 +7290,7 @@ export namespace Prisma {
     invoiceNo?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type SaleCountAggregateInputType = {
@@ -7252,6 +7309,7 @@ export namespace Prisma {
     invoiceNo?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -7357,6 +7415,7 @@ export namespace Prisma {
     invoiceNo: string
     sync: boolean
     syncedAt: Date | null
+    isDeleted: boolean
     _count: SaleCountAggregateOutputType | null
     _avg: SaleAvgAggregateOutputType | null
     _sum: SaleSumAggregateOutputType | null
@@ -7394,6 +7453,7 @@ export namespace Prisma {
     invoiceNo?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     saleItems?: boolean | Sale$saleItemsArgs<ExtArgs>
     selectedCustomer?: boolean | Sale$selectedCustomerArgs<ExtArgs>
     warehouses?: boolean | Sale$warehousesArgs<ExtArgs>
@@ -7417,6 +7477,7 @@ export namespace Prisma {
     invoiceNo?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     selectedCustomer?: boolean | Sale$selectedCustomerArgs<ExtArgs>
     warehouses?: boolean | Sale$warehousesArgs<ExtArgs>
   }, ExtArgs["result"]["sale"]>
@@ -7437,6 +7498,7 @@ export namespace Prisma {
     invoiceNo?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     selectedCustomer?: boolean | Sale$selectedCustomerArgs<ExtArgs>
     warehouses?: boolean | Sale$warehousesArgs<ExtArgs>
   }, ExtArgs["result"]["sale"]>
@@ -7457,9 +7519,10 @@ export namespace Prisma {
     invoiceNo?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
   }
 
-  export type SaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "selectedCustomerId" | "taxRate" | "subTotal" | "notes" | "amountPaid" | "grandTotal" | "paidAmount" | "balance" | "createdAt" | "updatedAt" | "warehousesId" | "invoiceNo" | "sync" | "syncedAt", ExtArgs["result"]["sale"]>
+  export type SaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "selectedCustomerId" | "taxRate" | "subTotal" | "notes" | "amountPaid" | "grandTotal" | "paidAmount" | "balance" | "createdAt" | "updatedAt" | "warehousesId" | "invoiceNo" | "sync" | "syncedAt" | "isDeleted", ExtArgs["result"]["sale"]>
   export type SaleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     saleItems?: boolean | Sale$saleItemsArgs<ExtArgs>
     selectedCustomer?: boolean | Sale$selectedCustomerArgs<ExtArgs>
@@ -7500,6 +7563,7 @@ export namespace Prisma {
       invoiceNo: string
       sync: boolean
       syncedAt: Date | null
+      isDeleted: boolean
     }, ExtArgs["result"]["sale"]>
     composites: {}
   }
@@ -7942,6 +8006,7 @@ export namespace Prisma {
     readonly invoiceNo: FieldRef<"Sale", 'String'>
     readonly sync: FieldRef<"Sale", 'Boolean'>
     readonly syncedAt: FieldRef<"Sale", 'DateTime'>
+    readonly isDeleted: FieldRef<"Sale", 'Boolean'>
   }
     
 
@@ -8488,6 +8553,7 @@ export namespace Prisma {
     sync: boolean | null
     syncedAt: Date | null
     customerId: string | null
+    isDeleted: boolean | null
   }
 
   export type SaleItemMaxAggregateOutputType = {
@@ -8506,6 +8572,7 @@ export namespace Prisma {
     sync: boolean | null
     syncedAt: Date | null
     customerId: string | null
+    isDeleted: boolean | null
   }
 
   export type SaleItemCountAggregateOutputType = {
@@ -8524,6 +8591,7 @@ export namespace Prisma {
     sync: number
     syncedAt: number
     customerId: number
+    isDeleted: number
     _all: number
   }
 
@@ -8562,6 +8630,7 @@ export namespace Prisma {
     sync?: true
     syncedAt?: true
     customerId?: true
+    isDeleted?: true
   }
 
   export type SaleItemMaxAggregateInputType = {
@@ -8580,6 +8649,7 @@ export namespace Prisma {
     sync?: true
     syncedAt?: true
     customerId?: true
+    isDeleted?: true
   }
 
   export type SaleItemCountAggregateInputType = {
@@ -8598,6 +8668,7 @@ export namespace Prisma {
     sync?: true
     syncedAt?: true
     customerId?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -8703,6 +8774,7 @@ export namespace Prisma {
     sync: boolean
     syncedAt: Date | null
     customerId: string | null
+    isDeleted: boolean
     _count: SaleItemCountAggregateOutputType | null
     _avg: SaleItemAvgAggregateOutputType | null
     _sum: SaleItemSumAggregateOutputType | null
@@ -8740,6 +8812,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: boolean
     customerId?: boolean
+    isDeleted?: boolean
     sale?: boolean | SaleItem$saleArgs<ExtArgs>
     product?: boolean | SaleItem$productArgs<ExtArgs>
     Warehouses?: boolean | SaleItem$WarehousesArgs<ExtArgs>
@@ -8762,6 +8835,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: boolean
     customerId?: boolean
+    isDeleted?: boolean
     sale?: boolean | SaleItem$saleArgs<ExtArgs>
     product?: boolean | SaleItem$productArgs<ExtArgs>
     Warehouses?: boolean | SaleItem$WarehousesArgs<ExtArgs>
@@ -8784,6 +8858,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: boolean
     customerId?: boolean
+    isDeleted?: boolean
     sale?: boolean | SaleItem$saleArgs<ExtArgs>
     product?: boolean | SaleItem$productArgs<ExtArgs>
     Warehouses?: boolean | SaleItem$WarehousesArgs<ExtArgs>
@@ -8806,9 +8881,10 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: boolean
     customerId?: boolean
+    isDeleted?: boolean
   }
 
-  export type SaleItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "saleId" | "productId" | "productName" | "cost" | "selectedPrice" | "priceType" | "quantity" | "discount" | "total" | "profit" | "warehousesId" | "sync" | "syncedAt" | "customerId", ExtArgs["result"]["saleItem"]>
+  export type SaleItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "saleId" | "productId" | "productName" | "cost" | "selectedPrice" | "priceType" | "quantity" | "discount" | "total" | "profit" | "warehousesId" | "sync" | "syncedAt" | "customerId" | "isDeleted", ExtArgs["result"]["saleItem"]>
   export type SaleItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sale?: boolean | SaleItem$saleArgs<ExtArgs>
     product?: boolean | SaleItem$productArgs<ExtArgs>
@@ -8852,6 +8928,7 @@ export namespace Prisma {
       sync: boolean
       syncedAt: Date | null
       customerId: string | null
+      isDeleted: boolean
     }, ExtArgs["result"]["saleItem"]>
     composites: {}
   }
@@ -9294,6 +9371,7 @@ export namespace Prisma {
     readonly sync: FieldRef<"SaleItem", 'Boolean'>
     readonly syncedAt: FieldRef<"SaleItem", 'DateTime'>
     readonly customerId: FieldRef<"SaleItem", 'String'>
+    readonly isDeleted: FieldRef<"SaleItem", 'Boolean'>
   }
     
 
@@ -9830,6 +9908,7 @@ export namespace Prisma {
     sync: boolean | null
     syncedAt: Date | null
     supplierId: string | null
+    isDeleted: boolean | null
   }
 
   export type PurchaseMaxAggregateOutputType = {
@@ -9848,6 +9927,7 @@ export namespace Prisma {
     sync: boolean | null
     syncedAt: Date | null
     supplierId: string | null
+    isDeleted: boolean | null
   }
 
   export type PurchaseCountAggregateOutputType = {
@@ -9866,6 +9946,7 @@ export namespace Prisma {
     sync: number
     syncedAt: number
     supplierId: number
+    isDeleted: number
     _all: number
   }
 
@@ -9904,6 +9985,7 @@ export namespace Prisma {
     sync?: true
     syncedAt?: true
     supplierId?: true
+    isDeleted?: true
   }
 
   export type PurchaseMaxAggregateInputType = {
@@ -9922,6 +10004,7 @@ export namespace Prisma {
     sync?: true
     syncedAt?: true
     supplierId?: true
+    isDeleted?: true
   }
 
   export type PurchaseCountAggregateInputType = {
@@ -9940,6 +10023,7 @@ export namespace Prisma {
     sync?: true
     syncedAt?: true
     supplierId?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -10045,6 +10129,7 @@ export namespace Prisma {
     sync: boolean
     syncedAt: Date | null
     supplierId: string | null
+    isDeleted: boolean
     _count: PurchaseCountAggregateOutputType | null
     _avg: PurchaseAvgAggregateOutputType | null
     _sum: PurchaseSumAggregateOutputType | null
@@ -10082,6 +10167,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: boolean
     supplierId?: boolean
+    isDeleted?: boolean
     purchaseItem?: boolean | Purchase$purchaseItemArgs<ExtArgs>
     warehouses?: boolean | Purchase$warehousesArgs<ExtArgs>
     Supplier?: boolean | Purchase$SupplierArgs<ExtArgs>
@@ -10104,6 +10190,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: boolean
     supplierId?: boolean
+    isDeleted?: boolean
     warehouses?: boolean | Purchase$warehousesArgs<ExtArgs>
     Supplier?: boolean | Purchase$SupplierArgs<ExtArgs>
   }, ExtArgs["result"]["purchase"]>
@@ -10124,6 +10211,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: boolean
     supplierId?: boolean
+    isDeleted?: boolean
     warehouses?: boolean | Purchase$warehousesArgs<ExtArgs>
     Supplier?: boolean | Purchase$SupplierArgs<ExtArgs>
   }, ExtArgs["result"]["purchase"]>
@@ -10144,9 +10232,10 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: boolean
     supplierId?: boolean
+    isDeleted?: boolean
   }
 
-  export type PurchaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "taxRate" | "subTotal" | "notes" | "amountPaid" | "grandTotal" | "paidAmount" | "balance" | "createdAt" | "updatedAt" | "warehousesId" | "referenceNo" | "sync" | "syncedAt" | "supplierId", ExtArgs["result"]["purchase"]>
+  export type PurchaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "taxRate" | "subTotal" | "notes" | "amountPaid" | "grandTotal" | "paidAmount" | "balance" | "createdAt" | "updatedAt" | "warehousesId" | "referenceNo" | "sync" | "syncedAt" | "supplierId" | "isDeleted", ExtArgs["result"]["purchase"]>
   export type PurchaseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     purchaseItem?: boolean | Purchase$purchaseItemArgs<ExtArgs>
     warehouses?: boolean | Purchase$warehousesArgs<ExtArgs>
@@ -10185,6 +10274,7 @@ export namespace Prisma {
       sync: boolean
       syncedAt: Date | null
       supplierId: string | null
+      isDeleted: boolean
     }, ExtArgs["result"]["purchase"]>
     composites: {}
   }
@@ -10626,6 +10716,7 @@ export namespace Prisma {
     readonly sync: FieldRef<"Purchase", 'Boolean'>
     readonly syncedAt: FieldRef<"Purchase", 'DateTime'>
     readonly supplierId: FieldRef<"Purchase", 'String'>
+    readonly isDeleted: FieldRef<"Purchase", 'Boolean'>
   }
     
 
@@ -11155,6 +11246,7 @@ export namespace Prisma {
     customWholesalePrice: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type PurchaseItemMaxAggregateOutputType = {
@@ -11176,6 +11268,7 @@ export namespace Prisma {
     customWholesalePrice: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type PurchaseItemCountAggregateOutputType = {
@@ -11197,6 +11290,7 @@ export namespace Prisma {
     customWholesalePrice: number
     createdAt: number
     updatedAt: number
+    isDeleted: number
     _all: number
   }
 
@@ -11242,6 +11336,7 @@ export namespace Prisma {
     customWholesalePrice?: true
     createdAt?: true
     updatedAt?: true
+    isDeleted?: true
   }
 
   export type PurchaseItemMaxAggregateInputType = {
@@ -11263,6 +11358,7 @@ export namespace Prisma {
     customWholesalePrice?: true
     createdAt?: true
     updatedAt?: true
+    isDeleted?: true
   }
 
   export type PurchaseItemCountAggregateInputType = {
@@ -11284,6 +11380,7 @@ export namespace Prisma {
     customWholesalePrice?: true
     createdAt?: true
     updatedAt?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -11392,6 +11489,7 @@ export namespace Prisma {
     customWholesalePrice: number | null
     createdAt: Date
     updatedAt: Date
+    isDeleted: boolean
     _count: PurchaseItemCountAggregateOutputType | null
     _avg: PurchaseItemAvgAggregateOutputType | null
     _sum: PurchaseItemSumAggregateOutputType | null
@@ -11432,6 +11530,7 @@ export namespace Prisma {
     customWholesalePrice?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    isDeleted?: boolean
     product?: boolean | PurchaseItem$productArgs<ExtArgs>
     Warehouses?: boolean | PurchaseItem$WarehousesArgs<ExtArgs>
     Purchase?: boolean | PurchaseItem$PurchaseArgs<ExtArgs>
@@ -11456,6 +11555,7 @@ export namespace Prisma {
     customWholesalePrice?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    isDeleted?: boolean
     product?: boolean | PurchaseItem$productArgs<ExtArgs>
     Warehouses?: boolean | PurchaseItem$WarehousesArgs<ExtArgs>
     Purchase?: boolean | PurchaseItem$PurchaseArgs<ExtArgs>
@@ -11480,6 +11580,7 @@ export namespace Prisma {
     customWholesalePrice?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    isDeleted?: boolean
     product?: boolean | PurchaseItem$productArgs<ExtArgs>
     Warehouses?: boolean | PurchaseItem$WarehousesArgs<ExtArgs>
     Purchase?: boolean | PurchaseItem$PurchaseArgs<ExtArgs>
@@ -11504,9 +11605,10 @@ export namespace Prisma {
     customWholesalePrice?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    isDeleted?: boolean
   }
 
-  export type PurchaseItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "productName" | "cost" | "selectedPrice" | "priceType" | "quantity" | "discount" | "total" | "profit" | "warehousesId" | "sync" | "syncedAt" | "purchaseId" | "customRetailPrice" | "customWholesalePrice" | "createdAt" | "updatedAt", ExtArgs["result"]["purchaseItem"]>
+  export type PurchaseItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "productName" | "cost" | "selectedPrice" | "priceType" | "quantity" | "discount" | "total" | "profit" | "warehousesId" | "sync" | "syncedAt" | "purchaseId" | "customRetailPrice" | "customWholesalePrice" | "createdAt" | "updatedAt" | "isDeleted", ExtArgs["result"]["purchaseItem"]>
   export type PurchaseItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     product?: boolean | PurchaseItem$productArgs<ExtArgs>
     Warehouses?: boolean | PurchaseItem$WarehousesArgs<ExtArgs>
@@ -11549,6 +11651,7 @@ export namespace Prisma {
       customWholesalePrice: number | null
       createdAt: Date
       updatedAt: Date
+      isDeleted: boolean
     }, ExtArgs["result"]["purchaseItem"]>
     composites: {}
   }
@@ -11993,6 +12096,7 @@ export namespace Prisma {
     readonly customWholesalePrice: FieldRef<"PurchaseItem", 'Float'>
     readonly createdAt: FieldRef<"PurchaseItem", 'DateTime'>
     readonly updatedAt: FieldRef<"PurchaseItem", 'DateTime'>
+    readonly isDeleted: FieldRef<"PurchaseItem", 'Boolean'>
   }
     
 
@@ -12487,6 +12591,7 @@ export namespace Prisma {
     updatedAt: Date | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type CustomerMaxAggregateOutputType = {
@@ -12502,6 +12607,7 @@ export namespace Prisma {
     updatedAt: Date | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type CustomerCountAggregateOutputType = {
@@ -12517,6 +12623,7 @@ export namespace Prisma {
     updatedAt: number
     sync: number
     syncedAt: number
+    isDeleted: number
     _all: number
   }
 
@@ -12534,6 +12641,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type CustomerMaxAggregateInputType = {
@@ -12549,6 +12657,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type CustomerCountAggregateInputType = {
@@ -12564,6 +12673,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -12652,6 +12762,7 @@ export namespace Prisma {
     updatedAt: Date
     sync: boolean
     syncedAt: Date | null
+    isDeleted: boolean
     _count: CustomerCountAggregateOutputType | null
     _min: CustomerMinAggregateOutputType | null
     _max: CustomerMaxAggregateOutputType | null
@@ -12684,6 +12795,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     Warehouses?: boolean | Customer$WarehousesArgs<ExtArgs>
     Sale?: boolean | Customer$SaleArgs<ExtArgs>
     saleItem?: boolean | Customer$saleItemArgs<ExtArgs>
@@ -12703,6 +12815,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     Warehouses?: boolean | Customer$WarehousesArgs<ExtArgs>
   }, ExtArgs["result"]["customer"]>
 
@@ -12719,6 +12832,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     Warehouses?: boolean | Customer$WarehousesArgs<ExtArgs>
   }, ExtArgs["result"]["customer"]>
 
@@ -12735,9 +12849,10 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
   }
 
-  export type CustomerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "type" | "companyName" | "email" | "address" | "phone" | "warehousesId" | "createdAt" | "updatedAt" | "sync" | "syncedAt", ExtArgs["result"]["customer"]>
+  export type CustomerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "type" | "companyName" | "email" | "address" | "phone" | "warehousesId" | "createdAt" | "updatedAt" | "sync" | "syncedAt" | "isDeleted", ExtArgs["result"]["customer"]>
   export type CustomerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Warehouses?: boolean | Customer$WarehousesArgs<ExtArgs>
     Sale?: boolean | Customer$SaleArgs<ExtArgs>
@@ -12771,6 +12886,7 @@ export namespace Prisma {
       updatedAt: Date
       sync: boolean
       syncedAt: Date | null
+      isDeleted: boolean
     }, ExtArgs["result"]["customer"]>
     composites: {}
   }
@@ -13209,6 +13325,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Customer", 'DateTime'>
     readonly sync: FieldRef<"Customer", 'Boolean'>
     readonly syncedAt: FieldRef<"Customer", 'DateTime'>
+    readonly isDeleted: FieldRef<"Customer", 'Boolean'>
   }
     
 
@@ -13713,6 +13830,7 @@ export namespace Prisma {
     updatedAt: Date | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type SupplierMaxAggregateOutputType = {
@@ -13728,6 +13846,7 @@ export namespace Prisma {
     updatedAt: Date | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type SupplierCountAggregateOutputType = {
@@ -13743,6 +13862,7 @@ export namespace Prisma {
     updatedAt: number
     sync: number
     syncedAt: number
+    isDeleted: number
     _all: number
   }
 
@@ -13760,6 +13880,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type SupplierMaxAggregateInputType = {
@@ -13775,6 +13896,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type SupplierCountAggregateInputType = {
@@ -13790,6 +13912,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -13878,6 +14001,7 @@ export namespace Prisma {
     updatedAt: Date
     sync: boolean
     syncedAt: Date | null
+    isDeleted: boolean
     _count: SupplierCountAggregateOutputType | null
     _min: SupplierMinAggregateOutputType | null
     _max: SupplierMaxAggregateOutputType | null
@@ -13910,6 +14034,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     Warehouses?: boolean | Supplier$WarehousesArgs<ExtArgs>
     purchase?: boolean | Supplier$purchaseArgs<ExtArgs>
     _count?: boolean | SupplierCountOutputTypeDefaultArgs<ExtArgs>
@@ -13928,6 +14053,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     Warehouses?: boolean | Supplier$WarehousesArgs<ExtArgs>
   }, ExtArgs["result"]["supplier"]>
 
@@ -13944,6 +14070,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     Warehouses?: boolean | Supplier$WarehousesArgs<ExtArgs>
   }, ExtArgs["result"]["supplier"]>
 
@@ -13960,9 +14087,10 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
   }
 
-  export type SupplierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "type" | "companyName" | "email" | "address" | "phone" | "warehousesId" | "createdAt" | "updatedAt" | "sync" | "syncedAt", ExtArgs["result"]["supplier"]>
+  export type SupplierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "type" | "companyName" | "email" | "address" | "phone" | "warehousesId" | "createdAt" | "updatedAt" | "sync" | "syncedAt" | "isDeleted", ExtArgs["result"]["supplier"]>
   export type SupplierInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Warehouses?: boolean | Supplier$WarehousesArgs<ExtArgs>
     purchase?: boolean | Supplier$purchaseArgs<ExtArgs>
@@ -13994,6 +14122,7 @@ export namespace Prisma {
       updatedAt: Date
       sync: boolean
       syncedAt: Date | null
+      isDeleted: boolean
     }, ExtArgs["result"]["supplier"]>
     composites: {}
   }
@@ -14431,6 +14560,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Supplier", 'DateTime'>
     readonly sync: FieldRef<"Supplier", 'Boolean'>
     readonly syncedAt: FieldRef<"Supplier", 'DateTime'>
+    readonly isDeleted: FieldRef<"Supplier", 'Boolean'>
   }
     
 
@@ -14932,6 +15062,7 @@ export namespace Prisma {
     updatedAt: Date | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type ProductMaxAggregateOutputType = {
@@ -14950,6 +15081,7 @@ export namespace Prisma {
     updatedAt: Date | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type ProductCountAggregateOutputType = {
@@ -14968,6 +15100,7 @@ export namespace Prisma {
     updatedAt: number
     sync: number
     syncedAt: number
+    isDeleted: number
     _all: number
   }
 
@@ -15004,6 +15137,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type ProductMaxAggregateInputType = {
@@ -15022,6 +15156,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type ProductCountAggregateInputType = {
@@ -15040,6 +15175,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -15145,6 +15281,7 @@ export namespace Prisma {
     updatedAt: Date
     sync: boolean
     syncedAt: Date | null
+    isDeleted: boolean
     _count: ProductCountAggregateOutputType | null
     _avg: ProductAvgAggregateOutputType | null
     _sum: ProductSumAggregateOutputType | null
@@ -15182,6 +15319,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     warehouses?: boolean | Product$warehousesArgs<ExtArgs>
     SaleItem?: boolean | Product$SaleItemArgs<ExtArgs>
     purchaseItem?: boolean | Product$purchaseItemArgs<ExtArgs>
@@ -15204,6 +15342,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     warehouses?: boolean | Product$warehousesArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
@@ -15223,6 +15362,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     warehouses?: boolean | Product$warehousesArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
@@ -15242,9 +15382,10 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "barcode" | "wholeSalePrice" | "retailPrice" | "cost" | "quantity" | "taxRate" | "unit" | "description" | "warehousesId" | "createdAt" | "updatedAt" | "sync" | "syncedAt", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "barcode" | "wholeSalePrice" | "retailPrice" | "cost" | "quantity" | "taxRate" | "unit" | "description" | "warehousesId" | "createdAt" | "updatedAt" | "sync" | "syncedAt" | "isDeleted", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     warehouses?: boolean | Product$warehousesArgs<ExtArgs>
     SaleItem?: boolean | Product$SaleItemArgs<ExtArgs>
@@ -15281,6 +15422,7 @@ export namespace Prisma {
       updatedAt: Date
       sync: boolean
       syncedAt: Date | null
+      isDeleted: boolean
     }, ExtArgs["result"]["product"]>
     composites: {}
   }
@@ -15722,6 +15864,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Product", 'DateTime'>
     readonly sync: FieldRef<"Product", 'Boolean'>
     readonly syncedAt: FieldRef<"Product", 'DateTime'>
+    readonly isDeleted: FieldRef<"Product", 'Boolean'>
   }
     
 
@@ -16233,6 +16376,7 @@ export namespace Prisma {
     updatedAt: Date | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type PaymentMethodMaxAggregateOutputType = {
@@ -16245,6 +16389,7 @@ export namespace Prisma {
     updatedAt: Date | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type PaymentMethodCountAggregateOutputType = {
@@ -16257,6 +16402,7 @@ export namespace Prisma {
     updatedAt: number
     sync: number
     syncedAt: number
+    isDeleted: number
     _all: number
   }
 
@@ -16279,6 +16425,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type PaymentMethodMaxAggregateInputType = {
@@ -16291,6 +16438,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type PaymentMethodCountAggregateInputType = {
@@ -16303,6 +16451,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -16402,6 +16551,7 @@ export namespace Prisma {
     updatedAt: Date
     sync: boolean
     syncedAt: Date | null
+    isDeleted: boolean
     _count: PaymentMethodCountAggregateOutputType | null
     _avg: PaymentMethodAvgAggregateOutputType | null
     _sum: PaymentMethodSumAggregateOutputType | null
@@ -16433,6 +16583,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     Warehouses?: boolean | PaymentMethod$WarehousesArgs<ExtArgs>
     Sale?: boolean | PaymentMethod$SaleArgs<ExtArgs>
   }, ExtArgs["result"]["paymentMethod"]>
@@ -16447,6 +16598,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     Warehouses?: boolean | PaymentMethod$WarehousesArgs<ExtArgs>
     Sale?: boolean | PaymentMethod$SaleArgs<ExtArgs>
   }, ExtArgs["result"]["paymentMethod"]>
@@ -16461,6 +16613,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     Warehouses?: boolean | PaymentMethod$WarehousesArgs<ExtArgs>
     Sale?: boolean | PaymentMethod$SaleArgs<ExtArgs>
   }, ExtArgs["result"]["paymentMethod"]>
@@ -16475,9 +16628,10 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
   }
 
-  export type PaymentMethodOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "method" | "amount" | "warehousesId" | "saleId" | "createdAt" | "updatedAt" | "sync" | "syncedAt", ExtArgs["result"]["paymentMethod"]>
+  export type PaymentMethodOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "method" | "amount" | "warehousesId" | "saleId" | "createdAt" | "updatedAt" | "sync" | "syncedAt" | "isDeleted", ExtArgs["result"]["paymentMethod"]>
   export type PaymentMethodInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Warehouses?: boolean | PaymentMethod$WarehousesArgs<ExtArgs>
     Sale?: boolean | PaymentMethod$SaleArgs<ExtArgs>
@@ -16507,6 +16661,7 @@ export namespace Prisma {
       updatedAt: Date
       sync: boolean
       syncedAt: Date | null
+      isDeleted: boolean
     }, ExtArgs["result"]["paymentMethod"]>
     composites: {}
   }
@@ -16941,6 +17096,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"PaymentMethod", 'DateTime'>
     readonly sync: FieldRef<"PaymentMethod", 'Boolean'>
     readonly syncedAt: FieldRef<"PaymentMethod", 'DateTime'>
+    readonly isDeleted: FieldRef<"PaymentMethod", 'Boolean'>
   }
     
 
@@ -17461,6 +17617,7 @@ export namespace Prisma {
     updatedAt: Date | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type ReceiptSettingsMaxAggregateOutputType = {
@@ -17511,6 +17668,7 @@ export namespace Prisma {
     updatedAt: Date | null
     sync: boolean | null
     syncedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type ReceiptSettingsCountAggregateOutputType = {
@@ -17561,6 +17719,7 @@ export namespace Prisma {
     updatedAt: number
     sync: number
     syncedAt: number
+    isDeleted: number
     _all: number
   }
 
@@ -17621,6 +17780,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type ReceiptSettingsMaxAggregateInputType = {
@@ -17671,6 +17831,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
   }
 
   export type ReceiptSettingsCountAggregateInputType = {
@@ -17721,6 +17882,7 @@ export namespace Prisma {
     updatedAt?: true
     sync?: true
     syncedAt?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -17858,6 +18020,7 @@ export namespace Prisma {
     updatedAt: Date
     sync: boolean
     syncedAt: Date | null
+    isDeleted: boolean
     _count: ReceiptSettingsCountAggregateOutputType | null
     _avg: ReceiptSettingsAvgAggregateOutputType | null
     _sum: ReceiptSettingsSumAggregateOutputType | null
@@ -17927,6 +18090,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     Warehouses?: boolean | ReceiptSettings$WarehousesArgs<ExtArgs>
   }, ExtArgs["result"]["receiptSettings"]>
 
@@ -17978,6 +18142,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     Warehouses?: boolean | ReceiptSettings$WarehousesArgs<ExtArgs>
   }, ExtArgs["result"]["receiptSettings"]>
 
@@ -18029,6 +18194,7 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
     Warehouses?: boolean | ReceiptSettings$WarehousesArgs<ExtArgs>
   }, ExtArgs["result"]["receiptSettings"]>
 
@@ -18080,9 +18246,10 @@ export namespace Prisma {
     updatedAt?: boolean
     sync?: boolean
     syncedAt?: boolean
+    isDeleted?: boolean
   }
 
-  export type ReceiptSettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyName" | "businessName" | "address" | "city" | "state" | "country" | "phone" | "email" | "website" | "receiptTitle" | "headerMessage" | "footerMessage" | "showLogo" | "logoUrl" | "showQrCode" | "qrCodeContent" | "customQrContent" | "showCustomerInfo" | "showCashierInfo" | "showItemCodes" | "showItemDescriptions" | "showTaxBreakdown" | "showPaymentMethods" | "showBalance" | "showTimestamp" | "use24HourFormat" | "showItemNumbers" | "showRunningTotal" | "paperSize" | "fontSize" | "printDensity" | "lineSpacing" | "primaryColor" | "accentColor" | "fontFamily" | "printCopyCount" | "autoPrint" | "language" | "currency" | "currencySymbol" | "currencyPosition" | "warehousesId" | "createdAt" | "updatedAt" | "sync" | "syncedAt", ExtArgs["result"]["receiptSettings"]>
+  export type ReceiptSettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyName" | "businessName" | "address" | "city" | "state" | "country" | "phone" | "email" | "website" | "receiptTitle" | "headerMessage" | "footerMessage" | "showLogo" | "logoUrl" | "showQrCode" | "qrCodeContent" | "customQrContent" | "showCustomerInfo" | "showCashierInfo" | "showItemCodes" | "showItemDescriptions" | "showTaxBreakdown" | "showPaymentMethods" | "showBalance" | "showTimestamp" | "use24HourFormat" | "showItemNumbers" | "showRunningTotal" | "paperSize" | "fontSize" | "printDensity" | "lineSpacing" | "primaryColor" | "accentColor" | "fontFamily" | "printCopyCount" | "autoPrint" | "language" | "currency" | "currencySymbol" | "currencyPosition" | "warehousesId" | "createdAt" | "updatedAt" | "sync" | "syncedAt" | "isDeleted", ExtArgs["result"]["receiptSettings"]>
   export type ReceiptSettingsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Warehouses?: boolean | ReceiptSettings$WarehousesArgs<ExtArgs>
   }
@@ -18146,6 +18313,7 @@ export namespace Prisma {
       updatedAt: Date
       sync: boolean
       syncedAt: Date | null
+      isDeleted: boolean
     }, ExtArgs["result"]["receiptSettings"]>
     composites: {}
   }
@@ -18617,6 +18785,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"ReceiptSettings", 'DateTime'>
     readonly sync: FieldRef<"ReceiptSettings", 'Boolean'>
     readonly syncedAt: FieldRef<"ReceiptSettings", 'DateTime'>
+    readonly isDeleted: FieldRef<"ReceiptSettings", 'Boolean'>
   }
     
 
@@ -19075,7 +19244,8 @@ export namespace Prisma {
     sync: 'sync',
     syncedAt: 'syncedAt',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    isDeleted: 'isDeleted'
   };
 
   export type SuperAdminScalarFieldEnum = (typeof SuperAdminScalarFieldEnum)[keyof typeof SuperAdminScalarFieldEnum]
@@ -19093,7 +19263,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     sync: 'sync',
-    syncedAt: 'syncedAt'
+    syncedAt: 'syncedAt',
+    isDeleted: 'isDeleted'
   };
 
   export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
@@ -19114,7 +19285,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     sync: 'sync',
-    syncedAt: 'syncedAt'
+    syncedAt: 'syncedAt',
+    isDeleted: 'isDeleted'
   };
 
   export type SettingsScalarFieldEnum = (typeof SettingsScalarFieldEnum)[keyof typeof SettingsScalarFieldEnum]
@@ -19129,7 +19301,8 @@ export namespace Prisma {
     description: 'description',
     address: 'address',
     sync: 'sync',
-    syncedAt: 'syncedAt'
+    syncedAt: 'syncedAt',
+    isDeleted: 'isDeleted'
   };
 
   export type WarehousesScalarFieldEnum = (typeof WarehousesScalarFieldEnum)[keyof typeof WarehousesScalarFieldEnum]
@@ -19150,7 +19323,8 @@ export namespace Prisma {
     warehousesId: 'warehousesId',
     invoiceNo: 'invoiceNo',
     sync: 'sync',
-    syncedAt: 'syncedAt'
+    syncedAt: 'syncedAt',
+    isDeleted: 'isDeleted'
   };
 
   export type SaleScalarFieldEnum = (typeof SaleScalarFieldEnum)[keyof typeof SaleScalarFieldEnum]
@@ -19171,7 +19345,8 @@ export namespace Prisma {
     warehousesId: 'warehousesId',
     sync: 'sync',
     syncedAt: 'syncedAt',
-    customerId: 'customerId'
+    customerId: 'customerId',
+    isDeleted: 'isDeleted'
   };
 
   export type SaleItemScalarFieldEnum = (typeof SaleItemScalarFieldEnum)[keyof typeof SaleItemScalarFieldEnum]
@@ -19192,7 +19367,8 @@ export namespace Prisma {
     referenceNo: 'referenceNo',
     sync: 'sync',
     syncedAt: 'syncedAt',
-    supplierId: 'supplierId'
+    supplierId: 'supplierId',
+    isDeleted: 'isDeleted'
   };
 
   export type PurchaseScalarFieldEnum = (typeof PurchaseScalarFieldEnum)[keyof typeof PurchaseScalarFieldEnum]
@@ -19216,7 +19392,8 @@ export namespace Prisma {
     customRetailPrice: 'customRetailPrice',
     customWholesalePrice: 'customWholesalePrice',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    isDeleted: 'isDeleted'
   };
 
   export type PurchaseItemScalarFieldEnum = (typeof PurchaseItemScalarFieldEnum)[keyof typeof PurchaseItemScalarFieldEnum]
@@ -19234,7 +19411,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     sync: 'sync',
-    syncedAt: 'syncedAt'
+    syncedAt: 'syncedAt',
+    isDeleted: 'isDeleted'
   };
 
   export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
@@ -19252,7 +19430,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     sync: 'sync',
-    syncedAt: 'syncedAt'
+    syncedAt: 'syncedAt',
+    isDeleted: 'isDeleted'
   };
 
   export type SupplierScalarFieldEnum = (typeof SupplierScalarFieldEnum)[keyof typeof SupplierScalarFieldEnum]
@@ -19273,7 +19452,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     sync: 'sync',
-    syncedAt: 'syncedAt'
+    syncedAt: 'syncedAt',
+    isDeleted: 'isDeleted'
   };
 
   export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
@@ -19288,7 +19468,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     sync: 'sync',
-    syncedAt: 'syncedAt'
+    syncedAt: 'syncedAt',
+    isDeleted: 'isDeleted'
   };
 
   export type PaymentMethodScalarFieldEnum = (typeof PaymentMethodScalarFieldEnum)[keyof typeof PaymentMethodScalarFieldEnum]
@@ -19341,7 +19522,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     sync: 'sync',
-    syncedAt: 'syncedAt'
+    syncedAt: 'syncedAt',
+    isDeleted: 'isDeleted'
   };
 
   export type ReceiptSettingsScalarFieldEnum = (typeof ReceiptSettingsScalarFieldEnum)[keyof typeof ReceiptSettingsScalarFieldEnum]
@@ -19499,6 +19681,7 @@ export namespace Prisma {
     syncedAt?: DateTimeNullableFilter<"superAdmin"> | Date | string | null
     createdAt?: DateTimeFilter<"superAdmin"> | Date | string
     updatedAt?: DateTimeFilter<"superAdmin"> | Date | string
+    isDeleted?: BoolFilter<"superAdmin"> | boolean
   }
 
   export type superAdminOrderByWithRelationInput = {
@@ -19513,6 +19696,7 @@ export namespace Prisma {
     syncedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type superAdminWhereUniqueInput = Prisma.AtLeast<{
@@ -19530,6 +19714,7 @@ export namespace Prisma {
     syncedAt?: DateTimeNullableFilter<"superAdmin"> | Date | string | null
     createdAt?: DateTimeFilter<"superAdmin"> | Date | string
     updatedAt?: DateTimeFilter<"superAdmin"> | Date | string
+    isDeleted?: BoolFilter<"superAdmin"> | boolean
   }, "id" | "email">
 
   export type superAdminOrderByWithAggregationInput = {
@@ -19544,6 +19729,7 @@ export namespace Prisma {
     syncedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isDeleted?: SortOrder
     _count?: superAdminCountOrderByAggregateInput
     _max?: superAdminMaxOrderByAggregateInput
     _min?: superAdminMinOrderByAggregateInput
@@ -19564,6 +19750,7 @@ export namespace Prisma {
     syncedAt?: DateTimeNullableWithAggregatesFilter<"superAdmin"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"superAdmin"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"superAdmin"> | Date | string
+    isDeleted?: BoolWithAggregatesFilter<"superAdmin"> | boolean
   }
 
   export type usersWhereInput = {
@@ -19582,6 +19769,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"users"> | Date | string
     sync?: BoolFilter<"users"> | boolean
     syncedAt?: DateTimeNullableFilter<"users"> | Date | string | null
+    isDeleted?: BoolFilter<"users"> | boolean
     warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
   }
 
@@ -19598,6 +19786,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     warehouses?: WarehousesOrderByWithRelationInput
   }
 
@@ -19617,6 +19806,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"users"> | Date | string
     sync?: BoolFilter<"users"> | boolean
     syncedAt?: DateTimeNullableFilter<"users"> | Date | string | null
+    isDeleted?: BoolFilter<"users"> | boolean
     warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
   }, "id" | "userName">
 
@@ -19633,6 +19823,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     _count?: usersCountOrderByAggregateInput
     _max?: usersMaxOrderByAggregateInput
     _min?: usersMinOrderByAggregateInput
@@ -19654,6 +19845,7 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"users"> | Date | string
     sync?: BoolWithAggregatesFilter<"users"> | boolean
     syncedAt?: DateTimeNullableWithAggregatesFilter<"users"> | Date | string | null
+    isDeleted?: BoolWithAggregatesFilter<"users"> | boolean
   }
 
   export type SettingsWhereInput = {
@@ -19675,6 +19867,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Settings"> | Date | string
     sync?: BoolFilter<"Settings"> | boolean
     syncedAt?: DateTimeNullableFilter<"Settings"> | Date | string | null
+    isDeleted?: BoolFilter<"Settings"> | boolean
   }
 
   export type SettingsOrderByWithRelationInput = {
@@ -19693,6 +19886,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
   }
 
   export type SettingsWhereUniqueInput = Prisma.AtLeast<{
@@ -19714,6 +19908,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Settings"> | Date | string
     sync?: BoolFilter<"Settings"> | boolean
     syncedAt?: DateTimeNullableFilter<"Settings"> | Date | string | null
+    isDeleted?: BoolFilter<"Settings"> | boolean
   }, "setting_id">
 
   export type SettingsOrderByWithAggregationInput = {
@@ -19732,6 +19927,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     _count?: SettingsCountOrderByAggregateInput
     _avg?: SettingsAvgOrderByAggregateInput
     _max?: SettingsMaxOrderByAggregateInput
@@ -19758,6 +19954,7 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Settings"> | Date | string
     sync?: BoolWithAggregatesFilter<"Settings"> | boolean
     syncedAt?: DateTimeNullableWithAggregatesFilter<"Settings"> | Date | string | null
+    isDeleted?: BoolWithAggregatesFilter<"Settings"> | boolean
   }
 
   export type WarehousesWhereInput = {
@@ -19773,6 +19970,7 @@ export namespace Prisma {
     address?: StringFilter<"Warehouses"> | string
     sync?: BoolFilter<"Warehouses"> | boolean
     syncedAt?: DateTimeNullableFilter<"Warehouses"> | Date | string | null
+    isDeleted?: BoolFilter<"Warehouses"> | boolean
     users?: UsersListRelationFilter
     products?: ProductListRelationFilter
     customer?: CustomerListRelationFilter
@@ -19795,6 +19993,7 @@ export namespace Prisma {
     address?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     users?: usersOrderByRelationAggregateInput
     products?: ProductOrderByRelationAggregateInput
     customer?: CustomerOrderByRelationAggregateInput
@@ -19820,6 +20019,7 @@ export namespace Prisma {
     address?: StringFilter<"Warehouses"> | string
     sync?: BoolFilter<"Warehouses"> | boolean
     syncedAt?: DateTimeNullableFilter<"Warehouses"> | Date | string | null
+    isDeleted?: BoolFilter<"Warehouses"> | boolean
     users?: UsersListRelationFilter
     products?: ProductListRelationFilter
     customer?: CustomerListRelationFilter
@@ -19842,6 +20042,7 @@ export namespace Prisma {
     address?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     _count?: WarehousesCountOrderByAggregateInput
     _max?: WarehousesMaxOrderByAggregateInput
     _min?: WarehousesMinOrderByAggregateInput
@@ -19860,6 +20061,7 @@ export namespace Prisma {
     address?: StringWithAggregatesFilter<"Warehouses"> | string
     sync?: BoolWithAggregatesFilter<"Warehouses"> | boolean
     syncedAt?: DateTimeNullableWithAggregatesFilter<"Warehouses"> | Date | string | null
+    isDeleted?: BoolWithAggregatesFilter<"Warehouses"> | boolean
   }
 
   export type SaleWhereInput = {
@@ -19881,6 +20083,7 @@ export namespace Prisma {
     invoiceNo?: StringFilter<"Sale"> | string
     sync?: BoolFilter<"Sale"> | boolean
     syncedAt?: DateTimeNullableFilter<"Sale"> | Date | string | null
+    isDeleted?: BoolFilter<"Sale"> | boolean
     saleItems?: SaleItemListRelationFilter
     selectedCustomer?: XOR<CustomerNullableScalarRelationFilter, CustomerWhereInput> | null
     warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
@@ -19903,6 +20106,7 @@ export namespace Prisma {
     invoiceNo?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     saleItems?: SaleItemOrderByRelationAggregateInput
     selectedCustomer?: CustomerOrderByWithRelationInput
     warehouses?: WarehousesOrderByWithRelationInput
@@ -19928,6 +20132,7 @@ export namespace Prisma {
     warehousesId?: StringNullableFilter<"Sale"> | string | null
     sync?: BoolFilter<"Sale"> | boolean
     syncedAt?: DateTimeNullableFilter<"Sale"> | Date | string | null
+    isDeleted?: BoolFilter<"Sale"> | boolean
     saleItems?: SaleItemListRelationFilter
     selectedCustomer?: XOR<CustomerNullableScalarRelationFilter, CustomerWhereInput> | null
     warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
@@ -19950,6 +20155,7 @@ export namespace Prisma {
     invoiceNo?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     _count?: SaleCountOrderByAggregateInput
     _avg?: SaleAvgOrderByAggregateInput
     _max?: SaleMaxOrderByAggregateInput
@@ -19976,6 +20182,7 @@ export namespace Prisma {
     invoiceNo?: StringWithAggregatesFilter<"Sale"> | string
     sync?: BoolWithAggregatesFilter<"Sale"> | boolean
     syncedAt?: DateTimeNullableWithAggregatesFilter<"Sale"> | Date | string | null
+    isDeleted?: BoolWithAggregatesFilter<"Sale"> | boolean
   }
 
   export type SaleItemWhereInput = {
@@ -19997,6 +20204,7 @@ export namespace Prisma {
     sync?: BoolFilter<"SaleItem"> | boolean
     syncedAt?: DateTimeNullableFilter<"SaleItem"> | Date | string | null
     customerId?: StringNullableFilter<"SaleItem"> | string | null
+    isDeleted?: BoolFilter<"SaleItem"> | boolean
     sale?: XOR<SaleNullableScalarRelationFilter, SaleWhereInput> | null
     product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
     Warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
@@ -20019,6 +20227,7 @@ export namespace Prisma {
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
     customerId?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     sale?: SaleOrderByWithRelationInput
     product?: ProductOrderByWithRelationInput
     Warehouses?: WarehousesOrderByWithRelationInput
@@ -20044,6 +20253,7 @@ export namespace Prisma {
     sync?: BoolFilter<"SaleItem"> | boolean
     syncedAt?: DateTimeNullableFilter<"SaleItem"> | Date | string | null
     customerId?: StringNullableFilter<"SaleItem"> | string | null
+    isDeleted?: BoolFilter<"SaleItem"> | boolean
     sale?: XOR<SaleNullableScalarRelationFilter, SaleWhereInput> | null
     product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
     Warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
@@ -20066,6 +20276,7 @@ export namespace Prisma {
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
     customerId?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     _count?: SaleItemCountOrderByAggregateInput
     _avg?: SaleItemAvgOrderByAggregateInput
     _max?: SaleItemMaxOrderByAggregateInput
@@ -20092,6 +20303,7 @@ export namespace Prisma {
     sync?: BoolWithAggregatesFilter<"SaleItem"> | boolean
     syncedAt?: DateTimeNullableWithAggregatesFilter<"SaleItem"> | Date | string | null
     customerId?: StringNullableWithAggregatesFilter<"SaleItem"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"SaleItem"> | boolean
   }
 
   export type PurchaseWhereInput = {
@@ -20113,6 +20325,7 @@ export namespace Prisma {
     sync?: BoolFilter<"Purchase"> | boolean
     syncedAt?: DateTimeNullableFilter<"Purchase"> | Date | string | null
     supplierId?: StringNullableFilter<"Purchase"> | string | null
+    isDeleted?: BoolFilter<"Purchase"> | boolean
     purchaseItem?: PurchaseItemListRelationFilter
     warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
     Supplier?: XOR<SupplierNullableScalarRelationFilter, SupplierWhereInput> | null
@@ -20134,6 +20347,7 @@ export namespace Prisma {
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
     supplierId?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     purchaseItem?: PurchaseItemOrderByRelationAggregateInput
     warehouses?: WarehousesOrderByWithRelationInput
     Supplier?: SupplierOrderByWithRelationInput
@@ -20158,6 +20372,7 @@ export namespace Prisma {
     sync?: BoolFilter<"Purchase"> | boolean
     syncedAt?: DateTimeNullableFilter<"Purchase"> | Date | string | null
     supplierId?: StringNullableFilter<"Purchase"> | string | null
+    isDeleted?: BoolFilter<"Purchase"> | boolean
     purchaseItem?: PurchaseItemListRelationFilter
     warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
     Supplier?: XOR<SupplierNullableScalarRelationFilter, SupplierWhereInput> | null
@@ -20179,6 +20394,7 @@ export namespace Prisma {
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
     supplierId?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     _count?: PurchaseCountOrderByAggregateInput
     _avg?: PurchaseAvgOrderByAggregateInput
     _max?: PurchaseMaxOrderByAggregateInput
@@ -20205,6 +20421,7 @@ export namespace Prisma {
     sync?: BoolWithAggregatesFilter<"Purchase"> | boolean
     syncedAt?: DateTimeNullableWithAggregatesFilter<"Purchase"> | Date | string | null
     supplierId?: StringNullableWithAggregatesFilter<"Purchase"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"Purchase"> | boolean
   }
 
   export type PurchaseItemWhereInput = {
@@ -20229,6 +20446,7 @@ export namespace Prisma {
     customWholesalePrice?: FloatNullableFilter<"PurchaseItem"> | number | null
     createdAt?: DateTimeFilter<"PurchaseItem"> | Date | string
     updatedAt?: DateTimeFilter<"PurchaseItem"> | Date | string
+    isDeleted?: BoolFilter<"PurchaseItem"> | boolean
     product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
     Warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
     Purchase?: XOR<PurchaseNullableScalarRelationFilter, PurchaseWhereInput> | null
@@ -20253,6 +20471,7 @@ export namespace Prisma {
     customWholesalePrice?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isDeleted?: SortOrder
     product?: ProductOrderByWithRelationInput
     Warehouses?: WarehousesOrderByWithRelationInput
     Purchase?: PurchaseOrderByWithRelationInput
@@ -20280,6 +20499,7 @@ export namespace Prisma {
     customWholesalePrice?: FloatNullableFilter<"PurchaseItem"> | number | null
     createdAt?: DateTimeFilter<"PurchaseItem"> | Date | string
     updatedAt?: DateTimeFilter<"PurchaseItem"> | Date | string
+    isDeleted?: BoolFilter<"PurchaseItem"> | boolean
     product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
     Warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
     Purchase?: XOR<PurchaseNullableScalarRelationFilter, PurchaseWhereInput> | null
@@ -20304,6 +20524,7 @@ export namespace Prisma {
     customWholesalePrice?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isDeleted?: SortOrder
     _count?: PurchaseItemCountOrderByAggregateInput
     _avg?: PurchaseItemAvgOrderByAggregateInput
     _max?: PurchaseItemMaxOrderByAggregateInput
@@ -20333,6 +20554,7 @@ export namespace Prisma {
     customWholesalePrice?: FloatNullableWithAggregatesFilter<"PurchaseItem"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"PurchaseItem"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PurchaseItem"> | Date | string
+    isDeleted?: BoolWithAggregatesFilter<"PurchaseItem"> | boolean
   }
 
   export type CustomerWhereInput = {
@@ -20351,6 +20573,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Customer"> | Date | string
     sync?: BoolFilter<"Customer"> | boolean
     syncedAt?: DateTimeNullableFilter<"Customer"> | Date | string | null
+    isDeleted?: BoolFilter<"Customer"> | boolean
     Warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
     Sale?: SaleListRelationFilter
     saleItem?: SaleItemListRelationFilter
@@ -20369,6 +20592,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     Warehouses?: WarehousesOrderByWithRelationInput
     Sale?: SaleOrderByRelationAggregateInput
     saleItem?: SaleItemOrderByRelationAggregateInput
@@ -20390,6 +20614,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Customer"> | Date | string
     sync?: BoolFilter<"Customer"> | boolean
     syncedAt?: DateTimeNullableFilter<"Customer"> | Date | string | null
+    isDeleted?: BoolFilter<"Customer"> | boolean
     Warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
     Sale?: SaleListRelationFilter
     saleItem?: SaleItemListRelationFilter
@@ -20408,6 +20633,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     _count?: CustomerCountOrderByAggregateInput
     _max?: CustomerMaxOrderByAggregateInput
     _min?: CustomerMinOrderByAggregateInput
@@ -20429,6 +20655,7 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Customer"> | Date | string
     sync?: BoolWithAggregatesFilter<"Customer"> | boolean
     syncedAt?: DateTimeNullableWithAggregatesFilter<"Customer"> | Date | string | null
+    isDeleted?: BoolWithAggregatesFilter<"Customer"> | boolean
   }
 
   export type SupplierWhereInput = {
@@ -20447,6 +20674,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Supplier"> | Date | string
     sync?: BoolFilter<"Supplier"> | boolean
     syncedAt?: DateTimeNullableFilter<"Supplier"> | Date | string | null
+    isDeleted?: BoolFilter<"Supplier"> | boolean
     Warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
     purchase?: PurchaseListRelationFilter
   }
@@ -20464,6 +20692,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     Warehouses?: WarehousesOrderByWithRelationInput
     purchase?: PurchaseOrderByRelationAggregateInput
   }
@@ -20484,6 +20713,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Supplier"> | Date | string
     sync?: BoolFilter<"Supplier"> | boolean
     syncedAt?: DateTimeNullableFilter<"Supplier"> | Date | string | null
+    isDeleted?: BoolFilter<"Supplier"> | boolean
     Warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
     purchase?: PurchaseListRelationFilter
   }, "id">
@@ -20501,6 +20731,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     _count?: SupplierCountOrderByAggregateInput
     _max?: SupplierMaxOrderByAggregateInput
     _min?: SupplierMinOrderByAggregateInput
@@ -20522,6 +20753,7 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Supplier"> | Date | string
     sync?: BoolWithAggregatesFilter<"Supplier"> | boolean
     syncedAt?: DateTimeNullableWithAggregatesFilter<"Supplier"> | Date | string | null
+    isDeleted?: BoolWithAggregatesFilter<"Supplier"> | boolean
   }
 
   export type ProductWhereInput = {
@@ -20543,6 +20775,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     sync?: BoolFilter<"Product"> | boolean
     syncedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
+    isDeleted?: BoolFilter<"Product"> | boolean
     warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
     SaleItem?: SaleItemListRelationFilter
     purchaseItem?: PurchaseItemListRelationFilter
@@ -20564,6 +20797,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     warehouses?: WarehousesOrderByWithRelationInput
     SaleItem?: SaleItemOrderByRelationAggregateInput
     purchaseItem?: PurchaseItemOrderByRelationAggregateInput
@@ -20588,6 +20822,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     sync?: BoolFilter<"Product"> | boolean
     syncedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
+    isDeleted?: BoolFilter<"Product"> | boolean
     warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
     SaleItem?: SaleItemListRelationFilter
     purchaseItem?: PurchaseItemListRelationFilter
@@ -20609,6 +20844,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     _count?: ProductCountOrderByAggregateInput
     _avg?: ProductAvgOrderByAggregateInput
     _max?: ProductMaxOrderByAggregateInput
@@ -20635,6 +20871,7 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     sync?: BoolWithAggregatesFilter<"Product"> | boolean
     syncedAt?: DateTimeNullableWithAggregatesFilter<"Product"> | Date | string | null
+    isDeleted?: BoolWithAggregatesFilter<"Product"> | boolean
   }
 
   export type PaymentMethodWhereInput = {
@@ -20650,6 +20887,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"PaymentMethod"> | Date | string
     sync?: BoolFilter<"PaymentMethod"> | boolean
     syncedAt?: DateTimeNullableFilter<"PaymentMethod"> | Date | string | null
+    isDeleted?: BoolFilter<"PaymentMethod"> | boolean
     Warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
     Sale?: XOR<SaleNullableScalarRelationFilter, SaleWhereInput> | null
   }
@@ -20664,6 +20902,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     Warehouses?: WarehousesOrderByWithRelationInput
     Sale?: SaleOrderByWithRelationInput
   }
@@ -20681,6 +20920,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"PaymentMethod"> | Date | string
     sync?: BoolFilter<"PaymentMethod"> | boolean
     syncedAt?: DateTimeNullableFilter<"PaymentMethod"> | Date | string | null
+    isDeleted?: BoolFilter<"PaymentMethod"> | boolean
     Warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
     Sale?: XOR<SaleNullableScalarRelationFilter, SaleWhereInput> | null
   }, "id">
@@ -20695,6 +20935,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     _count?: PaymentMethodCountOrderByAggregateInput
     _avg?: PaymentMethodAvgOrderByAggregateInput
     _max?: PaymentMethodMaxOrderByAggregateInput
@@ -20715,6 +20956,7 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"PaymentMethod"> | Date | string
     sync?: BoolWithAggregatesFilter<"PaymentMethod"> | boolean
     syncedAt?: DateTimeNullableWithAggregatesFilter<"PaymentMethod"> | Date | string | null
+    isDeleted?: BoolWithAggregatesFilter<"PaymentMethod"> | boolean
   }
 
   export type ReceiptSettingsWhereInput = {
@@ -20768,6 +21010,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ReceiptSettings"> | Date | string
     sync?: BoolFilter<"ReceiptSettings"> | boolean
     syncedAt?: DateTimeNullableFilter<"ReceiptSettings"> | Date | string | null
+    isDeleted?: BoolFilter<"ReceiptSettings"> | boolean
     Warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
   }
 
@@ -20819,6 +21062,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     Warehouses?: WarehousesOrderByWithRelationInput
   }
 
@@ -20873,6 +21117,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ReceiptSettings"> | Date | string
     sync?: BoolFilter<"ReceiptSettings"> | boolean
     syncedAt?: DateTimeNullableFilter<"ReceiptSettings"> | Date | string | null
+    isDeleted?: BoolFilter<"ReceiptSettings"> | boolean
     Warehouses?: XOR<WarehousesNullableScalarRelationFilter, WarehousesWhereInput> | null
   }, "id" | "warehousesId">
 
@@ -20924,6 +21169,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     _count?: ReceiptSettingsCountOrderByAggregateInput
     _avg?: ReceiptSettingsAvgOrderByAggregateInput
     _max?: ReceiptSettingsMaxOrderByAggregateInput
@@ -20982,6 +21228,7 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"ReceiptSettings"> | Date | string
     sync?: BoolWithAggregatesFilter<"ReceiptSettings"> | boolean
     syncedAt?: DateTimeNullableWithAggregatesFilter<"ReceiptSettings"> | Date | string | null
+    isDeleted?: BoolWithAggregatesFilter<"ReceiptSettings"> | boolean
   }
 
   export type superAdminCreateInput = {
@@ -20996,6 +21243,7 @@ export namespace Prisma {
     syncedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
   }
 
   export type superAdminUncheckedCreateInput = {
@@ -21010,6 +21258,7 @@ export namespace Prisma {
     syncedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
   }
 
   export type superAdminUpdateInput = {
@@ -21024,6 +21273,7 @@ export namespace Prisma {
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type superAdminUncheckedUpdateInput = {
@@ -21038,6 +21288,7 @@ export namespace Prisma {
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type superAdminCreateManyInput = {
@@ -21052,6 +21303,7 @@ export namespace Prisma {
     syncedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
   }
 
   export type superAdminUpdateManyMutationInput = {
@@ -21066,6 +21318,7 @@ export namespace Prisma {
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type superAdminUncheckedUpdateManyInput = {
@@ -21080,6 +21333,7 @@ export namespace Prisma {
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type usersCreateInput = {
@@ -21094,6 +21348,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     warehouses?: WarehousesCreateNestedOneWithoutUsersInput
   }
 
@@ -21110,6 +21365,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type usersUpdateInput = {
@@ -21124,6 +21380,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     warehouses?: WarehousesUpdateOneWithoutUsersNestedInput
   }
 
@@ -21140,6 +21397,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type usersCreateManyInput = {
@@ -21155,6 +21413,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type usersUpdateManyMutationInput = {
@@ -21169,6 +21428,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type usersUncheckedUpdateManyInput = {
@@ -21184,6 +21444,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SettingsCreateInput = {
@@ -21202,6 +21463,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type SettingsUncheckedCreateInput = {
@@ -21220,6 +21482,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type SettingsUpdateInput = {
@@ -21238,6 +21501,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SettingsUncheckedUpdateInput = {
@@ -21256,6 +21520,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SettingsCreateManyInput = {
@@ -21274,6 +21539,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type SettingsUpdateManyMutationInput = {
@@ -21292,6 +21558,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SettingsUncheckedUpdateManyInput = {
@@ -21310,6 +21577,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type WarehousesCreateInput = {
@@ -21322,6 +21590,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersCreateNestedManyWithoutWarehousesInput
     products?: ProductCreateNestedManyWithoutWarehousesInput
     customer?: CustomerCreateNestedManyWithoutWarehousesInput
@@ -21344,6 +21613,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersUncheckedCreateNestedManyWithoutWarehousesInput
     products?: ProductUncheckedCreateNestedManyWithoutWarehousesInput
     customer?: CustomerUncheckedCreateNestedManyWithoutWarehousesInput
@@ -21366,6 +21636,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUpdateManyWithoutWarehousesNestedInput
     products?: ProductUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUpdateManyWithoutWarehousesNestedInput
@@ -21388,6 +21659,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUncheckedUpdateManyWithoutWarehousesNestedInput
     products?: ProductUncheckedUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUncheckedUpdateManyWithoutWarehousesNestedInput
@@ -21410,6 +21682,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type WarehousesUpdateManyMutationInput = {
@@ -21422,6 +21695,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type WarehousesUncheckedUpdateManyInput = {
@@ -21434,6 +21708,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SaleCreateInput = {
@@ -21450,6 +21725,7 @@ export namespace Prisma {
     invoiceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     saleItems?: SaleItemCreateNestedManyWithoutSaleInput
     selectedCustomer?: CustomerCreateNestedOneWithoutSaleInput
     warehouses?: WarehousesCreateNestedOneWithoutSaleInput
@@ -21472,6 +21748,7 @@ export namespace Prisma {
     invoiceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     saleItems?: SaleItemUncheckedCreateNestedManyWithoutSaleInput
     paymentMethod?: PaymentMethodUncheckedCreateNestedManyWithoutSaleInput
   }
@@ -21490,6 +21767,7 @@ export namespace Prisma {
     invoiceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     saleItems?: SaleItemUpdateManyWithoutSaleNestedInput
     selectedCustomer?: CustomerUpdateOneWithoutSaleNestedInput
     warehouses?: WarehousesUpdateOneWithoutSaleNestedInput
@@ -21512,6 +21790,7 @@ export namespace Prisma {
     invoiceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     saleItems?: SaleItemUncheckedUpdateManyWithoutSaleNestedInput
     paymentMethod?: PaymentMethodUncheckedUpdateManyWithoutSaleNestedInput
   }
@@ -21532,6 +21811,7 @@ export namespace Prisma {
     invoiceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type SaleUpdateManyMutationInput = {
@@ -21548,6 +21828,7 @@ export namespace Prisma {
     invoiceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SaleUncheckedUpdateManyInput = {
@@ -21566,6 +21847,7 @@ export namespace Prisma {
     invoiceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SaleItemCreateInput = {
@@ -21580,6 +21862,7 @@ export namespace Prisma {
     profit: number
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     sale?: SaleCreateNestedOneWithoutSaleItemsInput
     product?: ProductCreateNestedOneWithoutSaleItemInput
     Warehouses?: WarehousesCreateNestedOneWithoutSaleItemInput
@@ -21602,6 +21885,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: Date | string | null
     customerId?: string | null
+    isDeleted?: boolean
   }
 
   export type SaleItemUpdateInput = {
@@ -21616,6 +21900,7 @@ export namespace Prisma {
     profit?: FloatFieldUpdateOperationsInput | number
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     sale?: SaleUpdateOneWithoutSaleItemsNestedInput
     product?: ProductUpdateOneWithoutSaleItemNestedInput
     Warehouses?: WarehousesUpdateOneWithoutSaleItemNestedInput
@@ -21638,6 +21923,7 @@ export namespace Prisma {
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SaleItemCreateManyInput = {
@@ -21656,6 +21942,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: Date | string | null
     customerId?: string | null
+    isDeleted?: boolean
   }
 
   export type SaleItemUpdateManyMutationInput = {
@@ -21670,6 +21957,7 @@ export namespace Prisma {
     profit?: FloatFieldUpdateOperationsInput | number
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SaleItemUncheckedUpdateManyInput = {
@@ -21688,6 +21976,7 @@ export namespace Prisma {
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PurchaseCreateInput = {
@@ -21704,6 +21993,7 @@ export namespace Prisma {
     referenceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     purchaseItem?: PurchaseItemCreateNestedManyWithoutPurchaseInput
     warehouses?: WarehousesCreateNestedOneWithoutPurchaseInput
     Supplier?: SupplierCreateNestedOneWithoutPurchaseInput
@@ -21725,6 +22015,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: Date | string | null
     supplierId?: string | null
+    isDeleted?: boolean
     purchaseItem?: PurchaseItemUncheckedCreateNestedManyWithoutPurchaseInput
   }
 
@@ -21742,6 +22033,7 @@ export namespace Prisma {
     referenceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     purchaseItem?: PurchaseItemUpdateManyWithoutPurchaseNestedInput
     warehouses?: WarehousesUpdateOneWithoutPurchaseNestedInput
     Supplier?: SupplierUpdateOneWithoutPurchaseNestedInput
@@ -21763,6 +22055,7 @@ export namespace Prisma {
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     supplierId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     purchaseItem?: PurchaseItemUncheckedUpdateManyWithoutPurchaseNestedInput
   }
 
@@ -21782,6 +22075,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: Date | string | null
     supplierId?: string | null
+    isDeleted?: boolean
   }
 
   export type PurchaseUpdateManyMutationInput = {
@@ -21798,6 +22092,7 @@ export namespace Prisma {
     referenceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PurchaseUncheckedUpdateManyInput = {
@@ -21816,6 +22111,7 @@ export namespace Prisma {
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     supplierId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PurchaseItemCreateInput = {
@@ -21834,6 +22130,7 @@ export namespace Prisma {
     customWholesalePrice?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
     product?: ProductCreateNestedOneWithoutPurchaseItemInput
     Warehouses?: WarehousesCreateNestedOneWithoutPurchaseItemInput
     Purchase?: PurchaseCreateNestedOneWithoutPurchaseItemInput
@@ -21858,6 +22155,7 @@ export namespace Prisma {
     customWholesalePrice?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
   }
 
   export type PurchaseItemUpdateInput = {
@@ -21876,6 +22174,7 @@ export namespace Prisma {
     customWholesalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     product?: ProductUpdateOneWithoutPurchaseItemNestedInput
     Warehouses?: WarehousesUpdateOneWithoutPurchaseItemNestedInput
     Purchase?: PurchaseUpdateOneWithoutPurchaseItemNestedInput
@@ -21900,6 +22199,7 @@ export namespace Prisma {
     customWholesalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PurchaseItemCreateManyInput = {
@@ -21921,6 +22221,7 @@ export namespace Prisma {
     customWholesalePrice?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
   }
 
   export type PurchaseItemUpdateManyMutationInput = {
@@ -21939,6 +22240,7 @@ export namespace Prisma {
     customWholesalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PurchaseItemUncheckedUpdateManyInput = {
@@ -21960,6 +22262,7 @@ export namespace Prisma {
     customWholesalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type CustomerCreateInput = {
@@ -21974,6 +22277,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     Warehouses?: WarehousesCreateNestedOneWithoutCustomerInput
     Sale?: SaleCreateNestedManyWithoutSelectedCustomerInput
     saleItem?: SaleItemCreateNestedManyWithoutCustomerInput
@@ -21992,6 +22296,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     Sale?: SaleUncheckedCreateNestedManyWithoutSelectedCustomerInput
     saleItem?: SaleItemUncheckedCreateNestedManyWithoutCustomerInput
   }
@@ -22008,6 +22313,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     Warehouses?: WarehousesUpdateOneWithoutCustomerNestedInput
     Sale?: SaleUpdateManyWithoutSelectedCustomerNestedInput
     saleItem?: SaleItemUpdateManyWithoutCustomerNestedInput
@@ -22026,6 +22332,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     Sale?: SaleUncheckedUpdateManyWithoutSelectedCustomerNestedInput
     saleItem?: SaleItemUncheckedUpdateManyWithoutCustomerNestedInput
   }
@@ -22043,6 +22350,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type CustomerUpdateManyMutationInput = {
@@ -22057,6 +22365,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type CustomerUncheckedUpdateManyInput = {
@@ -22072,6 +22381,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SupplierCreateInput = {
@@ -22086,6 +22396,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     Warehouses?: WarehousesCreateNestedOneWithoutSupplierInput
     purchase?: PurchaseCreateNestedManyWithoutSupplierInput
   }
@@ -22103,6 +22414,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     purchase?: PurchaseUncheckedCreateNestedManyWithoutSupplierInput
   }
 
@@ -22118,6 +22430,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     Warehouses?: WarehousesUpdateOneWithoutSupplierNestedInput
     purchase?: PurchaseUpdateManyWithoutSupplierNestedInput
   }
@@ -22135,6 +22448,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     purchase?: PurchaseUncheckedUpdateManyWithoutSupplierNestedInput
   }
 
@@ -22151,6 +22465,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type SupplierUpdateManyMutationInput = {
@@ -22165,6 +22480,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SupplierUncheckedUpdateManyInput = {
@@ -22180,6 +22496,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ProductCreateInput = {
@@ -22197,6 +22514,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     warehouses?: WarehousesCreateNestedOneWithoutProductsInput
     SaleItem?: SaleItemCreateNestedManyWithoutProductInput
     purchaseItem?: PurchaseItemCreateNestedManyWithoutProductInput
@@ -22218,6 +22536,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     SaleItem?: SaleItemUncheckedCreateNestedManyWithoutProductInput
     purchaseItem?: PurchaseItemUncheckedCreateNestedManyWithoutProductInput
   }
@@ -22237,6 +22556,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     warehouses?: WarehousesUpdateOneWithoutProductsNestedInput
     SaleItem?: SaleItemUpdateManyWithoutProductNestedInput
     purchaseItem?: PurchaseItemUpdateManyWithoutProductNestedInput
@@ -22258,6 +22578,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     SaleItem?: SaleItemUncheckedUpdateManyWithoutProductNestedInput
     purchaseItem?: PurchaseItemUncheckedUpdateManyWithoutProductNestedInput
   }
@@ -22278,6 +22599,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type ProductUpdateManyMutationInput = {
@@ -22295,6 +22617,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ProductUncheckedUpdateManyInput = {
@@ -22313,6 +22636,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PaymentMethodCreateInput = {
@@ -22323,6 +22647,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     Warehouses?: WarehousesCreateNestedOneWithoutPaymentMethodInput
     Sale?: SaleCreateNestedOneWithoutPaymentMethodInput
   }
@@ -22337,6 +22662,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type PaymentMethodUpdateInput = {
@@ -22347,6 +22673,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     Warehouses?: WarehousesUpdateOneWithoutPaymentMethodNestedInput
     Sale?: SaleUpdateOneWithoutPaymentMethodNestedInput
   }
@@ -22361,6 +22688,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PaymentMethodCreateManyInput = {
@@ -22373,6 +22701,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type PaymentMethodUpdateManyMutationInput = {
@@ -22383,6 +22712,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PaymentMethodUncheckedUpdateManyInput = {
@@ -22395,6 +22725,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ReceiptSettingsCreateInput = {
@@ -22444,6 +22775,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     Warehouses?: WarehousesCreateNestedOneWithoutReceiptSettingsInput
   }
 
@@ -22495,6 +22827,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type ReceiptSettingsUpdateInput = {
@@ -22544,6 +22877,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     Warehouses?: WarehousesUpdateOneWithoutReceiptSettingsNestedInput
   }
 
@@ -22595,6 +22929,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ReceiptSettingsCreateManyInput = {
@@ -22645,6 +22980,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type ReceiptSettingsUpdateManyMutationInput = {
@@ -22694,6 +23030,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ReceiptSettingsUncheckedUpdateManyInput = {
@@ -22744,6 +23081,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -22820,6 +23158,7 @@ export namespace Prisma {
     syncedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type superAdminMaxOrderByAggregateInput = {
@@ -22834,6 +23173,7 @@ export namespace Prisma {
     syncedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type superAdminMinOrderByAggregateInput = {
@@ -22848,6 +23188,7 @@ export namespace Prisma {
     syncedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -22947,6 +23288,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type usersMaxOrderByAggregateInput = {
@@ -22962,6 +23304,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type usersMinOrderByAggregateInput = {
@@ -22977,6 +23320,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type EnumroleWithAggregatesFilter<$PrismaModel = never> = {
@@ -23023,6 +23367,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type SettingsAvgOrderByAggregateInput = {
@@ -23047,6 +23392,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type SettingsMinOrderByAggregateInput = {
@@ -23065,6 +23411,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type SettingsSumOrderByAggregateInput = {
@@ -23209,6 +23556,7 @@ export namespace Prisma {
     address?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type WarehousesMaxOrderByAggregateInput = {
@@ -23221,6 +23569,7 @@ export namespace Prisma {
     address?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type WarehousesMinOrderByAggregateInput = {
@@ -23233,6 +23582,7 @@ export namespace Prisma {
     address?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -23278,6 +23628,7 @@ export namespace Prisma {
     invoiceNo?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type SaleAvgOrderByAggregateInput = {
@@ -23305,6 +23656,7 @@ export namespace Prisma {
     invoiceNo?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type SaleMinOrderByAggregateInput = {
@@ -23323,6 +23675,7 @@ export namespace Prisma {
     invoiceNo?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type SaleSumOrderByAggregateInput = {
@@ -23392,6 +23745,7 @@ export namespace Prisma {
     sync?: SortOrder
     syncedAt?: SortOrder
     customerId?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type SaleItemAvgOrderByAggregateInput = {
@@ -23419,6 +23773,7 @@ export namespace Prisma {
     sync?: SortOrder
     syncedAt?: SortOrder
     customerId?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type SaleItemMinOrderByAggregateInput = {
@@ -23437,6 +23792,7 @@ export namespace Prisma {
     sync?: SortOrder
     syncedAt?: SortOrder
     customerId?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type SaleItemSumOrderByAggregateInput = {
@@ -23469,6 +23825,7 @@ export namespace Prisma {
     sync?: SortOrder
     syncedAt?: SortOrder
     supplierId?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type PurchaseAvgOrderByAggregateInput = {
@@ -23496,6 +23853,7 @@ export namespace Prisma {
     sync?: SortOrder
     syncedAt?: SortOrder
     supplierId?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type PurchaseMinOrderByAggregateInput = {
@@ -23514,6 +23872,7 @@ export namespace Prisma {
     sync?: SortOrder
     syncedAt?: SortOrder
     supplierId?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type PurchaseSumOrderByAggregateInput = {
@@ -23549,6 +23908,7 @@ export namespace Prisma {
     customWholesalePrice?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type PurchaseItemAvgOrderByAggregateInput = {
@@ -23581,6 +23941,7 @@ export namespace Prisma {
     customWholesalePrice?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type PurchaseItemMinOrderByAggregateInput = {
@@ -23602,6 +23963,7 @@ export namespace Prisma {
     customWholesalePrice?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type PurchaseItemSumOrderByAggregateInput = {
@@ -23628,6 +23990,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type CustomerMaxOrderByAggregateInput = {
@@ -23643,6 +24006,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type CustomerMinOrderByAggregateInput = {
@@ -23658,6 +24022,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type SupplierCountOrderByAggregateInput = {
@@ -23673,6 +24038,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type SupplierMaxOrderByAggregateInput = {
@@ -23688,6 +24054,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type SupplierMinOrderByAggregateInput = {
@@ -23703,6 +24070,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type EnumunitFilter<$PrismaModel = never> = {
@@ -23728,6 +24096,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type ProductAvgOrderByAggregateInput = {
@@ -23754,6 +24123,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type ProductMinOrderByAggregateInput = {
@@ -23772,6 +24142,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type ProductSumOrderByAggregateInput = {
@@ -23802,6 +24173,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type PaymentMethodAvgOrderByAggregateInput = {
@@ -23818,6 +24190,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type PaymentMethodMinOrderByAggregateInput = {
@@ -23830,6 +24203,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type PaymentMethodSumOrderByAggregateInput = {
@@ -23900,6 +24274,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type ReceiptSettingsAvgOrderByAggregateInput = {
@@ -23954,6 +24329,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type ReceiptSettingsMinOrderByAggregateInput = {
@@ -24004,6 +24380,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sync?: SortOrder
     syncedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type ReceiptSettingsSumOrderByAggregateInput = {
@@ -25453,6 +25830,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     products?: ProductCreateNestedManyWithoutWarehousesInput
     customer?: CustomerCreateNestedManyWithoutWarehousesInput
     saleItem?: SaleItemCreateNestedManyWithoutWarehousesInput
@@ -25474,6 +25852,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     products?: ProductUncheckedCreateNestedManyWithoutWarehousesInput
     customer?: CustomerUncheckedCreateNestedManyWithoutWarehousesInput
     saleItem?: SaleItemUncheckedCreateNestedManyWithoutWarehousesInput
@@ -25511,6 +25890,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     products?: ProductUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUpdateManyWithoutWarehousesNestedInput
     saleItem?: SaleItemUpdateManyWithoutWarehousesNestedInput
@@ -25532,6 +25912,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     products?: ProductUncheckedUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUncheckedUpdateManyWithoutWarehousesNestedInput
     saleItem?: SaleItemUncheckedUpdateManyWithoutWarehousesNestedInput
@@ -25555,6 +25936,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type usersUncheckedCreateWithoutWarehousesInput = {
@@ -25569,6 +25951,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type usersCreateOrConnectWithoutWarehousesInput = {
@@ -25596,6 +25979,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     SaleItem?: SaleItemCreateNestedManyWithoutProductInput
     purchaseItem?: PurchaseItemCreateNestedManyWithoutProductInput
   }
@@ -25615,6 +25999,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     SaleItem?: SaleItemUncheckedCreateNestedManyWithoutProductInput
     purchaseItem?: PurchaseItemUncheckedCreateNestedManyWithoutProductInput
   }
@@ -25641,6 +26026,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     Sale?: SaleCreateNestedManyWithoutSelectedCustomerInput
     saleItem?: SaleItemCreateNestedManyWithoutCustomerInput
   }
@@ -25657,6 +26043,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     Sale?: SaleUncheckedCreateNestedManyWithoutSelectedCustomerInput
     saleItem?: SaleItemUncheckedCreateNestedManyWithoutCustomerInput
   }
@@ -25683,6 +26070,7 @@ export namespace Prisma {
     profit: number
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     sale?: SaleCreateNestedOneWithoutSaleItemsInput
     product?: ProductCreateNestedOneWithoutSaleItemInput
     Customer?: CustomerCreateNestedOneWithoutSaleItemInput
@@ -25703,6 +26091,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: Date | string | null
     customerId?: string | null
+    isDeleted?: boolean
   }
 
   export type SaleItemCreateOrConnectWithoutWarehousesInput = {
@@ -25729,6 +26118,7 @@ export namespace Prisma {
     invoiceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     saleItems?: SaleItemCreateNestedManyWithoutSaleInput
     selectedCustomer?: CustomerCreateNestedOneWithoutSaleInput
     paymentMethod?: PaymentMethodCreateNestedManyWithoutSaleInput
@@ -25749,6 +26139,7 @@ export namespace Prisma {
     invoiceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     saleItems?: SaleItemUncheckedCreateNestedManyWithoutSaleInput
     paymentMethod?: PaymentMethodUncheckedCreateNestedManyWithoutSaleInput
   }
@@ -25771,6 +26162,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     Sale?: SaleCreateNestedOneWithoutPaymentMethodInput
   }
 
@@ -25783,6 +26175,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type PaymentMethodCreateOrConnectWithoutWarehousesInput = {
@@ -25809,6 +26202,7 @@ export namespace Prisma {
     referenceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     purchaseItem?: PurchaseItemCreateNestedManyWithoutPurchaseInput
     Supplier?: SupplierCreateNestedOneWithoutPurchaseInput
   }
@@ -25828,6 +26222,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: Date | string | null
     supplierId?: string | null
+    isDeleted?: boolean
     purchaseItem?: PurchaseItemUncheckedCreateNestedManyWithoutPurchaseInput
   }
 
@@ -25857,6 +26252,7 @@ export namespace Prisma {
     customWholesalePrice?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
     product?: ProductCreateNestedOneWithoutPurchaseItemInput
     Purchase?: PurchaseCreateNestedOneWithoutPurchaseItemInput
   }
@@ -25879,6 +26275,7 @@ export namespace Prisma {
     customWholesalePrice?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
   }
 
   export type PurchaseItemCreateOrConnectWithoutWarehousesInput = {
@@ -25903,6 +26300,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     purchase?: PurchaseCreateNestedManyWithoutSupplierInput
   }
 
@@ -25918,6 +26316,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     purchase?: PurchaseUncheckedCreateNestedManyWithoutSupplierInput
   }
 
@@ -25978,6 +26377,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type ReceiptSettingsUncheckedCreateWithoutWarehousesInput = {
@@ -26027,6 +26427,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type ReceiptSettingsCreateOrConnectWithoutWarehousesInput = {
@@ -26071,6 +26472,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"users"> | Date | string
     sync?: BoolFilter<"users"> | boolean
     syncedAt?: DateTimeNullableFilter<"users"> | Date | string | null
+    isDeleted?: BoolFilter<"users"> | boolean
   }
 
   export type ProductUpsertWithWhereUniqueWithoutWarehousesInput = {
@@ -26108,6 +26510,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     sync?: BoolFilter<"Product"> | boolean
     syncedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
+    isDeleted?: BoolFilter<"Product"> | boolean
   }
 
   export type CustomerUpsertWithWhereUniqueWithoutWarehousesInput = {
@@ -26142,6 +26545,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Customer"> | Date | string
     sync?: BoolFilter<"Customer"> | boolean
     syncedAt?: DateTimeNullableFilter<"Customer"> | Date | string | null
+    isDeleted?: BoolFilter<"Customer"> | boolean
   }
 
   export type SaleItemUpsertWithWhereUniqueWithoutWarehousesInput = {
@@ -26179,6 +26583,7 @@ export namespace Prisma {
     sync?: BoolFilter<"SaleItem"> | boolean
     syncedAt?: DateTimeNullableFilter<"SaleItem"> | Date | string | null
     customerId?: StringNullableFilter<"SaleItem"> | string | null
+    isDeleted?: BoolFilter<"SaleItem"> | boolean
   }
 
   export type SaleUpsertWithWhereUniqueWithoutWarehousesInput = {
@@ -26216,6 +26621,7 @@ export namespace Prisma {
     invoiceNo?: StringFilter<"Sale"> | string
     sync?: BoolFilter<"Sale"> | boolean
     syncedAt?: DateTimeNullableFilter<"Sale"> | Date | string | null
+    isDeleted?: BoolFilter<"Sale"> | boolean
   }
 
   export type PaymentMethodUpsertWithWhereUniqueWithoutWarehousesInput = {
@@ -26247,6 +26653,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"PaymentMethod"> | Date | string
     sync?: BoolFilter<"PaymentMethod"> | boolean
     syncedAt?: DateTimeNullableFilter<"PaymentMethod"> | Date | string | null
+    isDeleted?: BoolFilter<"PaymentMethod"> | boolean
   }
 
   export type PurchaseUpsertWithWhereUniqueWithoutWarehousesInput = {
@@ -26284,6 +26691,7 @@ export namespace Prisma {
     sync?: BoolFilter<"Purchase"> | boolean
     syncedAt?: DateTimeNullableFilter<"Purchase"> | Date | string | null
     supplierId?: StringNullableFilter<"Purchase"> | string | null
+    isDeleted?: BoolFilter<"Purchase"> | boolean
   }
 
   export type PurchaseItemUpsertWithWhereUniqueWithoutWarehousesInput = {
@@ -26324,6 +26732,7 @@ export namespace Prisma {
     customWholesalePrice?: FloatNullableFilter<"PurchaseItem"> | number | null
     createdAt?: DateTimeFilter<"PurchaseItem"> | Date | string
     updatedAt?: DateTimeFilter<"PurchaseItem"> | Date | string
+    isDeleted?: BoolFilter<"PurchaseItem"> | boolean
   }
 
   export type SupplierUpsertWithWhereUniqueWithoutWarehousesInput = {
@@ -26358,6 +26767,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Supplier"> | Date | string
     sync?: BoolFilter<"Supplier"> | boolean
     syncedAt?: DateTimeNullableFilter<"Supplier"> | Date | string | null
+    isDeleted?: BoolFilter<"Supplier"> | boolean
   }
 
   export type ReceiptSettingsUpsertWithWhereUniqueWithoutWarehousesInput = {
@@ -26427,6 +26837,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ReceiptSettings"> | Date | string
     sync?: BoolFilter<"ReceiptSettings"> | boolean
     syncedAt?: DateTimeNullableFilter<"ReceiptSettings"> | Date | string | null
+    isDeleted?: BoolFilter<"ReceiptSettings"> | boolean
   }
 
   export type SaleItemCreateWithoutSaleInput = {
@@ -26441,6 +26852,7 @@ export namespace Prisma {
     profit: number
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     product?: ProductCreateNestedOneWithoutSaleItemInput
     Warehouses?: WarehousesCreateNestedOneWithoutSaleItemInput
     Customer?: CustomerCreateNestedOneWithoutSaleItemInput
@@ -26461,6 +26873,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: Date | string | null
     customerId?: string | null
+    isDeleted?: boolean
   }
 
   export type SaleItemCreateOrConnectWithoutSaleInput = {
@@ -26485,6 +26898,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     Warehouses?: WarehousesCreateNestedOneWithoutCustomerInput
     saleItem?: SaleItemCreateNestedManyWithoutCustomerInput
   }
@@ -26502,6 +26916,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     saleItem?: SaleItemUncheckedCreateNestedManyWithoutCustomerInput
   }
 
@@ -26520,6 +26935,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersCreateNestedManyWithoutWarehousesInput
     products?: ProductCreateNestedManyWithoutWarehousesInput
     customer?: CustomerCreateNestedManyWithoutWarehousesInput
@@ -26541,6 +26957,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersUncheckedCreateNestedManyWithoutWarehousesInput
     products?: ProductUncheckedCreateNestedManyWithoutWarehousesInput
     customer?: CustomerUncheckedCreateNestedManyWithoutWarehousesInput
@@ -26565,6 +26982,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     Warehouses?: WarehousesCreateNestedOneWithoutPaymentMethodInput
   }
 
@@ -26577,6 +26995,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type PaymentMethodCreateOrConnectWithoutSaleInput = {
@@ -26628,6 +27047,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     Warehouses?: WarehousesUpdateOneWithoutCustomerNestedInput
     saleItem?: SaleItemUpdateManyWithoutCustomerNestedInput
   }
@@ -26645,6 +27065,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     saleItem?: SaleItemUncheckedUpdateManyWithoutCustomerNestedInput
   }
 
@@ -26669,6 +27090,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUpdateManyWithoutWarehousesNestedInput
     products?: ProductUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUpdateManyWithoutWarehousesNestedInput
@@ -26690,6 +27112,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUncheckedUpdateManyWithoutWarehousesNestedInput
     products?: ProductUncheckedUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUncheckedUpdateManyWithoutWarehousesNestedInput
@@ -26731,6 +27154,7 @@ export namespace Prisma {
     invoiceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     selectedCustomer?: CustomerCreateNestedOneWithoutSaleInput
     warehouses?: WarehousesCreateNestedOneWithoutSaleInput
     paymentMethod?: PaymentMethodCreateNestedManyWithoutSaleInput
@@ -26752,6 +27176,7 @@ export namespace Prisma {
     invoiceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     paymentMethod?: PaymentMethodUncheckedCreateNestedManyWithoutSaleInput
   }
 
@@ -26775,6 +27200,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     warehouses?: WarehousesCreateNestedOneWithoutProductsInput
     purchaseItem?: PurchaseItemCreateNestedManyWithoutProductInput
   }
@@ -26795,6 +27221,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     purchaseItem?: PurchaseItemUncheckedCreateNestedManyWithoutProductInput
   }
 
@@ -26813,6 +27240,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersCreateNestedManyWithoutWarehousesInput
     products?: ProductCreateNestedManyWithoutWarehousesInput
     customer?: CustomerCreateNestedManyWithoutWarehousesInput
@@ -26834,6 +27262,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersUncheckedCreateNestedManyWithoutWarehousesInput
     products?: ProductUncheckedCreateNestedManyWithoutWarehousesInput
     customer?: CustomerUncheckedCreateNestedManyWithoutWarehousesInput
@@ -26862,6 +27291,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     Warehouses?: WarehousesCreateNestedOneWithoutCustomerInput
     Sale?: SaleCreateNestedManyWithoutSelectedCustomerInput
   }
@@ -26879,6 +27309,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     Sale?: SaleUncheckedCreateNestedManyWithoutSelectedCustomerInput
   }
 
@@ -26912,6 +27343,7 @@ export namespace Prisma {
     invoiceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     selectedCustomer?: CustomerUpdateOneWithoutSaleNestedInput
     warehouses?: WarehousesUpdateOneWithoutSaleNestedInput
     paymentMethod?: PaymentMethodUpdateManyWithoutSaleNestedInput
@@ -26933,6 +27365,7 @@ export namespace Prisma {
     invoiceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     paymentMethod?: PaymentMethodUncheckedUpdateManyWithoutSaleNestedInput
   }
 
@@ -26962,6 +27395,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     warehouses?: WarehousesUpdateOneWithoutProductsNestedInput
     purchaseItem?: PurchaseItemUpdateManyWithoutProductNestedInput
   }
@@ -26982,6 +27416,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     purchaseItem?: PurchaseItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
@@ -27006,6 +27441,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUpdateManyWithoutWarehousesNestedInput
     products?: ProductUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUpdateManyWithoutWarehousesNestedInput
@@ -27027,6 +27463,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUncheckedUpdateManyWithoutWarehousesNestedInput
     products?: ProductUncheckedUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUncheckedUpdateManyWithoutWarehousesNestedInput
@@ -27061,6 +27498,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     Warehouses?: WarehousesUpdateOneWithoutCustomerNestedInput
     Sale?: SaleUpdateManyWithoutSelectedCustomerNestedInput
   }
@@ -27078,6 +27516,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     Sale?: SaleUncheckedUpdateManyWithoutSelectedCustomerNestedInput
   }
 
@@ -27097,6 +27536,7 @@ export namespace Prisma {
     customWholesalePrice?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
     product?: ProductCreateNestedOneWithoutPurchaseItemInput
     Warehouses?: WarehousesCreateNestedOneWithoutPurchaseItemInput
   }
@@ -27119,6 +27559,7 @@ export namespace Prisma {
     customWholesalePrice?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
   }
 
   export type PurchaseItemCreateOrConnectWithoutPurchaseInput = {
@@ -27141,6 +27582,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersCreateNestedManyWithoutWarehousesInput
     products?: ProductCreateNestedManyWithoutWarehousesInput
     customer?: CustomerCreateNestedManyWithoutWarehousesInput
@@ -27162,6 +27604,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersUncheckedCreateNestedManyWithoutWarehousesInput
     products?: ProductUncheckedCreateNestedManyWithoutWarehousesInput
     customer?: CustomerUncheckedCreateNestedManyWithoutWarehousesInput
@@ -27190,6 +27633,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     Warehouses?: WarehousesCreateNestedOneWithoutSupplierInput
   }
 
@@ -27206,6 +27650,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type SupplierCreateOrConnectWithoutPurchaseInput = {
@@ -27250,6 +27695,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUpdateManyWithoutWarehousesNestedInput
     products?: ProductUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUpdateManyWithoutWarehousesNestedInput
@@ -27271,6 +27717,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUncheckedUpdateManyWithoutWarehousesNestedInput
     products?: ProductUncheckedUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUncheckedUpdateManyWithoutWarehousesNestedInput
@@ -27305,6 +27752,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     Warehouses?: WarehousesUpdateOneWithoutSupplierNestedInput
   }
 
@@ -27321,6 +27769,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ProductCreateWithoutPurchaseItemInput = {
@@ -27338,6 +27787,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     warehouses?: WarehousesCreateNestedOneWithoutProductsInput
     SaleItem?: SaleItemCreateNestedManyWithoutProductInput
   }
@@ -27358,6 +27808,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     SaleItem?: SaleItemUncheckedCreateNestedManyWithoutProductInput
   }
 
@@ -27376,6 +27827,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersCreateNestedManyWithoutWarehousesInput
     products?: ProductCreateNestedManyWithoutWarehousesInput
     customer?: CustomerCreateNestedManyWithoutWarehousesInput
@@ -27397,6 +27849,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersUncheckedCreateNestedManyWithoutWarehousesInput
     products?: ProductUncheckedCreateNestedManyWithoutWarehousesInput
     customer?: CustomerUncheckedCreateNestedManyWithoutWarehousesInput
@@ -27427,6 +27880,7 @@ export namespace Prisma {
     referenceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     warehouses?: WarehousesCreateNestedOneWithoutPurchaseInput
     Supplier?: SupplierCreateNestedOneWithoutPurchaseInput
   }
@@ -27447,6 +27901,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: Date | string | null
     supplierId?: string | null
+    isDeleted?: boolean
   }
 
   export type PurchaseCreateOrConnectWithoutPurchaseItemInput = {
@@ -27480,6 +27935,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     warehouses?: WarehousesUpdateOneWithoutProductsNestedInput
     SaleItem?: SaleItemUpdateManyWithoutProductNestedInput
   }
@@ -27500,6 +27956,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     SaleItem?: SaleItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
@@ -27524,6 +27981,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUpdateManyWithoutWarehousesNestedInput
     products?: ProductUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUpdateManyWithoutWarehousesNestedInput
@@ -27545,6 +28003,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUncheckedUpdateManyWithoutWarehousesNestedInput
     products?: ProductUncheckedUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUncheckedUpdateManyWithoutWarehousesNestedInput
@@ -27581,6 +28040,7 @@ export namespace Prisma {
     referenceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     warehouses?: WarehousesUpdateOneWithoutPurchaseNestedInput
     Supplier?: SupplierUpdateOneWithoutPurchaseNestedInput
   }
@@ -27601,6 +28061,7 @@ export namespace Prisma {
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     supplierId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type WarehousesCreateWithoutCustomerInput = {
@@ -27613,6 +28074,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersCreateNestedManyWithoutWarehousesInput
     products?: ProductCreateNestedManyWithoutWarehousesInput
     saleItem?: SaleItemCreateNestedManyWithoutWarehousesInput
@@ -27634,6 +28096,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersUncheckedCreateNestedManyWithoutWarehousesInput
     products?: ProductUncheckedCreateNestedManyWithoutWarehousesInput
     saleItem?: SaleItemUncheckedCreateNestedManyWithoutWarehousesInput
@@ -27664,6 +28127,7 @@ export namespace Prisma {
     invoiceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     saleItems?: SaleItemCreateNestedManyWithoutSaleInput
     warehouses?: WarehousesCreateNestedOneWithoutSaleInput
     paymentMethod?: PaymentMethodCreateNestedManyWithoutSaleInput
@@ -27684,6 +28148,7 @@ export namespace Prisma {
     invoiceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     saleItems?: SaleItemUncheckedCreateNestedManyWithoutSaleInput
     paymentMethod?: PaymentMethodUncheckedCreateNestedManyWithoutSaleInput
   }
@@ -27710,6 +28175,7 @@ export namespace Prisma {
     profit: number
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     sale?: SaleCreateNestedOneWithoutSaleItemsInput
     product?: ProductCreateNestedOneWithoutSaleItemInput
     Warehouses?: WarehousesCreateNestedOneWithoutSaleItemInput
@@ -27730,6 +28196,7 @@ export namespace Prisma {
     warehousesId?: string | null
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type SaleItemCreateOrConnectWithoutCustomerInput = {
@@ -27763,6 +28230,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUpdateManyWithoutWarehousesNestedInput
     products?: ProductUpdateManyWithoutWarehousesNestedInput
     saleItem?: SaleItemUpdateManyWithoutWarehousesNestedInput
@@ -27784,6 +28252,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUncheckedUpdateManyWithoutWarehousesNestedInput
     products?: ProductUncheckedUpdateManyWithoutWarehousesNestedInput
     saleItem?: SaleItemUncheckedUpdateManyWithoutWarehousesNestedInput
@@ -27837,6 +28306,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersCreateNestedManyWithoutWarehousesInput
     products?: ProductCreateNestedManyWithoutWarehousesInput
     customer?: CustomerCreateNestedManyWithoutWarehousesInput
@@ -27858,6 +28328,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersUncheckedCreateNestedManyWithoutWarehousesInput
     products?: ProductUncheckedCreateNestedManyWithoutWarehousesInput
     customer?: CustomerUncheckedCreateNestedManyWithoutWarehousesInput
@@ -27888,6 +28359,7 @@ export namespace Prisma {
     referenceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     purchaseItem?: PurchaseItemCreateNestedManyWithoutPurchaseInput
     warehouses?: WarehousesCreateNestedOneWithoutPurchaseInput
   }
@@ -27907,6 +28379,7 @@ export namespace Prisma {
     referenceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     purchaseItem?: PurchaseItemUncheckedCreateNestedManyWithoutPurchaseInput
   }
 
@@ -27941,6 +28414,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUpdateManyWithoutWarehousesNestedInput
     products?: ProductUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUpdateManyWithoutWarehousesNestedInput
@@ -27962,6 +28436,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUncheckedUpdateManyWithoutWarehousesNestedInput
     products?: ProductUncheckedUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUncheckedUpdateManyWithoutWarehousesNestedInput
@@ -27999,6 +28474,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersCreateNestedManyWithoutWarehousesInput
     customer?: CustomerCreateNestedManyWithoutWarehousesInput
     saleItem?: SaleItemCreateNestedManyWithoutWarehousesInput
@@ -28020,6 +28496,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersUncheckedCreateNestedManyWithoutWarehousesInput
     customer?: CustomerUncheckedCreateNestedManyWithoutWarehousesInput
     saleItem?: SaleItemUncheckedCreateNestedManyWithoutWarehousesInput
@@ -28048,6 +28525,7 @@ export namespace Prisma {
     profit: number
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     sale?: SaleCreateNestedOneWithoutSaleItemsInput
     Warehouses?: WarehousesCreateNestedOneWithoutSaleItemInput
     Customer?: CustomerCreateNestedOneWithoutSaleItemInput
@@ -28068,6 +28546,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: Date | string | null
     customerId?: string | null
+    isDeleted?: boolean
   }
 
   export type SaleItemCreateOrConnectWithoutProductInput = {
@@ -28096,6 +28575,7 @@ export namespace Prisma {
     customWholesalePrice?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
     Warehouses?: WarehousesCreateNestedOneWithoutPurchaseItemInput
     Purchase?: PurchaseCreateNestedOneWithoutPurchaseItemInput
   }
@@ -28118,6 +28598,7 @@ export namespace Prisma {
     customWholesalePrice?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
   }
 
   export type PurchaseItemCreateOrConnectWithoutProductInput = {
@@ -28151,6 +28632,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUpdateManyWithoutWarehousesNestedInput
     saleItem?: SaleItemUpdateManyWithoutWarehousesNestedInput
@@ -28172,6 +28654,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUncheckedUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUncheckedUpdateManyWithoutWarehousesNestedInput
     saleItem?: SaleItemUncheckedUpdateManyWithoutWarehousesNestedInput
@@ -28225,6 +28708,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersCreateNestedManyWithoutWarehousesInput
     products?: ProductCreateNestedManyWithoutWarehousesInput
     customer?: CustomerCreateNestedManyWithoutWarehousesInput
@@ -28246,6 +28730,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersUncheckedCreateNestedManyWithoutWarehousesInput
     products?: ProductUncheckedCreateNestedManyWithoutWarehousesInput
     customer?: CustomerUncheckedCreateNestedManyWithoutWarehousesInput
@@ -28276,6 +28761,7 @@ export namespace Prisma {
     invoiceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     saleItems?: SaleItemCreateNestedManyWithoutSaleInput
     selectedCustomer?: CustomerCreateNestedOneWithoutSaleInput
     warehouses?: WarehousesCreateNestedOneWithoutSaleInput
@@ -28297,6 +28783,7 @@ export namespace Prisma {
     invoiceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     saleItems?: SaleItemUncheckedCreateNestedManyWithoutSaleInput
   }
 
@@ -28326,6 +28813,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUpdateManyWithoutWarehousesNestedInput
     products?: ProductUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUpdateManyWithoutWarehousesNestedInput
@@ -28347,6 +28835,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUncheckedUpdateManyWithoutWarehousesNestedInput
     products?: ProductUncheckedUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUncheckedUpdateManyWithoutWarehousesNestedInput
@@ -28383,6 +28872,7 @@ export namespace Prisma {
     invoiceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     saleItems?: SaleItemUpdateManyWithoutSaleNestedInput
     selectedCustomer?: CustomerUpdateOneWithoutSaleNestedInput
     warehouses?: WarehousesUpdateOneWithoutSaleNestedInput
@@ -28404,6 +28894,7 @@ export namespace Prisma {
     invoiceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     saleItems?: SaleItemUncheckedUpdateManyWithoutSaleNestedInput
   }
 
@@ -28417,6 +28908,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersCreateNestedManyWithoutWarehousesInput
     products?: ProductCreateNestedManyWithoutWarehousesInput
     customer?: CustomerCreateNestedManyWithoutWarehousesInput
@@ -28438,6 +28930,7 @@ export namespace Prisma {
     address: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
     users?: usersUncheckedCreateNestedManyWithoutWarehousesInput
     products?: ProductUncheckedCreateNestedManyWithoutWarehousesInput
     customer?: CustomerUncheckedCreateNestedManyWithoutWarehousesInput
@@ -28475,6 +28968,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUpdateManyWithoutWarehousesNestedInput
     products?: ProductUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUpdateManyWithoutWarehousesNestedInput
@@ -28496,6 +28990,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     users?: usersUncheckedUpdateManyWithoutWarehousesNestedInput
     products?: ProductUncheckedUpdateManyWithoutWarehousesNestedInput
     customer?: CustomerUncheckedUpdateManyWithoutWarehousesNestedInput
@@ -28519,6 +29014,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type ProductCreateManyWarehousesInput = {
@@ -28536,6 +29032,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type CustomerCreateManyWarehousesInput = {
@@ -28550,6 +29047,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type SaleItemCreateManyWarehousesInput = {
@@ -28567,6 +29065,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: Date | string | null
     customerId?: string | null
+    isDeleted?: boolean
   }
 
   export type SaleCreateManyWarehousesInput = {
@@ -28584,6 +29083,7 @@ export namespace Prisma {
     invoiceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type PaymentMethodCreateManyWarehousesInput = {
@@ -28595,6 +29095,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type PurchaseCreateManyWarehousesInput = {
@@ -28612,6 +29113,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: Date | string | null
     supplierId?: string | null
+    isDeleted?: boolean
   }
 
   export type PurchaseItemCreateManyWarehousesInput = {
@@ -28632,6 +29134,7 @@ export namespace Prisma {
     customWholesalePrice?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
   }
 
   export type SupplierCreateManyWarehousesInput = {
@@ -28646,6 +29149,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type ReceiptSettingsCreateManyWarehousesInput = {
@@ -28695,6 +29199,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type usersUpdateWithoutWarehousesInput = {
@@ -28709,6 +29214,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type usersUncheckedUpdateWithoutWarehousesInput = {
@@ -28723,6 +29229,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type usersUncheckedUpdateManyWithoutWarehousesInput = {
@@ -28737,6 +29244,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ProductUpdateWithoutWarehousesInput = {
@@ -28754,6 +29262,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     SaleItem?: SaleItemUpdateManyWithoutProductNestedInput
     purchaseItem?: PurchaseItemUpdateManyWithoutProductNestedInput
   }
@@ -28773,6 +29282,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     SaleItem?: SaleItemUncheckedUpdateManyWithoutProductNestedInput
     purchaseItem?: PurchaseItemUncheckedUpdateManyWithoutProductNestedInput
   }
@@ -28792,6 +29302,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type CustomerUpdateWithoutWarehousesInput = {
@@ -28806,6 +29317,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     Sale?: SaleUpdateManyWithoutSelectedCustomerNestedInput
     saleItem?: SaleItemUpdateManyWithoutCustomerNestedInput
   }
@@ -28822,6 +29334,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     Sale?: SaleUncheckedUpdateManyWithoutSelectedCustomerNestedInput
     saleItem?: SaleItemUncheckedUpdateManyWithoutCustomerNestedInput
   }
@@ -28838,6 +29351,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SaleItemUpdateWithoutWarehousesInput = {
@@ -28852,6 +29366,7 @@ export namespace Prisma {
     profit?: FloatFieldUpdateOperationsInput | number
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     sale?: SaleUpdateOneWithoutSaleItemsNestedInput
     product?: ProductUpdateOneWithoutSaleItemNestedInput
     Customer?: CustomerUpdateOneWithoutSaleItemNestedInput
@@ -28872,6 +29387,7 @@ export namespace Prisma {
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SaleItemUncheckedUpdateManyWithoutWarehousesInput = {
@@ -28889,6 +29405,7 @@ export namespace Prisma {
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SaleUpdateWithoutWarehousesInput = {
@@ -28905,6 +29422,7 @@ export namespace Prisma {
     invoiceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     saleItems?: SaleItemUpdateManyWithoutSaleNestedInput
     selectedCustomer?: CustomerUpdateOneWithoutSaleNestedInput
     paymentMethod?: PaymentMethodUpdateManyWithoutSaleNestedInput
@@ -28925,6 +29443,7 @@ export namespace Prisma {
     invoiceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     saleItems?: SaleItemUncheckedUpdateManyWithoutSaleNestedInput
     paymentMethod?: PaymentMethodUncheckedUpdateManyWithoutSaleNestedInput
   }
@@ -28944,6 +29463,7 @@ export namespace Prisma {
     invoiceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PaymentMethodUpdateWithoutWarehousesInput = {
@@ -28954,6 +29474,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     Sale?: SaleUpdateOneWithoutPaymentMethodNestedInput
   }
 
@@ -28966,6 +29487,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PaymentMethodUncheckedUpdateManyWithoutWarehousesInput = {
@@ -28977,6 +29499,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PurchaseUpdateWithoutWarehousesInput = {
@@ -28993,6 +29516,7 @@ export namespace Prisma {
     referenceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     purchaseItem?: PurchaseItemUpdateManyWithoutPurchaseNestedInput
     Supplier?: SupplierUpdateOneWithoutPurchaseNestedInput
   }
@@ -29012,6 +29536,7 @@ export namespace Prisma {
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     supplierId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     purchaseItem?: PurchaseItemUncheckedUpdateManyWithoutPurchaseNestedInput
   }
 
@@ -29030,6 +29555,7 @@ export namespace Prisma {
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     supplierId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PurchaseItemUpdateWithoutWarehousesInput = {
@@ -29048,6 +29574,7 @@ export namespace Prisma {
     customWholesalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     product?: ProductUpdateOneWithoutPurchaseItemNestedInput
     Purchase?: PurchaseUpdateOneWithoutPurchaseItemNestedInput
   }
@@ -29070,6 +29597,7 @@ export namespace Prisma {
     customWholesalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PurchaseItemUncheckedUpdateManyWithoutWarehousesInput = {
@@ -29090,6 +29618,7 @@ export namespace Prisma {
     customWholesalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SupplierUpdateWithoutWarehousesInput = {
@@ -29104,6 +29633,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     purchase?: PurchaseUpdateManyWithoutSupplierNestedInput
   }
 
@@ -29119,6 +29649,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     purchase?: PurchaseUncheckedUpdateManyWithoutSupplierNestedInput
   }
 
@@ -29134,6 +29665,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ReceiptSettingsUpdateWithoutWarehousesInput = {
@@ -29183,6 +29715,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ReceiptSettingsUncheckedUpdateWithoutWarehousesInput = {
@@ -29232,6 +29765,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ReceiptSettingsUncheckedUpdateManyWithoutWarehousesInput = {
@@ -29281,6 +29815,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SaleItemCreateManySaleInput = {
@@ -29298,6 +29833,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: Date | string | null
     customerId?: string | null
+    isDeleted?: boolean
   }
 
   export type PaymentMethodCreateManySaleInput = {
@@ -29309,6 +29845,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type SaleItemUpdateWithoutSaleInput = {
@@ -29323,6 +29860,7 @@ export namespace Prisma {
     profit?: FloatFieldUpdateOperationsInput | number
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     product?: ProductUpdateOneWithoutSaleItemNestedInput
     Warehouses?: WarehousesUpdateOneWithoutSaleItemNestedInput
     Customer?: CustomerUpdateOneWithoutSaleItemNestedInput
@@ -29343,6 +29881,7 @@ export namespace Prisma {
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SaleItemUncheckedUpdateManyWithoutSaleInput = {
@@ -29360,6 +29899,7 @@ export namespace Prisma {
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PaymentMethodUpdateWithoutSaleInput = {
@@ -29370,6 +29910,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     Warehouses?: WarehousesUpdateOneWithoutPaymentMethodNestedInput
   }
 
@@ -29382,6 +29923,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PaymentMethodUncheckedUpdateManyWithoutSaleInput = {
@@ -29393,6 +29935,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PurchaseItemCreateManyPurchaseInput = {
@@ -29413,6 +29956,7 @@ export namespace Prisma {
     customWholesalePrice?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
   }
 
   export type PurchaseItemUpdateWithoutPurchaseInput = {
@@ -29431,6 +29975,7 @@ export namespace Prisma {
     customWholesalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     product?: ProductUpdateOneWithoutPurchaseItemNestedInput
     Warehouses?: WarehousesUpdateOneWithoutPurchaseItemNestedInput
   }
@@ -29453,6 +29998,7 @@ export namespace Prisma {
     customWholesalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PurchaseItemUncheckedUpdateManyWithoutPurchaseInput = {
@@ -29473,6 +30019,7 @@ export namespace Prisma {
     customWholesalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SaleCreateManySelectedCustomerInput = {
@@ -29490,6 +30037,7 @@ export namespace Prisma {
     invoiceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type SaleItemCreateManyCustomerInput = {
@@ -29507,6 +30055,7 @@ export namespace Prisma {
     warehousesId?: string | null
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type SaleUpdateWithoutSelectedCustomerInput = {
@@ -29523,6 +30072,7 @@ export namespace Prisma {
     invoiceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     saleItems?: SaleItemUpdateManyWithoutSaleNestedInput
     warehouses?: WarehousesUpdateOneWithoutSaleNestedInput
     paymentMethod?: PaymentMethodUpdateManyWithoutSaleNestedInput
@@ -29543,6 +30093,7 @@ export namespace Prisma {
     invoiceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     saleItems?: SaleItemUncheckedUpdateManyWithoutSaleNestedInput
     paymentMethod?: PaymentMethodUncheckedUpdateManyWithoutSaleNestedInput
   }
@@ -29562,6 +30113,7 @@ export namespace Prisma {
     invoiceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SaleItemUpdateWithoutCustomerInput = {
@@ -29576,6 +30128,7 @@ export namespace Prisma {
     profit?: FloatFieldUpdateOperationsInput | number
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     sale?: SaleUpdateOneWithoutSaleItemsNestedInput
     product?: ProductUpdateOneWithoutSaleItemNestedInput
     Warehouses?: WarehousesUpdateOneWithoutSaleItemNestedInput
@@ -29596,6 +30149,7 @@ export namespace Prisma {
     warehousesId?: NullableStringFieldUpdateOperationsInput | string | null
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SaleItemUncheckedUpdateManyWithoutCustomerInput = {
@@ -29613,6 +30167,7 @@ export namespace Prisma {
     warehousesId?: NullableStringFieldUpdateOperationsInput | string | null
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PurchaseCreateManySupplierInput = {
@@ -29630,6 +30185,7 @@ export namespace Prisma {
     referenceNo: string
     sync?: boolean
     syncedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type PurchaseUpdateWithoutSupplierInput = {
@@ -29646,6 +30202,7 @@ export namespace Prisma {
     referenceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     purchaseItem?: PurchaseItemUpdateManyWithoutPurchaseNestedInput
     warehouses?: WarehousesUpdateOneWithoutPurchaseNestedInput
   }
@@ -29665,6 +30222,7 @@ export namespace Prisma {
     referenceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     purchaseItem?: PurchaseItemUncheckedUpdateManyWithoutPurchaseNestedInput
   }
 
@@ -29683,6 +30241,7 @@ export namespace Prisma {
     referenceNo?: StringFieldUpdateOperationsInput | string
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SaleItemCreateManyProductInput = {
@@ -29700,6 +30259,7 @@ export namespace Prisma {
     sync?: boolean
     syncedAt?: Date | string | null
     customerId?: string | null
+    isDeleted?: boolean
   }
 
   export type PurchaseItemCreateManyProductInput = {
@@ -29720,6 +30280,7 @@ export namespace Prisma {
     customWholesalePrice?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
   }
 
   export type SaleItemUpdateWithoutProductInput = {
@@ -29734,6 +30295,7 @@ export namespace Prisma {
     profit?: FloatFieldUpdateOperationsInput | number
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     sale?: SaleUpdateOneWithoutSaleItemsNestedInput
     Warehouses?: WarehousesUpdateOneWithoutSaleItemNestedInput
     Customer?: CustomerUpdateOneWithoutSaleItemNestedInput
@@ -29754,6 +30316,7 @@ export namespace Prisma {
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SaleItemUncheckedUpdateManyWithoutProductInput = {
@@ -29771,6 +30334,7 @@ export namespace Prisma {
     sync?: BoolFieldUpdateOperationsInput | boolean
     syncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PurchaseItemUpdateWithoutProductInput = {
@@ -29789,6 +30353,7 @@ export namespace Prisma {
     customWholesalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     Warehouses?: WarehousesUpdateOneWithoutPurchaseItemNestedInput
     Purchase?: PurchaseUpdateOneWithoutPurchaseItemNestedInput
   }
@@ -29811,6 +30376,7 @@ export namespace Prisma {
     customWholesalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PurchaseItemUncheckedUpdateManyWithoutProductInput = {
@@ -29831,6 +30397,7 @@ export namespace Prisma {
     customWholesalePrice?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
 

@@ -9,7 +9,7 @@ export async function POST(req:NextRequest) {
   try {
     // Find the sale by invoice number
     const sale = await prisma.sale.findUnique({
-      where: { invoiceNo },
+      where: { invoiceNo,isDeleted:false },
       include: {
         selectedCustomer: true,
         saleItems: {

@@ -9,7 +9,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
         const { id } = await context.params
         const supplier = await prisma.supplier.findUnique({
             where: {
-                id: id
+                id: id,isDeleted:false
             }
         })
 
@@ -42,7 +42,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
 
         const updatedSupplier = await prisma.supplier.update({
             where: {
-                id: id
+                id: id,isDeleted:false
             },
             data: {
                 name,
@@ -71,7 +71,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
         // Check if supplier has any purchases
         const supplierPurchases = await prisma.purchase.findMany({
             where: {
-                supplierId: id
+                supplierId: id,isDeleted:false
             }
         })
 
@@ -82,10 +82,11 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
             )
         }
 
-        await prisma.supplier.delete({
+        await prisma.supplier.update({
             where: {
                 id: id
-            }
+            },
+            data:{isDeleted:true}
         })
 
         return NextResponse.json({ message: "Supplier deleted successfully" }, { status: 200 })

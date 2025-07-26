@@ -8,7 +8,7 @@ export async function POST(req:NextRequest){
         warehouseId
     } = await req.json()
         try {
-            const them = await prisma.customer.findMany({where:{warehousesId:warehouseId}})
+            const them = await prisma.customer.findMany({where:{warehousesId:warehouseId,isDeleted:false}})
             return NextResponse.json(them,{status:201})
         } catch (error) {
             return NextResponse.json("",{status:500})

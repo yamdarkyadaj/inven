@@ -22,7 +22,7 @@ export async function POST(req:NextRequest){
     } = await req.json()
 
    try {
-    const warehouse = await prisma.warehouses.findUnique({where:{warehouseCode:warehouseId}})
+    const warehouse = await prisma.warehouses.findUnique({where:{warehouseCode:warehouseId,isDeleted:false}})
             
     if(!warehouse) return NextResponse.json("werehous does not exisi",{status:401})
 
@@ -67,7 +67,7 @@ export async function POST(req:NextRequest){
         })
         console.log(items[i].productId)
         await prisma.product.update({
-            where:{id:items[i].productId},
+            where:{id:items[i].productId,isDeleted:false},
             data:{quantity:{
                 decrement:items[i].quantity,
                 
@@ -106,14 +106,15 @@ export async function DELETE(req:NextRequest){
     const {saleId} = await req.json()
     try {
         const findSale = await prisma.sale.findMany({
-            where:{invoiceNo:saleId}
+            where:{invoiceNo:saleId,isDeleted:false}
         })
         if(!findSale){
             return NextResponse.json("Error",{status:500})
         }
 
-        await prisma.sale.delete({
-            where:{invoiceNo:saleId}
+        await prisma.sale.update({
+            where:{invoiceNo:saleId},
+            data:{isDeleted:true}
         })
         return NextResponse.json("Done",{status:200})
 

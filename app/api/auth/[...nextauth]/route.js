@@ -19,7 +19,7 @@ const handler = NextAuth({
 
         if (type == "warehouse") {
           // ✅ Warehouse login logic
-          const user = await prisma.users.findUnique({ where: { userName: email } });
+          const user = await prisma.users.findUnique({ where: { userName: email,isDeleted:false } });
           if (!user) return null;
           const compareHash = await bcrypt.compare(password, user.password);
 
@@ -30,14 +30,14 @@ const handler = NextAuth({
           }
         } else {
           // ✅ Admin login logic
-          const user = await prisma.superAdmin.findUnique({ where: { email: email } });
+          const user = await prisma.superAdmin.findUnique({ where: { email: email,isDeleted:false } });
           if (!user) return null;
-          // if (user.password === password) {
-          //   return user;
-          // } else {
-          //   return null;
-          // }
-          return user
+          if (user.password === password) {
+            return user;
+          } else {
+            return null;
+          }
+          
         }
       }
     })

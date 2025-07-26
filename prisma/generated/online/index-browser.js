@@ -131,7 +131,8 @@ exports.Prisma.SuperAdmin_onlineScalarFieldEnum = {
   sync: 'sync',
   syncedAt: 'syncedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.Users_onlineScalarFieldEnum = {
@@ -146,7 +147,8 @@ exports.Prisma.Users_onlineScalarFieldEnum = {
   updatedAt: 'updatedAt',
   sync: 'sync',
   syncedAt: 'syncedAt',
-  warehouses_onlineId: 'warehouses_onlineId'
+  warehouses_onlineId: 'warehouses_onlineId',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.Settings_onlineScalarFieldEnum = {
@@ -164,7 +166,8 @@ exports.Prisma.Settings_onlineScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   sync: 'sync',
-  syncedAt: 'syncedAt'
+  syncedAt: 'syncedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.Warehouses_onlineScalarFieldEnum = {
@@ -176,7 +179,8 @@ exports.Prisma.Warehouses_onlineScalarFieldEnum = {
   description: 'description',
   address: 'address',
   sync: 'sync',
-  syncedAt: 'syncedAt'
+  syncedAt: 'syncedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.Sale_onlineScalarFieldEnum = {
@@ -193,7 +197,8 @@ exports.Prisma.Sale_onlineScalarFieldEnum = {
   sync: 'sync',
   syncedAt: 'syncedAt',
   warehouses_onlineId: 'warehouses_onlineId',
-  customer_onlineId: 'customer_onlineId'
+  customer_onlineId: 'customer_onlineId',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.SaleItem_onlineScalarFieldEnum = {
@@ -211,7 +216,8 @@ exports.Prisma.SaleItem_onlineScalarFieldEnum = {
   warehouses_onlineId: 'warehouses_onlineId',
   sale_onlineId: 'sale_onlineId',
   customer_onlineId: 'customer_onlineId',
-  product_onlineId: 'product_onlineId'
+  product_onlineId: 'product_onlineId',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.Purchase_onlineScalarFieldEnum = {
@@ -229,7 +235,8 @@ exports.Prisma.Purchase_onlineScalarFieldEnum = {
   sync: 'sync',
   syncedAt: 'syncedAt',
   warehouses_onlineId: 'warehouses_onlineId',
-  supplier_onlineId: 'supplier_onlineId'
+  supplier_onlineId: 'supplier_onlineId',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.PurchaseItem_onlineScalarFieldEnum = {
@@ -250,7 +257,8 @@ exports.Prisma.PurchaseItem_onlineScalarFieldEnum = {
   updatedAt: 'updatedAt',
   warehouses_onlineId: 'warehouses_onlineId',
   purchase_onlineId: 'purchase_onlineId',
-  product_onlineId: 'product_onlineId'
+  product_onlineId: 'product_onlineId',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.Customer_onlineScalarFieldEnum = {
@@ -265,7 +273,8 @@ exports.Prisma.Customer_onlineScalarFieldEnum = {
   updatedAt: 'updatedAt',
   sync: 'sync',
   syncedAt: 'syncedAt',
-  warehouses_onlineId: 'warehouses_onlineId'
+  warehouses_onlineId: 'warehouses_onlineId',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.Supplier_onlineScalarFieldEnum = {
@@ -280,7 +289,8 @@ exports.Prisma.Supplier_onlineScalarFieldEnum = {
   updatedAt: 'updatedAt',
   sync: 'sync',
   syncedAt: 'syncedAt',
-  warehouses_onlineId: 'warehouses_onlineId'
+  warehouses_onlineId: 'warehouses_onlineId',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.Product_onlineScalarFieldEnum = {
@@ -298,7 +308,8 @@ exports.Prisma.Product_onlineScalarFieldEnum = {
   updatedAt: 'updatedAt',
   sync: 'sync',
   syncedAt: 'syncedAt',
-  warehouses_onlineId: 'warehouses_onlineId'
+  warehouses_onlineId: 'warehouses_onlineId',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.PaymentMethod_onlineScalarFieldEnum = {
@@ -310,7 +321,8 @@ exports.Prisma.PaymentMethod_onlineScalarFieldEnum = {
   sync: 'sync',
   syncedAt: 'syncedAt',
   warehouses_onlineId: 'warehouses_onlineId',
-  sale_onlineId: 'sale_onlineId'
+  sale_onlineId: 'sale_onlineId',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.ReceiptSettings_onlineScalarFieldEnum = {
@@ -360,7 +372,8 @@ exports.Prisma.ReceiptSettings_onlineScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   sync: 'sync',
-  syncedAt: 'syncedAt'
+  syncedAt: 'syncedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.SortOrder = {

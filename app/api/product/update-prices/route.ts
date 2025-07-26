@@ -30,7 +30,7 @@ export async function PATCH(req: NextRequest) {
 
         // Verify warehouse exists
         const warehouse = await prisma.warehouses.findUnique({
-            where: { warehouseCode: warehouseId }
+            where: { warehouseCode: warehouseId,isDeleted:false }
         })
             
         if (!warehouse) {
@@ -43,6 +43,7 @@ export async function PATCH(req: NextRequest) {
         // Find the product
         const existingProduct = await prisma.product.findFirst({
             where: {
+                isDeleted:false,
                 OR: [
                     { id: productId },
                     { barcode: productId }
@@ -69,7 +70,7 @@ export async function PATCH(req: NextRequest) {
 
         // Update the product prices
         const updatedProduct = await prisma.product.update({
-            where: { id: existingProduct.id },
+            where: { id: existingProduct.id,isDeleted:false },
             data: {...updateData,sync:false}
         })
 

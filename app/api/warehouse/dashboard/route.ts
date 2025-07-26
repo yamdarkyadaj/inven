@@ -11,7 +11,7 @@ export async function POST(req:NextRequest) {
 
     // Get warehouse info first
     const warehouse = await prisma.warehouses.findUnique({
-      where: { warehouseCode: warehouseId }
+      where: { warehouseCode: warehouseId,isDeleted:false }
     });
 
     if (!warehouse) {
@@ -35,32 +35,32 @@ export async function POST(req:NextRequest) {
     ] = [
       // Total users in this warehouse
       await prisma.users.count({
-        where: { warehousesId: warehouseId }
+        where: { warehousesId: warehouseId,isDeleted:false }
       }),
       
       // Total products in this warehouse
       await prisma.product.count({
-        where: { warehousesId: warehouseId }
+        where: { warehousesId: warehouseId,isDeleted:false }
       }),
       
       // Total sales for this warehouse
       await prisma.sale.count({
-        where: { warehousesId: warehouseId }
+        where: { warehousesId: warehouseId,isDeleted:false }
       }),
       
       // Total customers for this warehouse
       await prisma.customer.count({
-        where: { warehousesId: warehouseId }
+        where: { warehousesId: warehouseId,isDeleted:false }
       }),
       
       // Total suppliers for this warehouse
       await prisma.supplier.count({
-        where: { warehousesId: warehouseId }
+        where: { warehousesId: warehouseId,isDeleted:false }
       }),
       
       // Recent sales for this warehouse
       await prisma.sale.findMany({
-        where: { warehousesId: warehouseId },
+        where: { warehousesId: warehouseId,isDeleted:false },
         take: 5,
         orderBy: { createdAt: 'desc' },
         include: {
@@ -78,6 +78,7 @@ export async function POST(req:NextRequest) {
       await prisma.product.findMany({
         where: { 
           warehousesId: warehouseId,
+          isDeleted:false,
           quantity: { lte: 5 }
         },
         take: 10,
@@ -87,7 +88,7 @@ export async function POST(req:NextRequest) {
       // Top selling products by quantity
       await prisma.saleItem.groupBy({
         by: ['productId', 'productName'],
-        where: { warehousesId: warehouseId },
+        where: { warehousesId: warehouseId,isDeleted:false },
         _sum: {
           quantity: true,
           total: true
@@ -107,7 +108,7 @@ export async function POST(req:NextRequest) {
           COUNT(*)::int as sales,
           SUM("grandTotal")::float as revenue
         FROM "Sale" 
-        WHERE "warehousesId" = ${warehouseId} 
+        WHERE "warehousesId" = ${warehouseId} AND "isDeleted" = ${false}
           AND "createdAt" >= NOW() - INTERVAL '6 months'
         GROUP BY DATE_TRUNC('month', "createdAt")
         ORDER BY DATE_TRUNC('month', "createdAt")
@@ -129,7 +130,7 @@ export async function POST(req:NextRequest) {
 
     // Calculate total revenue for this warehouse
     const totalRevenue = await prisma.sale.aggregate({
-      where: { warehousesId: warehouseId },
+      where: { warehousesId: warehouseId,isDeleted:false },
       _sum: {
         grandTotal: true
       }
@@ -138,7 +139,7 @@ export async function POST(req:NextRequest) {
     // Get user roles distribution for this warehouse
     const userRoles = await prisma.users.groupBy({
       by: ['role'],
-      where: { warehousesId: warehouseId },
+      where: { warehousesId: warehouseId,isDeleted:false },
       _count: {
         role: true
       }
@@ -147,7 +148,7 @@ export async function POST(req:NextRequest) {
     // Get customer types distribution for this warehouse
     const customerTypes = await prisma.customer.groupBy({
       by: ['type'],
-      where: { warehousesId: warehouseId },
+      where: { warehousesId: warehouseId,isDeleted:false },
       _count: {
         type: true
       }

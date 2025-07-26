@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
    
     
     const sales = await prisma.sale.findMany({
-      where: { invoiceNo },
+      where: { invoiceNo,isDeleted:false },
       include: {
         selectedCustomer: true,
       },
@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
 
    
     const saleItems = await prisma.saleItem.findMany({
-      where: {saleId:invoiceNo },
+      where: {saleId:invoiceNo,isDeleted:false },
     });
 
    

@@ -14,7 +14,7 @@ export async function DELETE(req: NextRequest) {
 
         // First, get the sale and its items
         const sale = await prisma.sale.findUnique({
-            where: { invoiceNo },
+            where: { invoiceNo,isDeleted:false },
             include: {
                 saleItems: true,
                 paymentMethod: true
@@ -29,7 +29,7 @@ export async function DELETE(req: NextRequest) {
         for (const item of sale.saleItems) {
             if (item.productId) {
                 await prisma.product.update({
-                    where: { id: item.productId },
+                    where: { id: item.productId,isDeleted:false },
                     data: {
                         quantity: {
                             increment: item.quantity
@@ -40,18 +40,21 @@ export async function DELETE(req: NextRequest) {
         }
 
         // Delete payment methods
-        await prisma.paymentMethod.deleteMany({
-            where: { saleId: invoiceNo }
+        await prisma.paymentMethod.updateMany({
+            where: { saleId: invoiceNo },
+            data:{isDeleted:true}
         })
 
         // Delete sale items
-        await prisma.saleItem.deleteMany({
-            where: { saleId: invoiceNo }
+        await prisma.saleItem.updateMany({
+            where: { saleId: invoiceNo },
+            data:{isDeleted:true}
         })
 
         // Delete the sale
-        await prisma.sale.delete({
-            where: { invoiceNo }
+        await prisma.sale.update({
+            where: { invoiceNo },
+            data:{isDeleted:true}
         })
 
         return NextResponse.json({ 

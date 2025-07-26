@@ -17,6 +17,8 @@ import toast from "react-hot-toast"
 import { signIn, signOut, useSession } from "next-auth/react"
 import { redirect } from "next/dist/server/api-utils"
 import { useRouter } from "next/navigation"
+import { useOnlineStatus } from "@/hooks/check-online"
+import axios from "axios"
 
 export default function LoginForm() {
 
@@ -25,6 +27,8 @@ export default function LoginForm() {
 
   const [userName,setUserName] = useState("")
   const [password,setPassword] = useState("")
+
+  const {online} = useOnlineStatus()
 
   const [loading,setLoading] = useState(false)
   
@@ -51,9 +55,13 @@ export default function LoginForm() {
         }
         router.push(`/warehouse/${data.user.warehousesId}/${data.user.role}/dashboard`)
       }
+      if(online){
+        await axios.post("/api/syncNew")
+      }
     }
+   
     main()
-  })
+  },[data])
 
   
 

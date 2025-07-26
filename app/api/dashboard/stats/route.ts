@@ -14,12 +14,13 @@ export async function GET() {
       totalCustomers,
       recentSales
     ] = await Promise.all([
-      prisma.users_online.count(),
-      prisma.warehouses_online.count(),
-      prisma.product_online.count(),
-      prisma.sale_online.count(),
-      prisma.customer_online.count(),
+      prisma.users_online.count({where:{isDeleted:false}}),
+      prisma.warehouses_online.count({where:{isDeleted:false}}),
+      prisma.product_online.count({where:{isDeleted:false}}),
+      prisma.sale_online.count({where:{isDeleted:false}}),
+      prisma.customer_online.count({where:{isDeleted:false}}),
       prisma.sale_online.findMany({
+        where:{isDeleted:false},
         take: 5,
         orderBy: { createdAt: 'desc' },
         include: {

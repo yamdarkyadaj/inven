@@ -11,7 +11,7 @@ export async function POST(
   try {
     const product = await prisma.product.findUnique({
       where: {
-        id: id,
+        id: id,isDeleted:false
       },
       include: {
         warehouses: true,
@@ -56,7 +56,7 @@ export async function PUT(
 
     // Check if product exists
     const existingProduct = await prisma.product.findUnique({
-      where: { id: id },
+      where: { id: id,isDeleted:false },
     });
 
     if (!existingProduct) {
@@ -67,7 +67,7 @@ export async function PUT(
     }
 
     const updatedProduct = await prisma.product.update({
-      where: { id: id },
+      where: { id: id,isDeleted:false },
       data: {
         name,
         wholeSalePrice: parseFloat(wholeSalePrice),

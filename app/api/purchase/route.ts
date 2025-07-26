@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
 
     try {
         const warehouse = await prisma.warehouses.findUnique({
-            where: { warehouseCode: warehouseId }
+            where: { warehouseCode: warehouseId,isDeleted:false }
         })
             
         if (!warehouse) {
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
 
             // Update product quantity (increase stock for purchases)
             await prisma.product.update({
-                where: { id:items[i].productId },
+                where: { id:items[i].productId,isDeleted:false },
                 data: {
                     quantity: {
                         increment: items[i].quantity

@@ -13,7 +13,7 @@ export async function DELETE(req: NextRequest) {
 
         // First, get the purchase and its items
         const purchase = await prisma.purchase.findUnique({
-            where: { referenceNo },
+            where: { referenceNo,isDeleted:false },
             include: {
                 purchaseItem: true
             }
@@ -27,14 +27,14 @@ export async function DELETE(req: NextRequest) {
         for (const item of purchase.purchaseItem) {
             if (item.productId) {
                 const product = await prisma.product.findUnique({
-                    where: { id: item.productId }
+                    where: { id: item.productId,isDeleted:false }
                 })
 
                 if (product) {
                     // Check if we have enough stock to remove
                     if (product.quantity >= item.quantity) {
                         await prisma.product.update({
-                            where: { id: item.productId },
+                            where: { id: item.productId,isDeleted:false },
                             data: {
                                 quantity: {
                                     decrement: item.quantity
@@ -51,13 +51,15 @@ export async function DELETE(req: NextRequest) {
         }
 
         // Delete purchase items
-        await prisma.purchaseItem.deleteMany({
-            where: { purchaseId: referenceNo }
+        await prisma.purchaseItem.updateMany({
+            where: { purchaseId: referenceNo },
+            data:{isDeleted:true}
         })
 
         // Delete the purchase
-        await prisma.purchase.delete({
-            where: { referenceNo }
+        await prisma.purchase.update({
+            where: { referenceNo },
+            data:{isDeleted:true}
         })
 
         return NextResponse.json({ 

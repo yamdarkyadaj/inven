@@ -10,7 +10,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 
         // Fetch supplier details
         const supplier = await prisma.supplier.findUnique({
-            where: { id: supplierId }
+            where: { id: supplierId,isDeleted:false }
         })
 
         if (!supplier) {
@@ -20,7 +20,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
         // Fetch supplier purchases with items
         const purchases = await prisma.purchase.findMany({
             where: {
-                supplierId: supplierId
+                supplierId: supplierId,isDeleted:false
             },
             include: {
                 purchaseItem: {

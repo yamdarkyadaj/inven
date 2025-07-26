@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   try {
     const warehouse = await prisma.warehouses.findUnique({
     
-      where: { warehouseCode: warehouseId },
+      where: { warehouseCode: warehouseId,isDeleted:false },
       
     });
 
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
 
     
     const sales = await prisma.sale.findMany({
-      where: { warehousesId: warehouseId },
+      where: { warehousesId: warehouseId,isDeleted:false },
       orderBy:{
         createdAt:"desc"
       },
@@ -31,11 +31,11 @@ export async function POST(req: NextRequest) {
 
    
     const saleItems = await prisma.saleItem.findMany({
-      where: { warehousesId: warehouseId },
+      where: { warehousesId: warehouseId,isDeleted:false },
     });
 
     const paymentMethod = await prisma.paymentMethod.findMany({
-      where: { warehousesId: warehouseId },
+      where: { warehousesId: warehouseId,isDeleted:false },
     });
 
    

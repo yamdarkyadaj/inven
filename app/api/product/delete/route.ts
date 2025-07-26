@@ -10,15 +10,18 @@ export async function POST(req:NextRequest){
     try {
         const product = await prisma.product.findUnique({
             where:{
-                id:productId
+                id:productId,isDeleted:false
             }
         })
 
         if(!product) return NextResponse.json("product dose not exist",{status:402})
 
-        const deleteProduct = await prisma.product.delete({
+        const deleteProduct = await prisma.product.update({
             where:{
                 id:productId
+            },
+            data:{
+                isDeleted:true
             }
         })
 

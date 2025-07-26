@@ -5,7 +5,7 @@ const prisma = new PrismaClient()
 
 export async function GET(){
    try {
-    const warehouses = await prisma.warehouses_online.findMany()
+    const warehouses = await prisma.warehouses_online.findMany({where:{isDeleted:false}})
 
     return NextResponse.json(warehouses,{status:200})
    } catch (error) {
@@ -64,7 +64,7 @@ export async function PUT(req:NextRequest){
     try {
      const warehouses = await prisma.warehouses_online.update({
         where:{
-            warehouseCode
+            warehouseCode,isDeleted:false
         },
         data:{
             name,

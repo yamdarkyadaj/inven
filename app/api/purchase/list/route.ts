@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     try {
         const purchases = await prisma.purchase.findMany({
             where: {
-                warehousesId: warehouseId
+                warehousesId: warehouseId,isDeleted:false
             },
             include: {
                 purchaseItem: true,

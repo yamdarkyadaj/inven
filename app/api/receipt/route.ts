@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
 
     try {
         const update = await prisma.receiptSettings.upsert({
-            where: { warehousesId },
+            where: { warehousesId,isDeleted:false },
             update: {
                 ...settingsData,
                 updatedAt: new Date()
@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
 
     try {
         const settings = await prisma.receiptSettings.findUnique({
-            where: { warehousesId }
+            where: { warehousesId,isDeleted:false }
         })
 
         return NextResponse.json(settings, { status: 200 })

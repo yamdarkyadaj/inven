@@ -11,7 +11,7 @@ export async function POST(req:NextRequest){
     const data = await req.json()
     const {username:userName,email,password,role,phone:phoneNumber,warehouse} = data.formData
     try {
-        const existUser = await prisma.users_online.findUnique({where:{userName}})
+        const existUser = await prisma.users_online.findUnique({where:{userName,isDeleted:false}})
 
         if(existUser) return NextResponse.json("userNameExist",{status:401})
 
@@ -31,7 +31,7 @@ export async function POST(req:NextRequest){
 
 export async function GET(){
     try {
-        const users = await prismaOfline.users.findMany()
+        const users = await prismaOfline.users.findMany({where:{isDeleted:false}})
         return NextResponse.json(users,{status:200})
     } catch (error) {
         return NextResponse.json(error,{status:500})

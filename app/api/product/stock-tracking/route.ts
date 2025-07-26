@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
 
         // Get product details
         const product = await prisma.product.findUnique({
-            where: { id: productId },
+            where: { id: productId,isDeleted:false },
             include: {
                 warehouses: true
             }
@@ -29,6 +29,7 @@ export async function GET(req: NextRequest) {
         const saleItems = await prisma.saleItem.findMany({
             where: { 
                 productId,
+                isDeleted:false,
                 ...(warehouseId && { warehousesId: warehouseId })
             },
             include: {
@@ -49,6 +50,7 @@ export async function GET(req: NextRequest) {
         const purchaseItems = await prisma.purchaseItem.findMany({
             where: { 
                 productId,
+                isDeleted:false,
                 ...(warehouseId && { warehousesId: warehouseId })
             },
             include: {
