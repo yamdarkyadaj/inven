@@ -165,19 +165,7 @@ export default function UsersPage() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="status">Status</Label>
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="w-40">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Status</SelectItem>
-                      <SelectItem value="active">Active</SelectItem>
-                      <SelectItem value="inactive">Inactive</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                
                 <Button variant="outline" size="sm">
                   <Filter className="mr-2 h-4 w-4" />
                   Clear Filters
@@ -204,9 +192,8 @@ export default function UsersPage() {
                     <TableHead>Phone</TableHead>
                     <TableHead>Role</TableHead>
                     <TableHead>Warehouse</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Last Login</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    
+                    {/* <TableHead className="text-right">Actions</TableHead> */}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -231,7 +218,7 @@ export default function UsersPage() {
                       <TableCell>{user.phone}</TableCell>
                       <TableCell>{getRoleBadge(user.role)}</TableCell>
                       <TableCell>{user.warehousesId}</TableCell>
-                      <TableCell>{getStatusBadge(user.status)}</TableCell>
+                      {/* <TableCell>{getStatusBadge(user.status)}</TableCell>
                       <TableCell>{new Date(user.lastLogin).toLocaleDateString()}</TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
@@ -262,7 +249,7 @@ export default function UsersPage() {
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   ))}
                 </TableBody>

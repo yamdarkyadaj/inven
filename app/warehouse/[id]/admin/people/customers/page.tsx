@@ -168,7 +168,7 @@ export default function CustomersPage() {
                     />
                   </div>
                 </div>
-                <div className="space-y-2">
+                {/* <div className="space-y-2">
                   <Label htmlFor="status">Status</Label>
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
                     <SelectTrigger className="w-40">
@@ -184,7 +184,7 @@ export default function CustomersPage() {
                 <Button variant="outline" size="sm">
                   <Filter className="mr-2 h-4 w-4" />
                   Clear Filters
-                </Button>
+                </Button> */}
               </div>
             </CardContent>
           </Card>

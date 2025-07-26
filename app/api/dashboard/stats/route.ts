@@ -36,6 +36,7 @@ export async function GET() {
 
     // Calculate total sales amount
     const totalSalesAmount = await prisma.sale_online.aggregate({
+      where:{isDeleted:false},
       _sum: {
         grandTotal: true
       }
@@ -53,7 +54,7 @@ export async function GET() {
       totalRevenue,
       recentSales: recentSales.map((sale:any) => ({
         id: sale.invoiceNo,
-        customer: sale.selectedCustomer?.name || 'Unknown Customer',
+        customer: sale.Customer_online,
         amount: sale.grandTotal,
         date: sale.createdAt.toISOString(),
         items: sale.saleItems.length,

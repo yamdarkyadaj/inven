@@ -9,8 +9,11 @@ export async function PATCH(req: NextRequest) {
             productId,
             retailPrice,
             wholesalePrice,
-            warehouseId
+            warehouseId,
+            costPrice
         } = await req.json()
+
+        console.log(costPrice)
 
         // Validate required fields
         if (!productId || !warehouseId) {
@@ -66,6 +69,9 @@ export async function PATCH(req: NextRequest) {
         }
         if (wholesalePrice !== undefined) {
             updateData.wholeSalePrice = parseFloat(wholesalePrice)
+        }
+        if (costPrice !== undefined) {
+            updateData.cost = parseFloat(costPrice)
         }
 
         // Update the product prices

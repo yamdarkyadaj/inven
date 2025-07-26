@@ -1,10 +1,11 @@
 "use client"
 
 import { formatCurrency } from "@/lib/utils"
-import { useCallback } from "react"
+import { useCallback,useEffect,useRef } from "react"
 import fetchWareHouseData from "./fetch-invidual-data"
 import { getWareHouseId } from "./get-werehouseId"
 import axios from "axios"
+
 
 interface ReceiptItem {
   name: string
@@ -186,10 +187,8 @@ export function usePrintReceipt() {
 
       // Format currency based on settings
       const formatAmount = (amount: number) => {
-        const formattedAmount = amount.toFixed(2)
-        return settings.currencyPosition === "after" 
-          ? `${formattedAmount}${settings.currencySymbol}`
-          : `${settings.currencySymbol}${formattedAmount}`
+        
+        return formatCurrency(amount)
       }
 
       const formatPaymentMethods = () => {
@@ -217,7 +216,7 @@ export function usePrintReceipt() {
       }
 
       const generateQRCodeContent = () => {
-        if (!settings.showQrCode) return ""
+        if (!settings.showQrCode) return "first"
         
         let qrContent = ""
         switch (settings.qrCodeContent) {
@@ -234,19 +233,12 @@ export function usePrintReceipt() {
             qrContent = settings.website || ""
         }
 
+        
+
         if (qrContent) {
-          return `
-            <div style="text-align: center; margin: 16px 0;">
-              <div style="display: inline-block; border: 2px solid ${settings.primaryColor}; padding: 8px;">
-                <div style="width: 48px; height: 48px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 10px; color: ${settings.accentColor};">
-                  QR CODE
-                </div>
-              </div>
-              <div style="font-size: 8px; margin-top: 4px; color: ${settings.accentColor};">${qrContent.length > 30 ? qrContent.substring(0, 30) + "..." : qrContent}</div>
-            </div>
-          `
+          return "QR"
         }
-        return ""
+        return "last"
       }
 
       const html = `
@@ -458,8 +450,6 @@ export function usePrintReceipt() {
                   : ""
               }
             </div>
-
-            ${generateQRCodeContent()}
 
             <div class="footer">
               <div>Copyright © ${new Date().getFullYear()} ${settings.companyName}</div>

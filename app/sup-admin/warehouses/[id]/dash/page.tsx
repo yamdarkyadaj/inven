@@ -425,7 +425,7 @@ export default function WarehouseDetailsPage() {
                       <CardContent>
                         <div className="space-y-3">
                           {detailedAnalytics.topProducts.slice(0, 5).map((product: any, index: number) => (
-                            <div key={`product.productId ${Math.random()}`} className="flex items-center justify-between">
+                            <div key={product.productId} className="flex items-center justify-between">
                               <div className="flex items-center gap-2">
                                 <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-xs font-medium">
                                   {index + 1}

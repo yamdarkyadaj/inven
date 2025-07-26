@@ -106,9 +106,11 @@ export default function ViewPurchasesPage() {
       purchase.referenceNo.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (purchase.Supplier?.name || "").toLowerCase().includes(searchTerm.toLowerCase())
     
+      console.log(purchase)
+      const matchesStatus = statusFilter === "all" || purchase.status === statusFilter
     // Note: status and paymentStatus filtering would need to be added to the backend
     // For now, we'll just filter by search term
-    return matchesSearch
+    return matchesSearch && matchesStatus
   }) || []
 
   const getStatusBadge = (status: string) => {

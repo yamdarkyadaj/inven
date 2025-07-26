@@ -118,7 +118,7 @@ export default function AddSalePage() {
   const [saleItems, setSaleItems] = useState<SaleItem[]>([])
   const [selectedCustomer, setSelectedCustomer] = useState("")
   const [selectedProductId, setSelectedProductId] = useState("")
-  const [quantity, setQuantity] = useState(0)
+  const [quantity, setQuantity] = useState(1)
   const [discount, setDiscount] = useState(0)
   const [priceType, setPriceType] = useState<"wholesale" | "retail">("retail")
   const [taxRate, setTaxRate] = useState(0)
@@ -641,7 +641,7 @@ export default function AddSalePage() {
                         <Input
                           id="discount"
                           type="number"
-                          min="1"
+                          min="0"
                           value={discount}
                           onChange={(e) => setDiscount(Number.parseFloat(e.target.value) || 0)}
                         />

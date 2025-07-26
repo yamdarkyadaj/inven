@@ -205,21 +205,7 @@ const [openModalId, setOpenModalId] = useState(null);
                     />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="category">Category</Label>
-                  <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                    <SelectTrigger className="w-40">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Categories</SelectItem>
-                      <SelectItem value="Electronics">Electronics</SelectItem>
-                      <SelectItem value="Computers">Computers</SelectItem>
-                      <SelectItem value="Tablets">Tablets</SelectItem>
-                      <SelectItem value="Audio">Audio</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                
                 <div className="space-y-2">
                   <Label htmlFor="status">Status</Label>
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -260,7 +246,6 @@ const [openModalId, setOpenModalId] = useState(null);
                     <TableHead>Wholesale Price</TableHead>
                     <TableHead>Retail Price</TableHead>
                     <TableHead>Stock</TableHead>
-                    <TableHead>Supplier</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                     {/* <TableHead>Delete</TableHead> */}
                   </TableRow>
@@ -273,9 +258,7 @@ const [openModalId, setOpenModalId] = useState(null);
                       <TableCell>{formatCurrency(product.cost)}</TableCell>
                       <TableCell>{formatCurrency(product.wholeSalePrice)}</TableCell>
                       <TableCell>{formatCurrency(product.retailPrice.toFixed(2))}</TableCell>
-                      <TableCell>{product.quantity}</TableCell>
-                      <TableCell className={getStockColor(product.stock)}>{""}</TableCell>
-                      
+                      <TableCell>{product.quantity}</TableCell>                      
                       <TableCell className="text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -286,10 +269,7 @@ const [openModalId, setOpenModalId] = useState(null);
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem>
-                              <Eye className="mr-2 h-4 w-4" />
-                              View Details
-                            </DropdownMenuItem>
+                            
                             <DropdownMenuItem asChild>
                               <Link href={`${endpoint}/products/${product.id}/stock-tracking`}>
                                 <Activity className="mr-2 h-4 w-4" />

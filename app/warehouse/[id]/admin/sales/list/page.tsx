@@ -59,6 +59,8 @@ export default function SalesListPage() {
 
     const matchesDate = dateFilter === "all" || sale.createdAt === dateFilter
 
+    console.log(sale)
+
     return matchesSearch && matchesStatus && matchesDate
   })
 
@@ -313,9 +315,9 @@ export default function SalesListPage() {
                           <Button variant="ghost" size="sm" onClick={() => handleView(sale.invoiceNo)}>
                             <Eye className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" onClick={() => handleEdit(sale.invoiceNo)}>
+                          {/* <Button variant="ghost" size="sm" onClick={() => handleEdit(sale.invoiceNo)}>
                             <Edit className="h-4 w-4" />
-                          </Button>
+                          </Button> */}
                           <Button variant="ghost" size="sm" onClick={() => handleDelete(sale.invoiceNo)} className="text-red-600 hover:text-red-700">
                             <Trash2 className="h-4 w-4" />
                           </Button>

@@ -218,8 +218,7 @@ export default function UsersPage() {
                     <TableHead>Phone</TableHead>
                     <TableHead>Role</TableHead>
                    
-                    <TableHead>Status</TableHead>
-                    <TableHead>Last Login</TableHead>
+                    
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -244,9 +243,6 @@ export default function UsersPage() {
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.phone}</TableCell>
                       <TableCell>{getRoleBadge(user.role)}</TableCell>
-                      
-                      <TableCell>{getStatusBadge(user.status)}</TableCell>
-                      <TableCell>{new Date(user.lastLogin).toLocaleDateString()}</TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>

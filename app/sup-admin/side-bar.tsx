@@ -191,7 +191,7 @@ export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sid
                 ],
               },
             ]} />
-        <NavSection title="System" items={ [
+        {/* <NavSection title="System" items={ [
               // {
               //   title: "Notifications",
               //   url: "/notifications",
@@ -202,12 +202,12 @@ export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sid
               //   url: "/reports",
               //   icon: BarChart3,
               // },
-              {
-                title: "Settings",
-                url: "/sup-admin//settings",
-                icon: Settings,
-              },
-            ]} />
+              // {
+              //   title: "Settings",
+              //   url: "/sup-admin//settings",
+              //   icon: Settings,
+              // },
+            ]} /> */}
         <Button onClick={()=>signOut()} className="bg-red-500 m-2">Logout</Button>
       </SidebarContent>
       <SidebarRail />

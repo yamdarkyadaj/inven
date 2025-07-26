@@ -90,7 +90,7 @@ export default function AddPurchasePage() {
   const [selectedProductId, setSelectedProductId] = useState("")
   const [quantity, setQuantity] = useState(1)
   const [discount, setDiscount] = useState(0)
-  const [taxRate, setTaxRate] = useState(10)
+  const [taxRate, setTaxRate] = useState(0)
   const [shipping, setShipping] = useState(0)
   const [paidAmount, setPaidAmount] = useState(0)
   const [status, setStatus] = useState<"ordered" | "received" | "pending">("ordered")
@@ -137,34 +137,50 @@ export default function AddPurchasePage() {
   const addProductToPurchase = () => {
     if (!selectedProduct) return
 
-    // Use custom prices if enabled, otherwise use product defaults
-    const effectiveRetailPrice = enableCustomPrices && customRetailPrice !== undefined ? customRetailPrice : selectedProduct.retailPrice
-    const effectiveWholesalePrice = enableCustomPrices && customWholesalePrice !== undefined ? customWholesalePrice : selectedProduct.wholeSalePrice
-    
-    const selectedPrice = priceType === "wholesale" ? effectiveWholesalePrice : effectiveRetailPrice
+    const existingItemIndex = purchaseItems?.findIndex(
+      (item) => item.productId === selectedProduct.id && item.priceType === priceType,
+    )
 
-    const itemTotal = selectedProduct.cost * quantity - discount
-    const newItem: PurchaseItem = {
-      id: `ITEM-${Date.now()}`,
-        productId: selectedProduct.id,
-        productName: selectedProduct.name,
-        productBarcode: selectedProduct.barcode,
-        cost: selectedProduct.cost,
-        wholeSalePrice: selectedProduct.wholeSalePrice,
-        retailPrice: selectedProduct.retailPrice,
-        customRetailPrice: enableCustomPrices ? customRetailPrice : undefined,
-        customWholesalePrice: enableCustomPrices ? customWholesalePrice : undefined,
-        customCost: enableCustomPrices ? customCost : undefined,
-        selectedPrice,
-        priceType,
-        quantity,
-        discount,
-        total: itemTotal,
-        unit: selectedProduct.unit,
-        taxRate: selectedProduct.taxRate,
+    if (existingItemIndex >= 0) {
+      // Update existing item
+      const updatedItems = [...purchaseItems]
+      const existingItem = updatedItems[existingItemIndex]
+      existingItem.quantity += quantity
+      existingItem.discount += discount
+      existingItem.total = existingItem.selectedPrice * existingItem.quantity - existingItem.discount
+      setPurchaseItems(updatedItems)
+    }else{
+      const effectiveRetailPrice = enableCustomPrices && customRetailPrice !== undefined ? customRetailPrice : selectedProduct.retailPrice
+      const effectiveWholesalePrice = enableCustomPrices && customWholesalePrice !== undefined ? customWholesalePrice : selectedProduct.wholeSalePrice
+      
+      const selectedPrice = priceType === "wholesale" ? effectiveWholesalePrice : effectiveRetailPrice
+  
+      const itemTotal = customCost ? customCost : selectedProduct.cost * quantity - discount
+      const newItem: PurchaseItem = {
+        id: `ITEM-${Date.now()}`,
+          productId: selectedProduct.id,
+          productName: selectedProduct.name,
+          productBarcode: selectedProduct.barcode,
+          cost: selectedProduct.cost,
+          wholeSalePrice: selectedProduct.wholeSalePrice,
+          retailPrice: selectedProduct.retailPrice,
+          customRetailPrice: enableCustomPrices ? customRetailPrice : undefined,
+          customWholesalePrice: enableCustomPrices ? customWholesalePrice : undefined,
+          customCost: enableCustomPrices ? customCost : undefined,
+          selectedPrice,
+          priceType,
+          quantity,
+          discount,
+          total: itemTotal,
+          unit: selectedProduct.unit,
+          taxRate: selectedProduct.taxRate,
+      }
+  
+      setPurchaseItems([...purchaseItems, newItem])
     }
 
-    setPurchaseItems([...purchaseItems, newItem])
+    // Use custom prices if enabled, otherwise use product defaults
+   
     setSelectedProductId("")
     setQuantity(1)
     setDiscount(0)
@@ -184,7 +200,8 @@ export default function AddPurchasePage() {
     setPurchaseItems(
       purchaseItems.map((item) => {
         if (item.id === itemId) {
-          const newTotal = item.cost * newQuantity - item.discount
+          const newTotal = (item.customCost ? item.customCost : item.cost) * newQuantity - item.discount
+          console.log(item.customCost)
           return { ...item, quantity: newQuantity, total: newTotal }
         }
         return item
@@ -907,28 +924,28 @@ export default function AddPurchasePage() {
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span>Subtotal:</span>
-                      <span>${subtotal.toFixed(2)}</span>
+                      <span>{formatCurrency(subtotal)}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span>Tax ({taxRate}%):</span>
-                      <span>${taxAmount.toFixed(2)}</span>
+                      <span>{formatCurrency(taxAmount)}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span>Shipping:</span>
-                      <span>${shipping.toFixed(2)}</span>
+                      <span>{formatCurrency(shipping)}</span>
                     </div>
                     <Separator />
                     <div className="flex justify-between font-semibold text-lg">
                       <span>Grand Total:</span>
-                      <span>${grandTotal.toFixed(2)}</span>
+                      <span>{formatCurrency(grandTotal)}</span>
                     </div>
                     <div className="flex justify-between text-green-600">
                       <span>Paid Amount:</span>
-                      <span>${paidAmount.toFixed(2)}</span>
+                      <span>{formatCurrency(paidAmount)}</span>
                     </div>
                     <div className="flex justify-between text-orange-600">
                       <span>Balance:</span>
-                      <span>${(grandTotal - paidAmount).toFixed(2)}</span>
+                      <span>{formatCurrency(grandTotal - paidAmount)}</span>
                     </div>
                   </div>
 
@@ -964,6 +981,8 @@ export default function AddPurchasePage() {
                         value={paidAmount}
                         onChange={(e) => setPaidAmount(Number.parseFloat(e.target.value) || 0)}
                       />
+                      <Button onClick={()=>setPaidAmount(grandTotal)}>All</Button>&nbsp;
+                      <Button onClick={()=>setPaidAmount(grandTotal/2)}>Half</Button>
                     </div>
                   </div>
                 </CardContent>

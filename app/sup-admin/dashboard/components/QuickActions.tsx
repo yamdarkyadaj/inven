@@ -39,7 +39,7 @@ export function QuickActions() {
             View All Users
           </a>
         </Button>
-        <Button asChild className="w-full justify-start bg-transparent" variant="outline">
+        {/* <Button asChild className="w-full justify-start bg-transparent" variant="outline">
           <a href="/warehouse">
             <Package className="mr-2 h-4 w-4" />
             View Products
@@ -56,7 +56,7 @@ export function QuickActions() {
             <BarChart3 className="mr-2 h-4 w-4" />
             View Reports
           </a>
-        </Button>
+        </Button> */}
       </CardContent>
     </Card>
   )
