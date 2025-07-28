@@ -188,6 +188,7 @@ exports.Prisma.Sale_onlineScalarFieldEnum = {
   subTotal: 'subTotal',
   notes: 'notes',
   amountPaid: 'amountPaid',
+  taxRate: 'taxRate',
   grandTotal: 'grandTotal',
   paidAmount: 'paidAmount',
   balance: 'balance',

@@ -1,9 +1,12 @@
 import { PrismaClient } from "@/prisma/generated/offline";
+import { PrismaClient as PrismaOnline } from "@/prisma/generated/online";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
+
+const prismaOnline = new PrismaOnline()
 
 const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
@@ -30,13 +33,16 @@ const handler = NextAuth({
           }
         } else {
           // ✅ Admin login logic
-          const user = await prisma.superAdmin.findUnique({ where: { email: email,isDeleted:false } });
+          const user = await prismaOnline.superAdmin_online.findUnique({ where: { email: email,isDeleted:false } });
+          console.log("no")
           if (!user) return null;
+          console.log("ok")
           if (user.password === password) {
             return user;
           } else {
             return null;
           }
+          return user;
           
         }
       }

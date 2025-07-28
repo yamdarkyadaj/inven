@@ -538,6 +538,7 @@ export default function WarehouseDetailsPage() {
                           <TableHead>Cost</TableHead>
                           <TableHead>Wholesale Price</TableHead>
                           <TableHead>Retail Price</TableHead>
+                          <TableHead>Action</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -567,6 +568,12 @@ export default function WarehouseDetailsPage() {
                               <TableCell>{formatCurrency(product.cost)}</TableCell>
                               <TableCell>{formatCurrency(product.wholeSalePrice)}</TableCell>
                               <TableCell>{formatCurrency(product.retailPrice)}</TableCell>
+                              <TableCell>
+                              <Link href={`/sup-admin/warehouses/wh002/${product.id}/stock-tracking`}>
+                                <Activity className="mr-2 h-4 w-4" />
+                                Stock Tracking
+                              </Link>
+                              </TableCell>
                             </TableRow>
                           )
                         })}

@@ -7163,6 +7163,7 @@ export namespace Prisma {
   export type Sale_onlineAvgAggregateOutputType = {
     subTotal: number | null
     amountPaid: number | null
+    taxRate: number | null
     grandTotal: number | null
     paidAmount: number | null
     balance: number | null
@@ -7171,6 +7172,7 @@ export namespace Prisma {
   export type Sale_onlineSumAggregateOutputType = {
     subTotal: number | null
     amountPaid: number | null
+    taxRate: number | null
     grandTotal: number | null
     paidAmount: number | null
     balance: number | null
@@ -7181,6 +7183,7 @@ export namespace Prisma {
     subTotal: number | null
     notes: string | null
     amountPaid: number | null
+    taxRate: number | null
     grandTotal: number | null
     paidAmount: number | null
     balance: number | null
@@ -7199,6 +7202,7 @@ export namespace Prisma {
     subTotal: number | null
     notes: string | null
     amountPaid: number | null
+    taxRate: number | null
     grandTotal: number | null
     paidAmount: number | null
     balance: number | null
@@ -7217,6 +7221,7 @@ export namespace Prisma {
     subTotal: number
     notes: number
     amountPaid: number
+    taxRate: number
     grandTotal: number
     paidAmount: number
     balance: number
@@ -7235,6 +7240,7 @@ export namespace Prisma {
   export type Sale_onlineAvgAggregateInputType = {
     subTotal?: true
     amountPaid?: true
+    taxRate?: true
     grandTotal?: true
     paidAmount?: true
     balance?: true
@@ -7243,6 +7249,7 @@ export namespace Prisma {
   export type Sale_onlineSumAggregateInputType = {
     subTotal?: true
     amountPaid?: true
+    taxRate?: true
     grandTotal?: true
     paidAmount?: true
     balance?: true
@@ -7253,6 +7260,7 @@ export namespace Prisma {
     subTotal?: true
     notes?: true
     amountPaid?: true
+    taxRate?: true
     grandTotal?: true
     paidAmount?: true
     balance?: true
@@ -7271,6 +7279,7 @@ export namespace Prisma {
     subTotal?: true
     notes?: true
     amountPaid?: true
+    taxRate?: true
     grandTotal?: true
     paidAmount?: true
     balance?: true
@@ -7289,6 +7298,7 @@ export namespace Prisma {
     subTotal?: true
     notes?: true
     amountPaid?: true
+    taxRate?: true
     grandTotal?: true
     paidAmount?: true
     balance?: true
@@ -7394,6 +7404,7 @@ export namespace Prisma {
     subTotal: number
     notes: string | null
     amountPaid: number | null
+    taxRate: number
     grandTotal: number
     paidAmount: number
     balance: number
@@ -7431,6 +7442,7 @@ export namespace Prisma {
     subTotal?: boolean
     notes?: boolean
     amountPaid?: boolean
+    taxRate?: boolean
     grandTotal?: boolean
     paidAmount?: boolean
     balance?: boolean
@@ -7454,6 +7466,7 @@ export namespace Prisma {
     subTotal?: boolean
     notes?: boolean
     amountPaid?: boolean
+    taxRate?: boolean
     grandTotal?: boolean
     paidAmount?: boolean
     balance?: boolean
@@ -7474,6 +7487,7 @@ export namespace Prisma {
     subTotal?: boolean
     notes?: boolean
     amountPaid?: boolean
+    taxRate?: boolean
     grandTotal?: boolean
     paidAmount?: boolean
     balance?: boolean
@@ -7494,6 +7508,7 @@ export namespace Prisma {
     subTotal?: boolean
     notes?: boolean
     amountPaid?: boolean
+    taxRate?: boolean
     grandTotal?: boolean
     paidAmount?: boolean
     balance?: boolean
@@ -7507,7 +7522,7 @@ export namespace Prisma {
     isDeleted?: boolean
   }
 
-  export type Sale_onlineOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "subTotal" | "notes" | "amountPaid" | "grandTotal" | "paidAmount" | "balance" | "createdAt" | "updatedAt" | "invoiceNo" | "sync" | "syncedAt" | "warehouses_onlineId" | "customer_onlineId" | "isDeleted", ExtArgs["result"]["sale_online"]>
+  export type Sale_onlineOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "subTotal" | "notes" | "amountPaid" | "taxRate" | "grandTotal" | "paidAmount" | "balance" | "createdAt" | "updatedAt" | "invoiceNo" | "sync" | "syncedAt" | "warehouses_onlineId" | "customer_onlineId" | "isDeleted", ExtArgs["result"]["sale_online"]>
   export type Sale_onlineInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     saleItems?: boolean | Sale_online$saleItemsArgs<ExtArgs>
     paymentMethod?: boolean | Sale_online$paymentMethodArgs<ExtArgs>
@@ -7537,6 +7552,7 @@ export namespace Prisma {
       subTotal: number
       notes: string | null
       amountPaid: number | null
+      taxRate: number
       grandTotal: number
       paidAmount: number
       balance: number
@@ -7979,6 +7995,7 @@ export namespace Prisma {
     readonly subTotal: FieldRef<"Sale_online", 'Float'>
     readonly notes: FieldRef<"Sale_online", 'String'>
     readonly amountPaid: FieldRef<"Sale_online", 'Float'>
+    readonly taxRate: FieldRef<"Sale_online", 'Float'>
     readonly grandTotal: FieldRef<"Sale_online", 'Float'>
     readonly paidAmount: FieldRef<"Sale_online", 'Float'>
     readonly balance: FieldRef<"Sale_online", 'Float'>
@@ -19296,6 +19313,7 @@ export namespace Prisma {
     subTotal: 'subTotal',
     notes: 'notes',
     amountPaid: 'amountPaid',
+    taxRate: 'taxRate',
     grandTotal: 'grandTotal',
     paidAmount: 'paidAmount',
     balance: 'balance',
@@ -20054,6 +20072,7 @@ export namespace Prisma {
     subTotal?: FloatFilter<"Sale_online"> | number
     notes?: StringNullableFilter<"Sale_online"> | string | null
     amountPaid?: FloatNullableFilter<"Sale_online"> | number | null
+    taxRate?: FloatFilter<"Sale_online"> | number
     grandTotal?: FloatFilter<"Sale_online"> | number
     paidAmount?: FloatFilter<"Sale_online"> | number
     balance?: FloatFilter<"Sale_online"> | number
@@ -20076,6 +20095,7 @@ export namespace Prisma {
     subTotal?: SortOrder
     notes?: SortOrderInput | SortOrder
     amountPaid?: SortOrderInput | SortOrder
+    taxRate?: SortOrder
     grandTotal?: SortOrder
     paidAmount?: SortOrder
     balance?: SortOrder
@@ -20102,6 +20122,7 @@ export namespace Prisma {
     subTotal?: FloatFilter<"Sale_online"> | number
     notes?: StringNullableFilter<"Sale_online"> | string | null
     amountPaid?: FloatNullableFilter<"Sale_online"> | number | null
+    taxRate?: FloatFilter<"Sale_online"> | number
     grandTotal?: FloatFilter<"Sale_online"> | number
     paidAmount?: FloatFilter<"Sale_online"> | number
     balance?: FloatFilter<"Sale_online"> | number
@@ -20123,6 +20144,7 @@ export namespace Prisma {
     subTotal?: SortOrder
     notes?: SortOrderInput | SortOrder
     amountPaid?: SortOrderInput | SortOrder
+    taxRate?: SortOrder
     grandTotal?: SortOrder
     paidAmount?: SortOrder
     balance?: SortOrder
@@ -20149,6 +20171,7 @@ export namespace Prisma {
     subTotal?: FloatWithAggregatesFilter<"Sale_online"> | number
     notes?: StringNullableWithAggregatesFilter<"Sale_online"> | string | null
     amountPaid?: FloatNullableWithAggregatesFilter<"Sale_online"> | number | null
+    taxRate?: FloatWithAggregatesFilter<"Sale_online"> | number
     grandTotal?: FloatWithAggregatesFilter<"Sale_online"> | number
     paidAmount?: FloatWithAggregatesFilter<"Sale_online"> | number
     balance?: FloatWithAggregatesFilter<"Sale_online"> | number
@@ -21693,6 +21716,7 @@ export namespace Prisma {
     subTotal: number
     notes?: string | null
     amountPaid?: number | null
+    taxRate: number
     grandTotal: number
     paidAmount: number
     balance: number
@@ -21713,6 +21737,7 @@ export namespace Prisma {
     subTotal: number
     notes?: string | null
     amountPaid?: number | null
+    taxRate: number
     grandTotal: number
     paidAmount: number
     balance: number
@@ -21733,6 +21758,7 @@ export namespace Prisma {
     subTotal?: FloatFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     amountPaid?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxRate?: FloatFieldUpdateOperationsInput | number
     grandTotal?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number
@@ -21753,6 +21779,7 @@ export namespace Prisma {
     subTotal?: FloatFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     amountPaid?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxRate?: FloatFieldUpdateOperationsInput | number
     grandTotal?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number
@@ -21773,6 +21800,7 @@ export namespace Prisma {
     subTotal: number
     notes?: string | null
     amountPaid?: number | null
+    taxRate: number
     grandTotal: number
     paidAmount: number
     balance: number
@@ -21791,6 +21819,7 @@ export namespace Prisma {
     subTotal?: FloatFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     amountPaid?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxRate?: FloatFieldUpdateOperationsInput | number
     grandTotal?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number
@@ -21807,6 +21836,7 @@ export namespace Prisma {
     subTotal?: FloatFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     amountPaid?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxRate?: FloatFieldUpdateOperationsInput | number
     grandTotal?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number
@@ -23587,6 +23617,7 @@ export namespace Prisma {
     subTotal?: SortOrder
     notes?: SortOrder
     amountPaid?: SortOrder
+    taxRate?: SortOrder
     grandTotal?: SortOrder
     paidAmount?: SortOrder
     balance?: SortOrder
@@ -23603,6 +23634,7 @@ export namespace Prisma {
   export type Sale_onlineAvgOrderByAggregateInput = {
     subTotal?: SortOrder
     amountPaid?: SortOrder
+    taxRate?: SortOrder
     grandTotal?: SortOrder
     paidAmount?: SortOrder
     balance?: SortOrder
@@ -23613,6 +23645,7 @@ export namespace Prisma {
     subTotal?: SortOrder
     notes?: SortOrder
     amountPaid?: SortOrder
+    taxRate?: SortOrder
     grandTotal?: SortOrder
     paidAmount?: SortOrder
     balance?: SortOrder
@@ -23631,6 +23664,7 @@ export namespace Prisma {
     subTotal?: SortOrder
     notes?: SortOrder
     amountPaid?: SortOrder
+    taxRate?: SortOrder
     grandTotal?: SortOrder
     paidAmount?: SortOrder
     balance?: SortOrder
@@ -23647,6 +23681,7 @@ export namespace Prisma {
   export type Sale_onlineSumOrderByAggregateInput = {
     subTotal?: SortOrder
     amountPaid?: SortOrder
+    taxRate?: SortOrder
     grandTotal?: SortOrder
     paidAmount?: SortOrder
     balance?: SortOrder
@@ -26074,6 +26109,7 @@ export namespace Prisma {
     subTotal: number
     notes?: string | null
     amountPaid?: number | null
+    taxRate: number
     grandTotal: number
     paidAmount: number
     balance: number
@@ -26093,6 +26129,7 @@ export namespace Prisma {
     subTotal: number
     notes?: string | null
     amountPaid?: number | null
+    taxRate: number
     grandTotal: number
     paidAmount: number
     balance: number
@@ -26573,6 +26610,7 @@ export namespace Prisma {
     subTotal?: FloatFilter<"Sale_online"> | number
     notes?: StringNullableFilter<"Sale_online"> | string | null
     amountPaid?: FloatNullableFilter<"Sale_online"> | number | null
+    taxRate?: FloatFilter<"Sale_online"> | number
     grandTotal?: FloatFilter<"Sale_online"> | number
     paidAmount?: FloatFilter<"Sale_online"> | number
     balance?: FloatFilter<"Sale_online"> | number
@@ -27156,6 +27194,7 @@ export namespace Prisma {
     subTotal: number
     notes?: string | null
     amountPaid?: number | null
+    taxRate: number
     grandTotal: number
     paidAmount: number
     balance: number
@@ -27175,6 +27214,7 @@ export namespace Prisma {
     subTotal: number
     notes?: string | null
     amountPaid?: number | null
+    taxRate: number
     grandTotal: number
     paidAmount: number
     balance: number
@@ -27349,6 +27389,7 @@ export namespace Prisma {
     subTotal?: FloatFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     amountPaid?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxRate?: FloatFieldUpdateOperationsInput | number
     grandTotal?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number
@@ -27368,6 +27409,7 @@ export namespace Prisma {
     subTotal?: FloatFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     amountPaid?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxRate?: FloatFieldUpdateOperationsInput | number
     grandTotal?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number
@@ -28027,6 +28069,7 @@ export namespace Prisma {
     subTotal: number
     notes?: string | null
     amountPaid?: number | null
+    taxRate: number
     grandTotal: number
     paidAmount: number
     balance: number
@@ -28046,6 +28089,7 @@ export namespace Prisma {
     subTotal: number
     notes?: string | null
     amountPaid?: number | null
+    taxRate: number
     grandTotal: number
     paidAmount: number
     balance: number
@@ -28708,6 +28752,7 @@ export namespace Prisma {
     subTotal: number
     notes?: string | null
     amountPaid?: number | null
+    taxRate: number
     grandTotal: number
     paidAmount: number
     balance: number
@@ -28727,6 +28772,7 @@ export namespace Prisma {
     subTotal: number
     notes?: string | null
     amountPaid?: number | null
+    taxRate: number
     grandTotal: number
     paidAmount: number
     balance: number
@@ -28817,6 +28863,7 @@ export namespace Prisma {
     subTotal?: FloatFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     amountPaid?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxRate?: FloatFieldUpdateOperationsInput | number
     grandTotal?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number
@@ -28836,6 +28883,7 @@ export namespace Prisma {
     subTotal?: FloatFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     amountPaid?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxRate?: FloatFieldUpdateOperationsInput | number
     grandTotal?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number
@@ -29025,6 +29073,7 @@ export namespace Prisma {
     subTotal: number
     notes?: string | null
     amountPaid?: number | null
+    taxRate: number
     grandTotal: number
     paidAmount: number
     balance: number
@@ -29364,6 +29413,7 @@ export namespace Prisma {
     subTotal?: FloatFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     amountPaid?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxRate?: FloatFieldUpdateOperationsInput | number
     grandTotal?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number
@@ -29383,6 +29433,7 @@ export namespace Prisma {
     subTotal?: FloatFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     amountPaid?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxRate?: FloatFieldUpdateOperationsInput | number
     grandTotal?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number
@@ -29402,6 +29453,7 @@ export namespace Prisma {
     subTotal?: FloatFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     amountPaid?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxRate?: FloatFieldUpdateOperationsInput | number
     grandTotal?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number
@@ -29975,6 +30027,7 @@ export namespace Prisma {
     subTotal: number
     notes?: string | null
     amountPaid?: number | null
+    taxRate: number
     grandTotal: number
     paidAmount: number
     balance: number
@@ -30010,6 +30063,7 @@ export namespace Prisma {
     subTotal?: FloatFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     amountPaid?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxRate?: FloatFieldUpdateOperationsInput | number
     grandTotal?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number
@@ -30029,6 +30083,7 @@ export namespace Prisma {
     subTotal?: FloatFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     amountPaid?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxRate?: FloatFieldUpdateOperationsInput | number
     grandTotal?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number
@@ -30048,6 +30103,7 @@ export namespace Prisma {
     subTotal?: FloatFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     amountPaid?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxRate?: FloatFieldUpdateOperationsInput | number
     grandTotal?: FloatFieldUpdateOperationsInput | number
     paidAmount?: FloatFieldUpdateOperationsInput | number
     balance?: FloatFieldUpdateOperationsInput | number

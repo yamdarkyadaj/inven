@@ -122,6 +122,7 @@ model Sale_online {
     subTotal            Float
     notes               String?
     amountPaid          Float?
+    taxRate             Float
     grandTotal          Float
     paidAmount          Float
     balance             Float

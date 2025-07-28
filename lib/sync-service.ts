@@ -280,18 +280,20 @@ export class DataSyncService {
         const { sync, syncedAt, warehousesId,taxRate, selectedCustomerId, ...saleData } = sale;
         
         await onlineDb.sale_online.upsert({
-          where: { invoiceNo: sale.invoiceNo },
+          where: { invoiceNo: sale.invoiceNo,taxRate },
           update: {
             ...saleData,
             warehouses_onlineId: warehousesId,
             customer_onlineId: selectedCustomerId,
             sync: true,
+            taxRate,
             syncedAt: new Date()
           },
           create: {
             ...saleData,
             warehouses_onlineId: warehousesId,
             customer_onlineId: selectedCustomerId,
+            taxRate,
             sync: true,
             syncedAt: new Date()
           }

@@ -1,5 +1,6 @@
 "use client"
 import { useOnlineStatus } from "@/hooks/check-online";
+import { useAutoSync } from "@/hooks/sync-data";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -10,6 +11,10 @@ export default function SupAdminLayout({children}:{children:React.ReactNode}){
     const {data,status} = useSession()
     const router = useRouter()
     const {online} = useOnlineStatus()
+  
+      const{ status:key }= useAutoSync()
+      console.log(key)
+    
     
     useEffect(()=>{
 
@@ -23,14 +28,15 @@ export default function SupAdminLayout({children}:{children:React.ReactNode}){
 
         const interval = setInterval(async () => {
             if (online) {
-              try {
-                const response = await axios.post("/api/syncNew", { online });
-                console.log("Sync success:", response.data);
-              } catch (error) {
-                console.error("Sync failed:", error);
-              }
+             
             }
-          }, 20000); // 10000ms = 10 seconds
+            try {
+             
+              console.log("Sync success:", status);
+            } catch (error) {
+              console.error("Sync failed:", error);
+            }
+          }, 10000); 
       
           // Cleanup when component unmounts
           return () => clearInterval(interval);
