@@ -1,21 +1,19 @@
-import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
-
-const prisma = new PrismaClient()
+import offlinePrisma from "@/lib/oflinePrisma";
 
 
 export async function GET(req:NextRequest){
     const warehouseId = await req.json()
     
     try {
-        const products = await prisma.product.findMany({where:{isDeleted:false}})
+        const products = await offlinePrisma.product.findMany({where:{isDeleted:false}})
 
         return NextResponse.json(products,{status:200})
     } catch (error) {
         return NextResponse.json(error,{status:500})
         
     }finally{
-        await prisma.$disconnect()
+        await offlinePrisma.$disconnect()
     }
 }
 
@@ -23,16 +21,16 @@ export async function POST(req:NextRequest){
     const {productName:name,productCode:barcode,productDescription:description,productQuantity:quantity,productTaxRate:taxRate,productUnit:unit,wholeSalePrice,retailPrice,costPrice:cost,warehouseId} = await req.json()
     try{
         
-        const warehouse = await prisma.warehouses.findUnique({where:{warehouseCode:warehouseId,isDeleted:false}})
+        const warehouse = await offlinePrisma.warehouses.findUnique({where:{warehouseCode:warehouseId,isDeleted:false}})
         
         if(!warehouse) return NextResponse.json("werehous does not exisi",{status:401})
             
-        const checkProduct = await prisma.product.findMany({where:{barcode,warehousesId:warehouseId,isDeleted:false}})
+        const checkProduct = await offlinePrisma.product.findMany({where:{barcode,warehousesId:warehouseId,isDeleted:false}})
        
         
         if(checkProduct.length > 0) return NextResponse.json("werehous Product Exist",{status:403})
 
-        const product = await prisma.product.create({
+        const product = await offlinePrisma.product.create({
             data:{
                 name,
                 barcode,
@@ -54,17 +52,17 @@ export async function POST(req:NextRequest){
         
         return NextResponse.json(error,{status:500})
     }finally{
-        await prisma.$disconnect()
+        await offlinePrisma.$disconnect()
     }
 }
 
 // export async function PUT(req:NextRequest){
 //     const {productName:name,productCode:barcode,productDescription:description,productQuantity:quantity,productTaxRate:taxRate,productUnit:unit,wholeSalePrice,retailPrice,costPrice:cost} = await req.json()
 //     try{  
-//         const checkProduct = await prisma.product.findUnique({where:{barcode}})
+//         const checkProduct = await offlinePrisma.product.findUnique({where:{barcode}})
 //         if(checkProduct) return NextResponse.json("werehous Product Exist",{status:403})
 
-//         const productUpdate = await prisma.product.update({
+//         const productUpdate = await offlinePrisma.product.update({
 //             where:{barcode},
 //             data:{
 //                 name,
@@ -85,14 +83,14 @@ export async function POST(req:NextRequest){
         
 //         return NextResponse.json(error,{status:500})
 //     }finally{
-//         await prisma.$disconnect()
+//         await offlinePrisma.$disconnect()
 //     }
 // }
 
 export async function DELETE(req:NextRequest){
     const {productId} = await req.json()
     try {
-        const product = await prisma.product.findUnique({
+        const product = await offlinePrisma.product.findUnique({
             where:{
                 id:productId
             }
@@ -100,7 +98,7 @@ export async function DELETE(req:NextRequest){
 
         if(!product) return NextResponse.json("product dose not exist",{status:402})
 
-        const deleteProduct = await prisma.product.update({
+        const deleteProduct = await offlinePrisma.product.update({
             where:{
                 id:productId
             },
@@ -114,6 +112,6 @@ export async function DELETE(req:NextRequest){
         return NextResponse.json(error,{status:500})
         
     }finally{
-        await prisma.$disconnect()
+        await offlinePrisma.$disconnect()
     }
 }

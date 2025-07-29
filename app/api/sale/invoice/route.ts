@@ -1,14 +1,12 @@
-import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
 
-const prisma = new PrismaClient();
-
+import offlinePrisma from "@/lib/oflinePrisma";
 export async function POST(req:NextRequest) {
   const {invoiceNo} = await req.json()
 
   try {
     // Find the sale by invoice number
-    const sale = await prisma.sale.findUnique({
+    const sale = await offlinePrisma.sale.findUnique({
       where: { invoiceNo,isDeleted:false },
       include: {
         selectedCustomer: true,

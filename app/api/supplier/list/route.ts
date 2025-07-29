@@ -1,13 +1,12 @@
-import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
 
-const prisma = new PrismaClient()
+import offlinePrisma from "@/lib/oflinePrisma";
 
 export async function POST(req: NextRequest) {
     const { warehouseId } = await req.json()
 
     try {
-        const suppliers = await prisma.supplier.findMany({
+        const suppliers = await offlinePrisma.supplier.findMany({
             where: {
                 warehousesId: warehouseId,isDeleted:false
             },

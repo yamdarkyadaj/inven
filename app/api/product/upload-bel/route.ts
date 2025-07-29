@@ -1,14 +1,12 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@/prisma/generated/offline';
-
-const prisma = new PrismaClient();
+import offlinePrisma from "@/lib/oflinePrisma";
 
 export async function POST(req: Request) {
   const {products} = await req.json();
 
 
   try {
-    const created = await prisma.product.createMany({
+    const created = await offlinePrisma.product.createMany({
       data: products,
       skipDuplicates: true, // In case barcode is unique
     });

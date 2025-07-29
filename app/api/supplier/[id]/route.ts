@@ -1,13 +1,12 @@
-import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
 
-const prisma = new PrismaClient()
+import offlinePrisma from "@/lib/oflinePrisma";
 
 // GET - Fetch single supplier
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
     try {
         const { id } = await context.params
-        const supplier = await prisma.supplier.findUnique({
+        const supplier = await offlinePrisma.supplier.findUnique({
             where: {
                 id: id,isDeleted:false
             }
@@ -22,7 +21,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
         console.error("Error fetching supplier:", error)
         return NextResponse.json({ error: "Internal server error" }, { status: 500 })
     } finally {
-        await prisma.$disconnect()
+        await offlinePrisma.$disconnect()
     }
 }
 
@@ -40,7 +39,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
             warehousesId
         } = await req.json()
 
-        const updatedSupplier = await prisma.supplier.update({
+        const updatedSupplier = await offlinePrisma.supplier.update({
             where: {
                 id: id,isDeleted:false
             },
@@ -60,7 +59,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
         console.error("Error updating supplier:", error)
         return NextResponse.json({ error: "Internal server error" }, { status: 500 })
     } finally {
-        await prisma.$disconnect()
+        await offlinePrisma.$disconnect()
     }
 }
 
@@ -69,7 +68,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
     try {
         const { id } = await context.params
         // Check if supplier has any purchases
-        const supplierPurchases = await prisma.purchase.findMany({
+        const supplierPurchases = await offlinePrisma.purchase.findMany({
             where: {
                 supplierId: id,isDeleted:false
             }
@@ -82,7 +81,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
             )
         }
 
-        await prisma.supplier.update({
+        await offlinePrisma.supplier.update({
             where: {
                 id: id
             },
@@ -94,6 +93,6 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
         console.error("Error deleting supplier:", error)
         return NextResponse.json({ error: "Internal server error" }, { status: 500 })
     } finally {
-        await prisma.$disconnect()
+        await offlinePrisma.$disconnect()
     }
 }

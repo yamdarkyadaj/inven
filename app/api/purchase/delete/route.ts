@@ -1,8 +1,6 @@
-import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
 
-const prisma = new PrismaClient()
-
+import offlinePrisma from "@/lib/oflinePrisma";
 export async function DELETE(req: NextRequest) {
     try {
         const { referenceNo } = await req.json()
@@ -12,7 +10,7 @@ export async function DELETE(req: NextRequest) {
         }
 
         // First, get the purchase and its items
-        const purchase = await prisma.purchase.findUnique({
+        const purchase = await offlinePrisma.purchase.findUnique({
             where: { referenceNo,isDeleted:false },
             include: {
                 purchaseItem: true
@@ -26,14 +24,14 @@ export async function DELETE(req: NextRequest) {
         // Remove products from stock (reverse the purchase)
         for (const item of purchase.purchaseItem) {
             if (item.productId) {
-                const product = await prisma.product.findUnique({
+                const product = await offlinePrisma.product.findUnique({
                     where: { id: item.productId,isDeleted:false }
                 })
 
                 if (product) {
                     // Check if we have enough stock to remove
                     if (product.quantity >= item.quantity) {
-                        await prisma.product.update({
+                        await offlinePrisma.product.update({
                             where: { id: item.productId,isDeleted:false },
                             data: {
                                 quantity: {
@@ -43,7 +41,7 @@ export async function DELETE(req: NextRequest) {
                         })
                     } else {
                         return NextResponse.json({ 
-                            error: `Cannot delete purchase: Insufficient stock for product . Current stock: ${product.quantity}, trying to remove: ${item.quantity}` 
+                            error: `Cannot delete purchase: Insufficient stock for product ${item.productName}. Current stock: ${product.quantity}, trying to remove: ${item.quantity}` 
                         }, { status: 400 })
                     }
                 }
@@ -51,13 +49,13 @@ export async function DELETE(req: NextRequest) {
         }
 
         // Delete purchase items
-        await prisma.purchaseItem.updateMany({
+        await offlinePrisma.purchaseItem.updateMany({
             where: { purchaseId: referenceNo },
             data:{isDeleted:true}
         })
 
         // Delete the purchase
-        await prisma.purchase.update({
+        await offlinePrisma.purchase.update({
             where: { referenceNo },
             data:{isDeleted:true}
         })

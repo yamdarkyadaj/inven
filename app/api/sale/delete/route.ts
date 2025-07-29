@@ -1,8 +1,6 @@
-
-import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
 
-const prisma = new PrismaClient()
+import offlinePrisma from "@/lib/oflinePrisma";
 
 export async function DELETE(req: NextRequest) {
     try {
@@ -13,7 +11,7 @@ export async function DELETE(req: NextRequest) {
         }
 
         // First, get the sale and its items
-        const sale = await prisma.sale.findUnique({
+        const sale = await offlinePrisma.sale.findUnique({
             where: { invoiceNo,isDeleted:false },
             include: {
                 saleItems: true,
@@ -28,7 +26,7 @@ export async function DELETE(req: NextRequest) {
         // Return products back to stock
         for (const item of sale.saleItems) {
             if (item.productId) {
-                await prisma.product.update({
+                await offlinePrisma.product.update({
                     where: { id: item.productId,isDeleted:false },
                     data: {
                         quantity: {
@@ -40,19 +38,19 @@ export async function DELETE(req: NextRequest) {
         }
 
         // Delete payment methods
-        await prisma.paymentMethod.updateMany({
+        await offlinePrisma.paymentMethod.updateMany({
             where: { saleId: invoiceNo },
             data:{isDeleted:true}
         })
 
         // Delete sale items
-        await prisma.saleItem.updateMany({
+        await offlinePrisma.saleItem.updateMany({
             where: { saleId: invoiceNo },
             data:{isDeleted:true}
         })
 
         // Delete the sale
-        await prisma.sale.update({
+        await offlinePrisma.sale.update({
             where: { invoiceNo },
             data:{isDeleted:true}
         })

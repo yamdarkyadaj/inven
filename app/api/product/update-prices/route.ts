@@ -1,7 +1,5 @@
-import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
-
-const prisma = new PrismaClient()
+import offlinePrisma from "@/lib/oflinePrisma";
 
 export async function PATCH(req: NextRequest) {
     try {
@@ -32,7 +30,7 @@ export async function PATCH(req: NextRequest) {
         }
 
         // Verify warehouse exists
-        const warehouse = await prisma.warehouses.findUnique({
+        const warehouse = await offlinePrisma.warehouses.findUnique({
             where: { warehouseCode: warehouseId,isDeleted:false }
         })
             
@@ -44,7 +42,7 @@ export async function PATCH(req: NextRequest) {
         }
 
         // Find the product
-        const existingProduct = await prisma.product.findFirst({
+        const existingProduct = await offlinePrisma.product.findFirst({
             where: {
                 isDeleted:false,
                 OR: [
@@ -75,7 +73,7 @@ export async function PATCH(req: NextRequest) {
         }
 
         // Update the product prices
-        const updatedProduct = await prisma.product.update({
+        const updatedProduct = await offlinePrisma.product.update({
             where: { id: existingProduct.id,isDeleted:false },
             data: {...updateData,sync:false}
         })

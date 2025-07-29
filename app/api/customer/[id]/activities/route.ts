@@ -1,7 +1,6 @@
-import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
 
-const prisma = new PrismaClient()
+import offlinePrisma from "@/lib/oflinePrisma";
 
 // GET - Fetch customer activities (sales)
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
@@ -9,7 +8,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
         const { id: customerId } = await context.params
 
         // Fetch customer details
-        const customer = await prisma.customer.findUnique({
+        const customer = await offlinePrisma.customer.findUnique({
             where: { id: customerId,isDeleted:false }
         })
 
@@ -18,7 +17,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
         }
 
         // Fetch customer sales with items
-        const sales = await prisma.sale.findMany({
+        const sales = await offlinePrisma.sale.findMany({
             where: {
                 selectedCustomerId: customerId,isDeleted:false
             },
@@ -78,6 +77,6 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
         console.error("Error fetching customer activities:", error)
         return NextResponse.json({ error: "Internal server error" }, { status: 500 })
     } finally {
-        await prisma.$disconnect()
+        await offlinePrisma.$disconnect()
     }
 }

@@ -1,14 +1,13 @@
-import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
+import offlinePrisma from "@/lib/oflinePrisma";
 
-const prisma = new PrismaClient()
 
 export async function POST(req: NextRequest) {
     const settings = await req.json()
     const { warehousesId, ...settingsData } = settings
 
     try {
-        const update = await prisma.receiptSettings.upsert({
+        const update = await offlinePrisma.receiptSettings.upsert({
             where: { warehousesId,isDeleted:false },
             update: {
                 ...settingsData,
@@ -38,7 +37,7 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-        const settings = await prisma.receiptSettings.findUnique({
+        const settings = await offlinePrisma.receiptSettings.findUnique({
             where: { warehousesId,isDeleted:false }
         })
 

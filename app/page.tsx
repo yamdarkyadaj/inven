@@ -23,9 +23,8 @@ export default function Home() {
   useEffect(() => {
     async function syncNow() {
       try {
-        const res = await axios.post("/api/sync", { online });
-        const dat = await axios.get("/api/sync");
-        console.log(dat.data)
+        const res = await axios.post("/api/syncNew", { online });
+       
         console.log("Sync result:", res.data);
       } catch (error) {
         console.error("Sync error:", error);

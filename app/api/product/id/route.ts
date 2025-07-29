@@ -1,7 +1,6 @@
-import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
 
-const prisma = new PrismaClient();
+import offlinePrisma from "@/lib/oflinePrisma";
 
 export async function POST(
   req: NextRequest
@@ -9,7 +8,7 @@ export async function POST(
 ) {
    const {id} = await req.json()
   try {
-    const product = await prisma.product.findUnique({
+    const product = await offlinePrisma.product.findUnique({
       where: {
         id: id,isDeleted:false
       },
@@ -33,7 +32,7 @@ export async function POST(
       { status: 500 }
     );
   } finally {
-    await prisma.$disconnect();
+    await offlinePrisma.$disconnect();
   }
 }
 
@@ -55,7 +54,7 @@ export async function PUT(
     } = await req.json();
 
     // Check if product exists
-    const existingProduct = await prisma.product.findUnique({
+    const existingProduct = await offlinePrisma.product.findUnique({
       where: { id: id,isDeleted:false },
     });
 
@@ -66,7 +65,7 @@ export async function PUT(
       );
     }
 
-    const updatedProduct = await prisma.product.update({
+    const updatedProduct = await offlinePrisma.product.update({
       where: { id: id,isDeleted:false },
       data: {
         name,
@@ -89,7 +88,7 @@ export async function PUT(
       { status: 500 }
     );
   } finally {
-    await prisma.$disconnect();
+    await offlinePrisma.$disconnect();
   }
 }
 
@@ -99,7 +98,7 @@ export async function PUT(
 // ) {
 //   try {
 //     // Check if product exists
-//     const product = await prisma.product.findUnique({
+//     const product = await offlinePrisma.product.findUnique({
 //       where: { id: params?.id },
 //     });
 
@@ -111,11 +110,11 @@ export async function PUT(
 //     }
 
 //     // Check if product is used in any sales or purchases
-//     const saleItems = await prisma.saleItem.findMany({
+//     const saleItems = await offlinePrisma.saleItem.findMany({
 //       where: { productId: product.barcode }, // Using barcode as foreign key
 //     });
 
-//     const purchaseItems = await prisma.purchaseItem.findMany({
+//     const purchaseItems = await offlinePrisma.purchaseItem.findMany({
 //       where: { productId: product.barcode }, // Using barcode as foreign key
 //     });
 
@@ -126,7 +125,7 @@ export async function PUT(
 //       );
 //     }
 
-//     const deletedProduct = await prisma.product.delete({
+//     const deletedProduct = await offlinePrisma.product.delete({
 //       where: { id: params?.id },
 //     });
 
@@ -138,6 +137,6 @@ export async function PUT(
 //       { status: 500 }
 //     );
 //   } finally {
-//     await prisma.$disconnect();
+//     await offlinePrisma.$disconnect();
 //   }
 // }

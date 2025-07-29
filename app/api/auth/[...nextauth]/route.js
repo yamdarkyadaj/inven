@@ -1,12 +1,8 @@
-import { PrismaClient } from "@/prisma/generated/offline";
-import { PrismaClient as PrismaOnline } from "@/prisma/generated/online";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-
-const prisma = new PrismaClient();
-
-const prismaOnline = new PrismaOnline()
+import onlinePrisma from "@/lib/onlinePrisma";
+import offlinePrisma from "@/lib/oflinePrisma";
 
 const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
@@ -22,7 +18,7 @@ const handler = NextAuth({
 
         if (type == "warehouse") {
           // ✅ Warehouse login logic
-          const user = await prisma.users.findUnique({ where: { userName: email,isDeleted:false } });
+          const user = await offlinePrisma.users.findUnique({ where: { userName: email,isDeleted:false } });
           if (!user) return null;
           const compareHash = await bcrypt.compare(password, user.password);
 
@@ -33,7 +29,7 @@ const handler = NextAuth({
           }
         } else {
           // ✅ Admin login logic
-          const user = await prismaOnline.superAdmin_online.findUnique({ where: { email: email,isDeleted:false } });
+          const user = await onlinePrisma.superAdmin_online.findUnique({ where: { email: email,isDeleted:false } });
           console.log("no")
           if (!user) return null;
           console.log("ok")

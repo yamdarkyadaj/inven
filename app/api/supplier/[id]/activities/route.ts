@@ -1,7 +1,6 @@
-import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
 
-const prisma = new PrismaClient()
+import offlinePrisma from "@/lib/oflinePrisma";
 
 // GET - Fetch supplier activities (purchases)
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
@@ -9,7 +8,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
         const { id: supplierId } = await context.params
 
         // Fetch supplier details
-        const supplier = await prisma.supplier.findUnique({
+        const supplier = await offlinePrisma.supplier.findUnique({
             where: { id: supplierId,isDeleted:false }
         })
 
@@ -18,7 +17,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
         }
 
         // Fetch supplier purchases with items
-        const purchases = await prisma.purchase.findMany({
+        const purchases = await offlinePrisma.purchase.findMany({
             where: {
                 supplierId: supplierId,isDeleted:false
             },
@@ -75,6 +74,6 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
         console.error("Error fetching supplier activities:", error)
         return NextResponse.json({ error: "Internal server error" }, { status: 500 })
     } finally {
-        await prisma.$disconnect()
+        await offlinePrisma.$disconnect()
     }
 }

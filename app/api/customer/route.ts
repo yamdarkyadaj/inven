@@ -1,7 +1,5 @@
-import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
-
-const prisma = new PrismaClient()
+import offlinePrisma from "@/lib/oflinePrisma";
 
 export async function POST(req:NextRequest){
     const {
@@ -16,7 +14,7 @@ export async function POST(req:NextRequest){
     } = await req.json()
 
         try {
-            const newcustomer = await prisma.customer.create({
+            const newcustomer = await offlinePrisma.customer.create({
                 data:{
                     name,
                     type:userType,
@@ -33,7 +31,7 @@ export async function POST(req:NextRequest){
             return NextResponse.json("",{status:500})
             
         }finally{
-            await prisma.$disconnect()
+            await offlinePrisma.$disconnect()
         }
         
 }

@@ -1,5 +1,3 @@
-
-
 import { PrismaClient as OfflinePrismaClient } from "@/prisma/generated/offline";
 import { PrismaClient as OnlinePrismaClient } from "@/prisma/generated/online";
 

@@ -1,7 +1,6 @@
-import { PrismaClient } from "@/prisma/generated/online";
 import { NextResponse } from "next/server";
 
-const prisma = new PrismaClient()
+import onlinePrisma from "@/lib/onlinePrisma";
 
 export async function GET() {
   try {
@@ -14,12 +13,12 @@ export async function GET() {
       totalCustomers,
       recentSales
     ] = await Promise.all([
-      prisma.users_online.count({where:{isDeleted:false}}),
-      prisma.warehouses_online.count({where:{isDeleted:false}}),
-      prisma.product_online.count({where:{isDeleted:false}}),
-      prisma.sale_online.count({where:{isDeleted:false}}),
-      prisma.customer_online.count({where:{isDeleted:false}}),
-      prisma.sale_online.findMany({
+      onlinePrisma.users_online.count({where:{isDeleted:false}}),
+      onlinePrisma.warehouses_online.count({where:{isDeleted:false}}),
+      onlinePrisma.product_online.count({where:{isDeleted:false}}),
+      onlinePrisma.sale_online.count({where:{isDeleted:false}}),
+      onlinePrisma.customer_online.count({where:{isDeleted:false}}),
+      onlinePrisma.sale_online.findMany({
         where:{isDeleted:false},
         take: 5,
         orderBy: { createdAt: 'desc' },
@@ -35,7 +34,7 @@ export async function GET() {
     ])
 
     // Calculate total sales amount
-    const totalSalesAmount = await prisma.sale_online.aggregate({
+    const totalSalesAmount = await onlinePrisma.sale_online.aggregate({
       where:{isDeleted:false},
       _sum: {
         grandTotal: true

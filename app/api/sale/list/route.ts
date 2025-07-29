@@ -1,13 +1,12 @@
-import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
 
-const prisma = new PrismaClient();
+import offlinePrisma from "@/lib/oflinePrisma";
 
 export async function POST(req: NextRequest) {
   const { warehouseId } = await req.json();
 
   try {
-    const warehouse = await prisma.warehouses.findUnique({
+    const warehouse = await offlinePrisma.warehouses.findUnique({
     
       where: { warehouseCode: warehouseId,isDeleted:false },
       
@@ -19,7 +18,7 @@ export async function POST(req: NextRequest) {
       });
 
     
-    const sales = await prisma.sale.findMany({
+    const sales = await offlinePrisma.sale.findMany({
       where: { warehousesId: warehouseId,isDeleted:false },
       orderBy:{
         createdAt:"desc"
@@ -30,11 +29,11 @@ export async function POST(req: NextRequest) {
     });
 
    
-    const saleItems = await prisma.saleItem.findMany({
+    const saleItems = await offlinePrisma.saleItem.findMany({
       where: { warehousesId: warehouseId,isDeleted:false },
     });
 
-    const paymentMethod = await prisma.paymentMethod.findMany({
+    const paymentMethod = await offlinePrisma.paymentMethod.findMany({
       where: { warehousesId: warehouseId,isDeleted:false },
     });
 

@@ -1,7 +1,6 @@
-import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
 
-const prisma = new PrismaClient()
+import offlinePrisma from "@/lib/oflinePrisma";
 
 export async function GET(req: NextRequest) {
     try {
@@ -14,7 +13,7 @@ export async function GET(req: NextRequest) {
         }
 
         // Get product details
-        const product = await prisma.product.findUnique({
+        const product = await offlinePrisma.product.findUnique({
             where: { id: productId,isDeleted:false },
             include: {
                 warehouses: true
@@ -26,7 +25,7 @@ export async function GET(req: NextRequest) {
         }
 
         // Get all sales for this product
-        const saleItems = await prisma.saleItem.findMany({
+        const saleItems = await offlinePrisma.saleItem.findMany({
             where: { 
                 productId,
                 isDeleted:false,
@@ -47,7 +46,7 @@ export async function GET(req: NextRequest) {
         })
 
         // Get all purchases for this product
-        const purchaseItems = await prisma.purchaseItem.findMany({
+        const purchaseItems = await offlinePrisma.purchaseItem.findMany({
             where: { 
                 productId,
                 isDeleted:false,

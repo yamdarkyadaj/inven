@@ -1,8 +1,6 @@
-import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
 
-const prisma = new PrismaClient()
-
+import offlinePrisma from "@/lib/oflinePrisma";
 export async function POST(req:NextRequest){
     const {
         address,      
@@ -17,7 +15,7 @@ export async function POST(req:NextRequest){
 
     try {
 
-        const data = await prisma.supplier.create({
+        const data = await offlinePrisma.supplier.create({
             data:{
                 address,
                 companyName,

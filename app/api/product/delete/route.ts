@@ -1,14 +1,13 @@
-import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
 
-const prisma = new PrismaClient()
+import offlinePrisma from "@/lib/oflinePrisma";
 
 
 
 export async function POST(req:NextRequest){
     const {productId} = await req.json()
     try {
-        const product = await prisma.product.findUnique({
+        const product = await offlinePrisma.product.findUnique({
             where:{
                 id:productId,isDeleted:false
             }
@@ -16,7 +15,7 @@ export async function POST(req:NextRequest){
 
         if(!product) return NextResponse.json("product dose not exist",{status:402})
 
-        const deleteProduct = await prisma.product.update({
+        const deleteProduct = await offlinePrisma.product.update({
             where:{
                 id:productId
             },
@@ -30,6 +29,6 @@ export async function POST(req:NextRequest){
         return NextResponse.json(error,{status:500})
         
     }finally{
-        await prisma.$disconnect()
+        await offlinePrisma.$disconnect()
     }
 }

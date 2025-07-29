@@ -1,7 +1,8 @@
-import { PrismaClient } from "@/prisma/generated/offline";
+
 import { NextRequest, NextResponse } from "next/server";
 
-const prisma = new PrismaClient()
+import onlinePrisma from "@/lib/onlinePrisma";
+import offlinePrisma from "@/lib/oflinePrisma";
 
 export async function POST(req: NextRequest) {
     const {
@@ -21,7 +22,7 @@ export async function POST(req: NextRequest) {
     } = await req.json()
 
     try {
-        const warehouse = await prisma.warehouses.findUnique({
+        const warehouse = await offlinePrisma.warehouses.findUnique({
             where: { warehouseCode: warehouseId,isDeleted:false }
         })
             
@@ -29,7 +30,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json("Warehouse does not exist", { status: 401 })
         }
 
-        const purchase = await prisma.purchase.create({
+        const purchase = await offlinePrisma.purchase.create({
             data: {
                 referenceNo,
                 subTotal: subtotal,
@@ -46,7 +47,7 @@ export async function POST(req: NextRequest) {
 
         // Create purchase items
         for (let i = 0; i < items.length; i++) {
-            await prisma.purchaseItem.create({
+            await offlinePrisma.purchaseItem.create({
                 data: {
                     purchaseId: purchase.referenceNo,
                     productName: items[i].productName,
@@ -65,7 +66,7 @@ export async function POST(req: NextRequest) {
            
 
             // Update product quantity (increase stock for purchases)
-            await prisma.product.update({
+            await offlinePrisma.product.update({
                 where: { id:items[i].productId,isDeleted:false },
                 data: {
                     quantity: {

@@ -34,8 +34,6 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import fetchData from "@/hooks/fetch-data"
-import { NavbarItem } from "@heroui/navbar"
 import { Button } from "@heroui/button"
 import { signOut } from "next-auth/react"
 
@@ -115,11 +113,6 @@ function NavSection({
 
 export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   
-  const {data,loading,error} = fetchData("/api/settings")
-
-  
-  if(loading) return ""
-
   // const isOnline = useConnectionCheck()
  
   return (
@@ -133,7 +126,7 @@ export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sid
                   <Package className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{data?.companyName}</span>
+                  <span className="truncate font-semibold">{}</span>
                   <span className="truncate text-xs">Super Admin Management System</span>
                   {/* {isOnline ? "online" : "ofline"} */}
                 </div>

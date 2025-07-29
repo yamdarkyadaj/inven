@@ -1,7 +1,6 @@
-import { PrismaClient } from "@/prisma/generated/offline";
 import { NextRequest, NextResponse } from "next/server";
 
-const prisma = new PrismaClient()
+import offlinePrisma from "@/lib/oflinePrisma";
 
 export async function POST(req:NextRequest){
     const {
@@ -22,11 +21,11 @@ export async function POST(req:NextRequest){
     } = await req.json()
 
    try {
-    const warehouse = await prisma.warehouses.findUnique({where:{warehouseCode:warehouseId,isDeleted:false}})
+    const warehouse = await offlinePrisma.warehouses.findUnique({where:{warehouseCode:warehouseId,isDeleted:false}})
             
     if(!warehouse) return NextResponse.json("werehous does not exisi",{status:401})
 
-    const sale = await prisma.sale.create({
+    const sale = await offlinePrisma.sale.create({
         data:{
             invoiceNo,
             subTotal:subtotal,
@@ -50,7 +49,7 @@ export async function POST(req:NextRequest){
 
     
     for (let i = 0; i < items.length; i++) {
-        const savedSales = await prisma.saleItem.create({
+        const savedSales = await offlinePrisma.saleItem.create({
             data:{
                 saleId:sale.invoiceNo,
                 productName:items[i].productName,
@@ -66,7 +65,7 @@ export async function POST(req:NextRequest){
             }
         })
         console.log(items[i].productId)
-        await prisma.product.update({
+        await offlinePrisma.product.update({
             where:{id:items[i].productId,isDeleted:false},
             data:{quantity:{
                 decrement:items[i].quantity,
@@ -78,7 +77,7 @@ export async function POST(req:NextRequest){
     }
 
     for (let j = 0; j < paymentMethods.length; j++) {
-        await prisma.paymentMethod.create({
+        await offlinePrisma.paymentMethod.create({
             data:{
                 method:paymentMethods[j].method,
                 amount:paymentMethods[j].amount,
@@ -105,14 +104,14 @@ export async function POST(req:NextRequest){
 export async function DELETE(req:NextRequest){
     const {saleId} = await req.json()
     try {
-        const findSale = await prisma.sale.findMany({
+        const findSale = await offlinePrisma.sale.findMany({
             where:{invoiceNo:saleId,isDeleted:false}
         })
         if(!findSale){
             return NextResponse.json("Error",{status:500})
         }
 
-        await prisma.sale.update({
+        await offlinePrisma.sale.update({
             where:{invoiceNo:saleId},
             data:{isDeleted:true}
         })
