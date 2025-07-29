@@ -243,7 +243,6 @@ exports.Prisma.PurchaseScalarFieldEnum = {
 exports.Prisma.PurchaseItemScalarFieldEnum = {
   id: 'id',
   productId: 'productId',
-  productName: 'productName',
   cost: 'cost',
   selectedPrice: 'selectedPrice',
   priceType: 'priceType',

@@ -37,12 +37,7 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="en">
       <head />
-      <body
-        // className={clsx(
-         
-        //   fontSans.variable,
-        // )}
-      >
+      <body>
         <SessionAppProvider>
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           <div >
@@ -51,10 +46,8 @@ export default function RootLayout({
               {children}
             </main>
             <footer className="w-full flex items-center justify-center py-3">
-             
                 <span className="text-default-600">Powered by</span>
-                <p className="text-primary">HeroUI</p>
-             
+                <p className="text-primary">Code Git</p>
             </footer>
           </div>
         </Providers>

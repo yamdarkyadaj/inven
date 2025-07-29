@@ -152,7 +152,7 @@ export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sid
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{data?.companyName}</span>
-                  <span className="truncate text-xs">Super Admin Management System</span>
+                  <span className="truncate text-xs">Admin Management System</span>
                   {/* {isOnline ? "online" : "ofline"} */}
                 </div>
               </a>

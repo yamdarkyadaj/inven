@@ -1,5 +1,6 @@
 "use client"
 
+import * as XLSX from 'xlsx';
 import { useEffect, useState } from "react"
 import {
   Breadcrumb,
@@ -136,6 +137,32 @@ const [openModalId, setOpenModalId] = useState(null);
     if (stock <= 5) return "text-yellow-600"
     return "text-green-600"
   }
+  function exportData(){
+     // 1. Format the data
+     const formattedData = productsData.map((product:any) => ({
+      Name: product.name,
+      Barcode: product.barcode,
+      "Wholesale Price": product.wholeSalePrice,
+      "Retail Price": product.retailPrice,
+      Cost: product.cost,
+      Quantity: product.quantity,
+      "Tax Rate": product.taxRate,
+      Unit: product.unit,
+      Description: product.description,
+      "Created At": product.createdAt,
+      "Updated At": product.updatedAt,
+      "Is Synced": product.sync ? "Yes" : "No",
+      "Is Deleted": product.isDeleted ? "Yes" : "No"
+    }));
+
+    // 2. Convert JSON to worksheet
+    const worksheet = XLSX.utils.json_to_sheet(formattedData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Products");
+
+    // 3. Trigger file download
+    XLSX.writeFile(workbook, "products_export.xlsx");
+  }
 
   return (
     <>
@@ -172,7 +199,7 @@ const [openModalId, setOpenModalId] = useState(null);
                 <Upload className="mr-2 h-4 w-4" />
                 Import
               </Button>
-              <Button variant="outline" size="sm">
+              <Button onClick={exportData} variant="outline" size="sm">
                 <Download className="mr-2 h-4 w-4" />
                 Export
               </Button>

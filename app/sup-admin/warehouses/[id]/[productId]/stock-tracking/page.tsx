@@ -66,18 +66,20 @@ interface StockTrackingData {
 }
 
 export default function StockTrackingPage() {
+  const path = usePathname()
   const [data, setData] = useState<StockTrackingData | null>(null)
   const [loading, setLoading] = useState(true)
- 
+  const [endpoint, setEndPoint] = useState("")
   const { data: session } = useSession()
   const params = useParams()
   const router = useRouter()
-  const path = usePathname()
   
   const warehouseId = path?.split("/")[3]
   const productId = params.productId as string
 
-  
+  useEffect(() => {
+    setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
+  }, [session, warehouseId])
 
   useEffect(() => {
     if (productId && warehouseId) {
@@ -91,6 +93,7 @@ export default function StockTrackingPage() {
       if (response.ok) {
         const result = await response.json()
         setData(result)
+        console.log(result)
       } else {
         console.error("Failed to fetch stock data")
       }
@@ -172,10 +175,12 @@ export default function StockTrackingPage() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href={`/sup-admin/dashboard`}>Home</BreadcrumbLink>
+                <BreadcrumbLink href={`${endpoint}/dashboard`}>Home</BreadcrumbLink>
               </BreadcrumbItem>
-              
-              
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href={`${endpoint}/products/list`}>Products</BreadcrumbLink>
+              </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbPage>Stock Tracking</BreadcrumbPage>

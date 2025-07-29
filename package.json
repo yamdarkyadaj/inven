@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "npx prisma generate --schema=prisma/online.prisma && npx prisma generate --schema=prisma/schema.prisma && next dev --turbopack",
     "build": "npx prisma generate --schema=prisma/online.prisma && npx prisma generate --schema=prisma/schema.prisma && next build",
     "start": "next start",
     "lint": "eslint --fix"
@@ -59,7 +59,8 @@
     "recharts": "^3.0.2",
     "sqlite3": "^5.1.7",
     "tailwind-merge": "^3.3.1",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/compat": "1.2.8",

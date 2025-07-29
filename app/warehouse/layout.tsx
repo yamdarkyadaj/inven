@@ -12,8 +12,9 @@ export default function SupAdminLayout({children}:{children:React.ReactNode}){
     const router = useRouter()
     const {online} = useOnlineStatus()
   
-      const{ status:key }= useAutoSync()
-      console.log(key)
+      // const{ status:key }= useAutoSync()
+      // console.log(key)
+      useAutoSync()
     
     
     useEffect(()=>{

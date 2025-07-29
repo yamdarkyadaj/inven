@@ -3,14 +3,15 @@
 import { useEffect, useState } from "react"
 import { useOnlineStatus } from "./check-online"
 
-
 export function useAutoSync(url = "/api/syncNew", interval = 10000) {
   const [status, setStatus] = useState(false)
   const [loading, setLoading] = useState(true)
-  const {online} = useOnlineStatus()
+  const { online } = useOnlineStatus()
 
   useEffect(() => {
-    let timer: any
+    if (!online) return
+
+    let timer: NodeJS.Timeout
 
     async function checkStatus() {
       setLoading(true)
@@ -19,21 +20,17 @@ export function useAutoSync(url = "/api/syncNew", interval = 10000) {
         setStatus(res.ok)
       } catch (error) {
         setStatus(false)
-        
       } finally {
         setLoading(false)
       }
     }
 
-    // Initial check
-    checkStatus()
+    checkStatus() // Initial call
 
-    // Set interval check
     timer = setInterval(checkStatus, interval)
 
-    // Cleanup interval
     return () => clearInterval(timer)
-  }, [url, interval])
+  }, [url, interval, online])
 
   return { status, loading }
 }
