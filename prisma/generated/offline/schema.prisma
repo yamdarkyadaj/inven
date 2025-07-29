@@ -190,6 +190,7 @@ model PurchaseItem {
   productId            String?
   product              Product?    @relation(fields: [productId], references: [id])
   cost                 Float
+  productName          String?
   selectedPrice        Float
   priceType            String
   quantity             Int

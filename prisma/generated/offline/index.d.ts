@@ -11231,6 +11231,7 @@ export namespace Prisma {
     id: string | null
     productId: string | null
     cost: number | null
+    productName: string | null
     selectedPrice: number | null
     priceType: string | null
     quantity: number | null
@@ -11252,6 +11253,7 @@ export namespace Prisma {
     id: string | null
     productId: string | null
     cost: number | null
+    productName: string | null
     selectedPrice: number | null
     priceType: string | null
     quantity: number | null
@@ -11273,6 +11275,7 @@ export namespace Prisma {
     id: number
     productId: number
     cost: number
+    productName: number
     selectedPrice: number
     priceType: number
     quantity: number
@@ -11318,6 +11321,7 @@ export namespace Prisma {
     id?: true
     productId?: true
     cost?: true
+    productName?: true
     selectedPrice?: true
     priceType?: true
     quantity?: true
@@ -11339,6 +11343,7 @@ export namespace Prisma {
     id?: true
     productId?: true
     cost?: true
+    productName?: true
     selectedPrice?: true
     priceType?: true
     quantity?: true
@@ -11360,6 +11365,7 @@ export namespace Prisma {
     id?: true
     productId?: true
     cost?: true
+    productName?: true
     selectedPrice?: true
     priceType?: true
     quantity?: true
@@ -11468,6 +11474,7 @@ export namespace Prisma {
     id: string
     productId: string | null
     cost: number
+    productName: string | null
     selectedPrice: number
     priceType: string
     quantity: number
@@ -11508,6 +11515,7 @@ export namespace Prisma {
     id?: boolean
     productId?: boolean
     cost?: boolean
+    productName?: boolean
     selectedPrice?: boolean
     priceType?: boolean
     quantity?: boolean
@@ -11532,6 +11540,7 @@ export namespace Prisma {
     id?: boolean
     productId?: boolean
     cost?: boolean
+    productName?: boolean
     selectedPrice?: boolean
     priceType?: boolean
     quantity?: boolean
@@ -11556,6 +11565,7 @@ export namespace Prisma {
     id?: boolean
     productId?: boolean
     cost?: boolean
+    productName?: boolean
     selectedPrice?: boolean
     priceType?: boolean
     quantity?: boolean
@@ -11580,6 +11590,7 @@ export namespace Prisma {
     id?: boolean
     productId?: boolean
     cost?: boolean
+    productName?: boolean
     selectedPrice?: boolean
     priceType?: boolean
     quantity?: boolean
@@ -11597,7 +11608,7 @@ export namespace Prisma {
     isDeleted?: boolean
   }
 
-  export type PurchaseItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "cost" | "selectedPrice" | "priceType" | "quantity" | "discount" | "total" | "profit" | "warehousesId" | "sync" | "syncedAt" | "purchaseId" | "customRetailPrice" | "customWholesalePrice" | "createdAt" | "updatedAt" | "isDeleted", ExtArgs["result"]["purchaseItem"]>
+  export type PurchaseItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "cost" | "productName" | "selectedPrice" | "priceType" | "quantity" | "discount" | "total" | "profit" | "warehousesId" | "sync" | "syncedAt" | "purchaseId" | "customRetailPrice" | "customWholesalePrice" | "createdAt" | "updatedAt" | "isDeleted", ExtArgs["result"]["purchaseItem"]>
   export type PurchaseItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     product?: boolean | PurchaseItem$productArgs<ExtArgs>
     Warehouses?: boolean | PurchaseItem$WarehousesArgs<ExtArgs>
@@ -11625,6 +11636,7 @@ export namespace Prisma {
       id: string
       productId: string | null
       cost: number
+      productName: string | null
       selectedPrice: number
       priceType: string
       quantity: number
@@ -12069,6 +12081,7 @@ export namespace Prisma {
     readonly id: FieldRef<"PurchaseItem", 'String'>
     readonly productId: FieldRef<"PurchaseItem", 'String'>
     readonly cost: FieldRef<"PurchaseItem", 'Float'>
+    readonly productName: FieldRef<"PurchaseItem", 'String'>
     readonly selectedPrice: FieldRef<"PurchaseItem", 'Float'>
     readonly priceType: FieldRef<"PurchaseItem", 'String'>
     readonly quantity: FieldRef<"PurchaseItem", 'Int'>
@@ -19365,6 +19378,7 @@ export namespace Prisma {
     id: 'id',
     productId: 'productId',
     cost: 'cost',
+    productName: 'productName',
     selectedPrice: 'selectedPrice',
     priceType: 'priceType',
     quantity: 'quantity',
@@ -20417,6 +20431,7 @@ export namespace Prisma {
     id?: StringFilter<"PurchaseItem"> | string
     productId?: StringNullableFilter<"PurchaseItem"> | string | null
     cost?: FloatFilter<"PurchaseItem"> | number
+    productName?: StringNullableFilter<"PurchaseItem"> | string | null
     selectedPrice?: FloatFilter<"PurchaseItem"> | number
     priceType?: StringFilter<"PurchaseItem"> | string
     quantity?: IntFilter<"PurchaseItem"> | number
@@ -20441,6 +20456,7 @@ export namespace Prisma {
     id?: SortOrder
     productId?: SortOrderInput | SortOrder
     cost?: SortOrder
+    productName?: SortOrderInput | SortOrder
     selectedPrice?: SortOrder
     priceType?: SortOrder
     quantity?: SortOrder
@@ -20468,6 +20484,7 @@ export namespace Prisma {
     NOT?: PurchaseItemWhereInput | PurchaseItemWhereInput[]
     productId?: StringNullableFilter<"PurchaseItem"> | string | null
     cost?: FloatFilter<"PurchaseItem"> | number
+    productName?: StringNullableFilter<"PurchaseItem"> | string | null
     selectedPrice?: FloatFilter<"PurchaseItem"> | number
     priceType?: StringFilter<"PurchaseItem"> | string
     quantity?: IntFilter<"PurchaseItem"> | number
@@ -20492,6 +20509,7 @@ export namespace Prisma {
     id?: SortOrder
     productId?: SortOrderInput | SortOrder
     cost?: SortOrder
+    productName?: SortOrderInput | SortOrder
     selectedPrice?: SortOrder
     priceType?: SortOrder
     quantity?: SortOrder
@@ -20521,6 +20539,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"PurchaseItem"> | string
     productId?: StringNullableWithAggregatesFilter<"PurchaseItem"> | string | null
     cost?: FloatWithAggregatesFilter<"PurchaseItem"> | number
+    productName?: StringNullableWithAggregatesFilter<"PurchaseItem"> | string | null
     selectedPrice?: FloatWithAggregatesFilter<"PurchaseItem"> | number
     priceType?: StringWithAggregatesFilter<"PurchaseItem"> | string
     quantity?: IntWithAggregatesFilter<"PurchaseItem"> | number
@@ -22098,6 +22117,7 @@ export namespace Prisma {
   export type PurchaseItemCreateInput = {
     id?: string
     cost: number
+    productName?: string | null
     selectedPrice: number
     priceType: string
     quantity: number
@@ -22120,6 +22140,7 @@ export namespace Prisma {
     id?: string
     productId?: string | null
     cost: number
+    productName?: string | null
     selectedPrice: number
     priceType: string
     quantity: number
@@ -22140,6 +22161,7 @@ export namespace Prisma {
   export type PurchaseItemUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     cost?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     selectedPrice?: FloatFieldUpdateOperationsInput | number
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
@@ -22162,6 +22184,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     selectedPrice?: FloatFieldUpdateOperationsInput | number
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
@@ -22183,6 +22206,7 @@ export namespace Prisma {
     id?: string
     productId?: string | null
     cost: number
+    productName?: string | null
     selectedPrice: number
     priceType: string
     quantity: number
@@ -22203,6 +22227,7 @@ export namespace Prisma {
   export type PurchaseItemUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     cost?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     selectedPrice?: FloatFieldUpdateOperationsInput | number
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
@@ -22222,6 +22247,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     selectedPrice?: FloatFieldUpdateOperationsInput | number
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
@@ -23867,6 +23893,7 @@ export namespace Prisma {
     id?: SortOrder
     productId?: SortOrder
     cost?: SortOrder
+    productName?: SortOrder
     selectedPrice?: SortOrder
     priceType?: SortOrder
     quantity?: SortOrder
@@ -23899,6 +23926,7 @@ export namespace Prisma {
     id?: SortOrder
     productId?: SortOrder
     cost?: SortOrder
+    productName?: SortOrder
     selectedPrice?: SortOrder
     priceType?: SortOrder
     quantity?: SortOrder
@@ -23920,6 +23948,7 @@ export namespace Prisma {
     id?: SortOrder
     productId?: SortOrder
     cost?: SortOrder
+    productName?: SortOrder
     selectedPrice?: SortOrder
     priceType?: SortOrder
     quantity?: SortOrder
@@ -26210,6 +26239,7 @@ export namespace Prisma {
   export type PurchaseItemCreateWithoutWarehousesInput = {
     id?: string
     cost: number
+    productName?: string | null
     selectedPrice: number
     priceType: string
     quantity: number
@@ -26231,6 +26261,7 @@ export namespace Prisma {
     id?: string
     productId?: string | null
     cost: number
+    productName?: string | null
     selectedPrice: number
     priceType: string
     quantity: number
@@ -26686,6 +26717,7 @@ export namespace Prisma {
     id?: StringFilter<"PurchaseItem"> | string
     productId?: StringNullableFilter<"PurchaseItem"> | string | null
     cost?: FloatFilter<"PurchaseItem"> | number
+    productName?: StringNullableFilter<"PurchaseItem"> | string | null
     selectedPrice?: FloatFilter<"PurchaseItem"> | number
     priceType?: StringFilter<"PurchaseItem"> | string
     quantity?: IntFilter<"PurchaseItem"> | number
@@ -27491,6 +27523,7 @@ export namespace Prisma {
   export type PurchaseItemCreateWithoutPurchaseInput = {
     id?: string
     cost: number
+    productName?: string | null
     selectedPrice: number
     priceType: string
     quantity: number
@@ -27512,6 +27545,7 @@ export namespace Prisma {
     id?: string
     productId?: string | null
     cost: number
+    productName?: string | null
     selectedPrice: number
     priceType: string
     quantity: number
@@ -28528,6 +28562,7 @@ export namespace Prisma {
   export type PurchaseItemCreateWithoutProductInput = {
     id?: string
     cost: number
+    productName?: string | null
     selectedPrice: number
     priceType: string
     quantity: number
@@ -28548,6 +28583,7 @@ export namespace Prisma {
   export type PurchaseItemUncheckedCreateWithoutProductInput = {
     id?: string
     cost: number
+    productName?: string | null
     selectedPrice: number
     priceType: string
     quantity: number
@@ -29084,6 +29120,7 @@ export namespace Prisma {
     id?: string
     productId?: string | null
     cost: number
+    productName?: string | null
     selectedPrice: number
     priceType: string
     quantity: number
@@ -29524,6 +29561,7 @@ export namespace Prisma {
   export type PurchaseItemUpdateWithoutWarehousesInput = {
     id?: StringFieldUpdateOperationsInput | string
     cost?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     selectedPrice?: FloatFieldUpdateOperationsInput | number
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
@@ -29545,6 +29583,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     selectedPrice?: FloatFieldUpdateOperationsInput | number
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
@@ -29565,6 +29604,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     selectedPrice?: FloatFieldUpdateOperationsInput | number
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
@@ -29902,6 +29942,7 @@ export namespace Prisma {
     id?: string
     productId?: string | null
     cost: number
+    productName?: string | null
     selectedPrice: number
     priceType: string
     quantity: number
@@ -29921,6 +29962,7 @@ export namespace Prisma {
   export type PurchaseItemUpdateWithoutPurchaseInput = {
     id?: StringFieldUpdateOperationsInput | string
     cost?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     selectedPrice?: FloatFieldUpdateOperationsInput | number
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
@@ -29942,6 +29984,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     selectedPrice?: FloatFieldUpdateOperationsInput | number
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
@@ -29962,6 +30005,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     selectedPrice?: FloatFieldUpdateOperationsInput | number
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
@@ -30221,6 +30265,7 @@ export namespace Prisma {
   export type PurchaseItemCreateManyProductInput = {
     id?: string
     cost: number
+    productName?: string | null
     selectedPrice: number
     priceType: string
     quantity: number
@@ -30295,6 +30340,7 @@ export namespace Prisma {
   export type PurchaseItemUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
     cost?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     selectedPrice?: FloatFieldUpdateOperationsInput | number
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
@@ -30315,6 +30361,7 @@ export namespace Prisma {
   export type PurchaseItemUncheckedUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
     cost?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     selectedPrice?: FloatFieldUpdateOperationsInput | number
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
@@ -30335,6 +30382,7 @@ export namespace Prisma {
   export type PurchaseItemUncheckedUpdateManyWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
     cost?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     selectedPrice?: FloatFieldUpdateOperationsInput | number
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number

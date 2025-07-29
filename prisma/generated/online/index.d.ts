@@ -11232,6 +11232,7 @@ export namespace Prisma {
     productId: string | null
     cost: number | null
     selectedPrice: number | null
+    productName: string | null
     priceType: string | null
     quantity: number | null
     discount: number | null
@@ -11254,6 +11255,7 @@ export namespace Prisma {
     productId: string | null
     cost: number | null
     selectedPrice: number | null
+    productName: string | null
     priceType: string | null
     quantity: number | null
     discount: number | null
@@ -11276,6 +11278,7 @@ export namespace Prisma {
     productId: number
     cost: number
     selectedPrice: number
+    productName: number
     priceType: number
     quantity: number
     discount: number
@@ -11322,6 +11325,7 @@ export namespace Prisma {
     productId?: true
     cost?: true
     selectedPrice?: true
+    productName?: true
     priceType?: true
     quantity?: true
     discount?: true
@@ -11344,6 +11348,7 @@ export namespace Prisma {
     productId?: true
     cost?: true
     selectedPrice?: true
+    productName?: true
     priceType?: true
     quantity?: true
     discount?: true
@@ -11366,6 +11371,7 @@ export namespace Prisma {
     productId?: true
     cost?: true
     selectedPrice?: true
+    productName?: true
     priceType?: true
     quantity?: true
     discount?: true
@@ -11475,6 +11481,7 @@ export namespace Prisma {
     productId: string | null
     cost: number
     selectedPrice: number
+    productName: string | null
     priceType: string
     quantity: number
     discount: number
@@ -11516,6 +11523,7 @@ export namespace Prisma {
     productId?: boolean
     cost?: boolean
     selectedPrice?: boolean
+    productName?: boolean
     priceType?: boolean
     quantity?: boolean
     discount?: boolean
@@ -11541,6 +11549,7 @@ export namespace Prisma {
     productId?: boolean
     cost?: boolean
     selectedPrice?: boolean
+    productName?: boolean
     priceType?: boolean
     quantity?: boolean
     discount?: boolean
@@ -11566,6 +11575,7 @@ export namespace Prisma {
     productId?: boolean
     cost?: boolean
     selectedPrice?: boolean
+    productName?: boolean
     priceType?: boolean
     quantity?: boolean
     discount?: boolean
@@ -11591,6 +11601,7 @@ export namespace Prisma {
     productId?: boolean
     cost?: boolean
     selectedPrice?: boolean
+    productName?: boolean
     priceType?: boolean
     quantity?: boolean
     discount?: boolean
@@ -11608,7 +11619,7 @@ export namespace Prisma {
     isDeleted?: boolean
   }
 
-  export type PurchaseItem_onlineOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "cost" | "selectedPrice" | "priceType" | "quantity" | "discount" | "total" | "profit" | "sync" | "syncedAt" | "customRetailPrice" | "customWholesalePrice" | "createdAt" | "updatedAt" | "warehouses_onlineId" | "purchase_onlineId" | "product_onlineId" | "isDeleted", ExtArgs["result"]["purchaseItem_online"]>
+  export type PurchaseItem_onlineOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "cost" | "selectedPrice" | "productName" | "priceType" | "quantity" | "discount" | "total" | "profit" | "sync" | "syncedAt" | "customRetailPrice" | "customWholesalePrice" | "createdAt" | "updatedAt" | "warehouses_onlineId" | "purchase_onlineId" | "product_onlineId" | "isDeleted", ExtArgs["result"]["purchaseItem_online"]>
   export type PurchaseItem_onlineInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Warehouses_online?: boolean | PurchaseItem_online$Warehouses_onlineArgs<ExtArgs>
     Purchase_online?: boolean | PurchaseItem_online$Purchase_onlineArgs<ExtArgs>
@@ -11637,6 +11648,7 @@ export namespace Prisma {
       productId: string | null
       cost: number
       selectedPrice: number
+      productName: string | null
       priceType: string
       quantity: number
       discount: number
@@ -12082,6 +12094,7 @@ export namespace Prisma {
     readonly productId: FieldRef<"PurchaseItem_online", 'String'>
     readonly cost: FieldRef<"PurchaseItem_online", 'Float'>
     readonly selectedPrice: FieldRef<"PurchaseItem_online", 'Float'>
+    readonly productName: FieldRef<"PurchaseItem_online", 'String'>
     readonly priceType: FieldRef<"PurchaseItem_online", 'String'>
     readonly quantity: FieldRef<"PurchaseItem_online", 'Int'>
     readonly discount: FieldRef<"PurchaseItem_online", 'Float'>
@@ -19379,6 +19392,7 @@ export namespace Prisma {
     productId: 'productId',
     cost: 'cost',
     selectedPrice: 'selectedPrice',
+    productName: 'productName',
     priceType: 'priceType',
     quantity: 'quantity',
     discount: 'discount',
@@ -20432,6 +20446,7 @@ export namespace Prisma {
     productId?: StringNullableFilter<"PurchaseItem_online"> | string | null
     cost?: FloatFilter<"PurchaseItem_online"> | number
     selectedPrice?: FloatFilter<"PurchaseItem_online"> | number
+    productName?: StringNullableFilter<"PurchaseItem_online"> | string | null
     priceType?: StringFilter<"PurchaseItem_online"> | string
     quantity?: IntFilter<"PurchaseItem_online"> | number
     discount?: FloatFilter<"PurchaseItem_online"> | number
@@ -20457,6 +20472,7 @@ export namespace Prisma {
     productId?: SortOrderInput | SortOrder
     cost?: SortOrder
     selectedPrice?: SortOrder
+    productName?: SortOrderInput | SortOrder
     priceType?: SortOrder
     quantity?: SortOrder
     discount?: SortOrder
@@ -20485,6 +20501,7 @@ export namespace Prisma {
     productId?: StringNullableFilter<"PurchaseItem_online"> | string | null
     cost?: FloatFilter<"PurchaseItem_online"> | number
     selectedPrice?: FloatFilter<"PurchaseItem_online"> | number
+    productName?: StringNullableFilter<"PurchaseItem_online"> | string | null
     priceType?: StringFilter<"PurchaseItem_online"> | string
     quantity?: IntFilter<"PurchaseItem_online"> | number
     discount?: FloatFilter<"PurchaseItem_online"> | number
@@ -20510,6 +20527,7 @@ export namespace Prisma {
     productId?: SortOrderInput | SortOrder
     cost?: SortOrder
     selectedPrice?: SortOrder
+    productName?: SortOrderInput | SortOrder
     priceType?: SortOrder
     quantity?: SortOrder
     discount?: SortOrder
@@ -20540,6 +20558,7 @@ export namespace Prisma {
     productId?: StringNullableWithAggregatesFilter<"PurchaseItem_online"> | string | null
     cost?: FloatWithAggregatesFilter<"PurchaseItem_online"> | number
     selectedPrice?: FloatWithAggregatesFilter<"PurchaseItem_online"> | number
+    productName?: StringNullableWithAggregatesFilter<"PurchaseItem_online"> | string | null
     priceType?: StringWithAggregatesFilter<"PurchaseItem_online"> | string
     quantity?: IntWithAggregatesFilter<"PurchaseItem_online"> | number
     discount?: FloatWithAggregatesFilter<"PurchaseItem_online"> | number
@@ -22119,6 +22138,7 @@ export namespace Prisma {
     productId?: string | null
     cost: number
     selectedPrice: number
+    productName?: string | null
     priceType: string
     quantity: number
     discount: number
@@ -22141,6 +22161,7 @@ export namespace Prisma {
     productId?: string | null
     cost: number
     selectedPrice: number
+    productName?: string | null
     priceType: string
     quantity: number
     discount: number
@@ -22163,6 +22184,7 @@ export namespace Prisma {
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
     selectedPrice?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     discount?: FloatFieldUpdateOperationsInput | number
@@ -22185,6 +22207,7 @@ export namespace Prisma {
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
     selectedPrice?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     discount?: FloatFieldUpdateOperationsInput | number
@@ -22207,6 +22230,7 @@ export namespace Prisma {
     productId?: string | null
     cost: number
     selectedPrice: number
+    productName?: string | null
     priceType: string
     quantity: number
     discount: number
@@ -22229,6 +22253,7 @@ export namespace Prisma {
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
     selectedPrice?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     discount?: FloatFieldUpdateOperationsInput | number
@@ -22248,6 +22273,7 @@ export namespace Prisma {
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
     selectedPrice?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     discount?: FloatFieldUpdateOperationsInput | number
@@ -23894,6 +23920,7 @@ export namespace Prisma {
     productId?: SortOrder
     cost?: SortOrder
     selectedPrice?: SortOrder
+    productName?: SortOrder
     priceType?: SortOrder
     quantity?: SortOrder
     discount?: SortOrder
@@ -23927,6 +23954,7 @@ export namespace Prisma {
     productId?: SortOrder
     cost?: SortOrder
     selectedPrice?: SortOrder
+    productName?: SortOrder
     priceType?: SortOrder
     quantity?: SortOrder
     discount?: SortOrder
@@ -23949,6 +23977,7 @@ export namespace Prisma {
     productId?: SortOrder
     cost?: SortOrder
     selectedPrice?: SortOrder
+    productName?: SortOrder
     priceType?: SortOrder
     quantity?: SortOrder
     discount?: SortOrder
@@ -26241,6 +26270,7 @@ export namespace Prisma {
     productId?: string | null
     cost: number
     selectedPrice: number
+    productName?: string | null
     priceType: string
     quantity: number
     discount: number
@@ -26262,6 +26292,7 @@ export namespace Prisma {
     productId?: string | null
     cost: number
     selectedPrice: number
+    productName?: string | null
     priceType: string
     quantity: number
     discount: number
@@ -26718,6 +26749,7 @@ export namespace Prisma {
     productId?: StringNullableFilter<"PurchaseItem_online"> | string | null
     cost?: FloatFilter<"PurchaseItem_online"> | number
     selectedPrice?: FloatFilter<"PurchaseItem_online"> | number
+    productName?: StringNullableFilter<"PurchaseItem_online"> | string | null
     priceType?: StringFilter<"PurchaseItem_online"> | string
     quantity?: IntFilter<"PurchaseItem_online"> | number
     discount?: FloatFilter<"PurchaseItem_online"> | number
@@ -27525,6 +27557,7 @@ export namespace Prisma {
     productId?: string | null
     cost: number
     selectedPrice: number
+    productName?: string | null
     priceType: string
     quantity: number
     discount: number
@@ -27546,6 +27579,7 @@ export namespace Prisma {
     productId?: string | null
     cost: number
     selectedPrice: number
+    productName?: string | null
     priceType: string
     quantity: number
     discount: number
@@ -28515,6 +28549,7 @@ export namespace Prisma {
     productId?: string | null
     cost: number
     selectedPrice: number
+    productName?: string | null
     priceType: string
     quantity: number
     discount: number
@@ -28536,6 +28571,7 @@ export namespace Prisma {
     productId?: string | null
     cost: number
     selectedPrice: number
+    productName?: string | null
     priceType: string
     quantity: number
     discount: number
@@ -29121,6 +29157,7 @@ export namespace Prisma {
     productId?: string | null
     cost: number
     selectedPrice: number
+    productName?: string | null
     priceType: string
     quantity: number
     discount: number
@@ -29563,6 +29600,7 @@ export namespace Prisma {
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
     selectedPrice?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     discount?: FloatFieldUpdateOperationsInput | number
@@ -29584,6 +29622,7 @@ export namespace Prisma {
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
     selectedPrice?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     discount?: FloatFieldUpdateOperationsInput | number
@@ -29605,6 +29644,7 @@ export namespace Prisma {
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
     selectedPrice?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     discount?: FloatFieldUpdateOperationsInput | number
@@ -29943,6 +29983,7 @@ export namespace Prisma {
     productId?: string | null
     cost: number
     selectedPrice: number
+    productName?: string | null
     priceType: string
     quantity: number
     discount: number
@@ -29964,6 +30005,7 @@ export namespace Prisma {
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
     selectedPrice?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     discount?: FloatFieldUpdateOperationsInput | number
@@ -29985,6 +30027,7 @@ export namespace Prisma {
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
     selectedPrice?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     discount?: FloatFieldUpdateOperationsInput | number
@@ -30006,6 +30049,7 @@ export namespace Prisma {
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
     selectedPrice?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     discount?: FloatFieldUpdateOperationsInput | number
@@ -30267,6 +30311,7 @@ export namespace Prisma {
     productId?: string | null
     cost: number
     selectedPrice: number
+    productName?: string | null
     priceType: string
     quantity: number
     discount: number
@@ -30342,6 +30387,7 @@ export namespace Prisma {
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
     selectedPrice?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     discount?: FloatFieldUpdateOperationsInput | number
@@ -30363,6 +30409,7 @@ export namespace Prisma {
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
     selectedPrice?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     discount?: FloatFieldUpdateOperationsInput | number
@@ -30384,6 +30431,7 @@ export namespace Prisma {
     productId?: NullableStringFieldUpdateOperationsInput | string | null
     cost?: FloatFieldUpdateOperationsInput | number
     selectedPrice?: FloatFieldUpdateOperationsInput | number
+    productName?: NullableStringFieldUpdateOperationsInput | string | null
     priceType?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     discount?: FloatFieldUpdateOperationsInput | number

@@ -43,7 +43,7 @@ export async function DELETE(req: NextRequest) {
                         })
                     } else {
                         return NextResponse.json({ 
-                            error: `Cannot delete purchase: Insufficient stock for product ${item.productName}. Current stock: ${product.quantity}, trying to remove: ${item.quantity}` 
+                            error: `Cannot delete purchase: Insufficient stock for product . Current stock: ${product.quantity}, trying to remove: ${item.quantity}` 
                         }, { status: 400 })
                     }
                 }
