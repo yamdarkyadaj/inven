@@ -89,7 +89,7 @@ export default function StockTrackingPage() {
 
   const fetchStockData = async () => {
     try {
-      const response = await fetch(`/api/product/stock-tracking?productId=${productId}&warehouseId=${warehouseId}`)
+      const response = await fetch(`/api/product/stock-tracking-online?productId=${productId}&warehouseId=${warehouseId}`)
       if (response.ok) {
         const result = await response.json()
         setData(result)

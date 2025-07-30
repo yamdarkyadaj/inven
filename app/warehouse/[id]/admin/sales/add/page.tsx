@@ -631,7 +631,7 @@ export default function AddSalePage() {
                           id="quantity"
                           type="number"
                           min="1"
-                          max={selectedProduct.quantity}
+                          // max={selectedProduct.quantity}
                           value={quantity}
                           onChange={(e) => setQuantity(Number.parseInt(e.target.value) || 1)}
                         />
@@ -650,7 +650,7 @@ export default function AddSalePage() {
                         <Button
                           onClick={addProductToSale}
                           className="w-full"
-                          disabled={selectedProduct.quantity === 0 || quantity > selectedProduct.quantity}
+                          // disabled={selectedProduct.quantity === 0 || quantity > selectedProduct.quantity}
                         >
                           <Plus className="mr-2 h-4 w-4" />
                           Add
@@ -727,7 +727,7 @@ export default function AddSalePage() {
                                   type="number"
                                   min="1"
                                   value={item.quantity}
-                                  max={item.limit}
+                                  // max={item.limit}
                                  
                                   onChange={(e) => updateItemQuantity(item.id, Number.parseInt(e.target.value) || 1)}
                                   className="w-16"
@@ -735,7 +735,7 @@ export default function AddSalePage() {
                                 <span className="text-xs text-muted-foreground">{item.unit}</span>
                               </div>
                             </TableCell>
-                            <TableCell className="font-medium">${item.total.toFixed(2)}</TableCell>
+                            <TableCell className="font-medium">{formatCurrency(item.total)}</TableCell>
                             <TableCell>
                               <Button
                                 variant="ghost"
@@ -882,7 +882,7 @@ export default function AddSalePage() {
                               {getPaymentMethodIcon(payment.method)}
                               <div>
                                 <div className="font-medium">
-                                  {getPaymentMethodLabel(payment.method)} - ${payment.amount.toFixed(2)}
+                                  {getPaymentMethodLabel(payment.method)} - {formatCurrency(payment.amount)}
                                 </div>
                                 {payment.reference && (
                                   <div className="text-sm text-muted-foreground">Ref: {payment.reference}</div>

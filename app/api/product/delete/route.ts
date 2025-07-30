@@ -20,7 +20,8 @@ export async function POST(req:NextRequest){
                 id:productId
             },
             data:{
-                isDeleted:true
+                isDeleted:true,
+                sync:false
             }
         })
 

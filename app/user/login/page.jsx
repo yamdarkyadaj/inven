@@ -58,9 +58,7 @@ export default function LoginForm() {
         }
         router.push(`/warehouse/${data.user.warehousesId}/${data.user.role}/dashboard`)
       }
-      if(online){
-        await axios.post("/api/syncNew")
-      }
+     
     }
    
     main()

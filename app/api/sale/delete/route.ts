@@ -31,7 +31,8 @@ export async function DELETE(req: NextRequest) {
                     data: {
                         quantity: {
                             increment: item.quantity
-                        }
+                        },
+                        sync:false
                     }
                 })
             }
@@ -40,19 +41,19 @@ export async function DELETE(req: NextRequest) {
         // Delete payment methods
         await offlinePrisma.paymentMethod.updateMany({
             where: { saleId: invoiceNo },
-            data:{isDeleted:true}
+            data:{isDeleted:true,sync:false}
         })
 
         // Delete sale items
         await offlinePrisma.saleItem.updateMany({
             where: { saleId: invoiceNo },
-            data:{isDeleted:true}
+            data:{isDeleted:true,sync:false}
         })
 
         // Delete the sale
         await offlinePrisma.sale.update({
             where: { invoiceNo },
-            data:{isDeleted:true}
+            data:{isDeleted:true,sync:false}
         })
 
         return NextResponse.json({ 

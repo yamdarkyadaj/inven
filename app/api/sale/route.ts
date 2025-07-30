@@ -113,7 +113,7 @@ export async function DELETE(req:NextRequest){
 
         await offlinePrisma.sale.update({
             where:{invoiceNo:saleId},
-            data:{isDeleted:true}
+            data:{isDeleted:true,sync:false}
         })
         return NextResponse.json("Done",{status:200})
 

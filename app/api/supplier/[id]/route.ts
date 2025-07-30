@@ -50,7 +50,8 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
                 email,
                 address,
                 phone,
-                warehousesId
+                warehousesId,
+                sync:false
             }
         })
 
@@ -85,7 +86,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
             where: {
                 id: id
             },
-            data:{isDeleted:true}
+            data:{isDeleted:true,sync:false}
         })
 
         return NextResponse.json({ message: "Supplier deleted successfully" }, { status: 200 })

@@ -36,7 +36,8 @@ export async function DELETE(req: NextRequest) {
                             data: {
                                 quantity: {
                                     decrement: item.quantity
-                                }
+                                },
+                                sync:false
                             }
                         })
                     } else {
@@ -51,13 +52,13 @@ export async function DELETE(req: NextRequest) {
         // Delete purchase items
         await offlinePrisma.purchaseItem.updateMany({
             where: { purchaseId: referenceNo },
-            data:{isDeleted:true}
+            data:{isDeleted:true,sync:false}
         })
 
         // Delete the purchase
         await offlinePrisma.purchase.update({
             where: { referenceNo },
-            data:{isDeleted:true}
+            data:{isDeleted:true,sync:false}
         })
 
         return NextResponse.json({ 
