@@ -452,7 +452,7 @@ export function usePrintReceipt() {
             </div>
 
             <div class="footer">
-              <div>Copyright © ${new Date().getFullYear()} ${settings.companyName}</div>
+              <div>Copyright © ${new Date().getFullYear()} Code Git</div>
               ${settings.footerMessage ? `<div style="font-weight: bold; margin-top: 4px;">${settings.footerMessage}</div>` : ""}
               ${settings.showTimestamp ? `<div style="margin-top: 8px;">Generated on ${new Date().toLocaleString()}</div>` : ""}
             </div>

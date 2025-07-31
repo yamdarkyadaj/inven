@@ -31,6 +31,7 @@ import {
 import { getWareHouseId } from "@/hooks/get-werehouseId"
 import { Loading } from "@/components/loading"
 import { formatCurrency } from "@/lib/utils"
+import axios from "axios"
 
 interface StockMovement {
   id: string
@@ -89,9 +90,10 @@ export default function StockTrackingPage() {
 
   const fetchStockData = async () => {
     try {
-      const response = await fetch(`/api/product/stock-tracking-online?productId=${productId}&warehouseId=${warehouseId}`)
-      if (response.ok) {
-        const result = await response.json()
+      // const response = await fetch(`/api/product/stock-tracking-online?productId=${productId}&warehouseId=${warehouseId}`)
+      const response = await axios.post(`/api/warehouse/products/stock-tracking-online`,{productId,warehouseId})
+      if (response.status !== 200) {
+        const result = response.data
         setData(result)
         console.log(result)
       } else {

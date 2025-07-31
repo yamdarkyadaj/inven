@@ -244,24 +244,36 @@ export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sid
                 ],
               },
             ]} />
-        <NavSection title="System" items={ [
-              {
-                title: "Notifications",
-                url: "/notifications",
-                icon: Bell,
-              },
+        <NavSection
+            title="System"
+            items={[
+             
               {
                 title: "Recpiet",
                 url: `${endpoint}/receipt`,
                 icon: Receipt,
               },
-              {
-                title: "Settings",
-                url: "/settings",
-                icon: Settings,
-              },
-            ]} />
-        <Button onClick={()=>signOut()} className="bg-red-500 m-2">Logout</Button>
+             
+            ].filter((item) => item.title !== "Notifications" && item.title !== "Settings")}
+          />
+
+        
+
+        <SidebarMenu>
+          <SidebarMenuItem>
+          <SidebarMenuButton
+              tooltip="Logout"
+              onClick={() => signOut()}
+              className="bg-red-500 text-white m-3 hover:bg-red-600 transition"
+            >
+              <ArrowLeftRight className="mr-2 h-4 w-4" />
+              <span>Logout</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+
+        <Button onClick={()=>signOut()} style={{display:"none"}} className="bg-red-500 m-2">Logout</Button>
+
       </SidebarContent>
       <SidebarRail />
     </Sidebar>

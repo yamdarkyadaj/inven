@@ -192,7 +192,7 @@ model PurchaseItem_online {
     productId            String?
     cost                 Float
     selectedPrice        Float
-    productName String?
+    productName          String?
     priceType            String
     quantity             Int
     discount             Float
