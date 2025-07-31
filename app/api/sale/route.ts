@@ -61,7 +61,7 @@ export async function POST(req:NextRequest){
                 discount:items[i].discount,
                 total:items[i].total,
                 warehousesId:warehouseId,
-                profit:items[i].profit,
+                profit:items[i].salePrice - items[i].costPrice,
             }
         })
         console.log(items[i].productId)

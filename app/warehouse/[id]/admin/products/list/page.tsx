@@ -45,7 +45,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Package, Search, Filter, Plus, MoreHorizontal, Edit, Trash2, Eye, Download, Upload, Trash, Activity } from "lucide-react"
+import { Package, Search, Filter, Plus, MoreHorizontal, Edit, Trash2, Eye, Download, Upload, Trash, Activity, DollarSign } from "lucide-react"
 import { getWareHouseId } from "@/hooks/get-werehouseId"
 import fetchWareHouseData from "@/hooks/fetch-invidual-data"
 import { Loading } from "@/components/loading"
@@ -188,6 +188,9 @@ const [openModalId, setOpenModalId] = useState(null);
           </div>
         </header>
 
+
+        
+
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -211,6 +214,20 @@ const [openModalId, setOpenModalId] = useState(null);
               </Button>
             </div>
           </div>
+
+            <div className="grid gap-4 md:grid-cols-3">
+                       <Card>
+                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                           <CardTitle className="text-sm font-medium">Total Sales</CardTitle>
+                           <DollarSign className="h-4 w-4 text-muted-foreground" />
+                         </CardHeader>
+                         <CardContent>
+                           <div className="text-2xl font-bold">{"2000"}</div>
+                           <p className="text-xs text-muted-foreground">{'1'} transactions</p>
+                         </CardContent>
+                       </Card>
+                      
+                     </div>
 
           {/* Filters and Search */}
           <Card>

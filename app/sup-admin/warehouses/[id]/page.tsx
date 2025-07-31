@@ -711,7 +711,7 @@ XLSX.writeFile(workbook, data.filename.replace(".csv", ".xlsx"));
                           <TableHead>Cost</TableHead>
                           <TableHead>Wholesale Price</TableHead>
                           <TableHead>Retail Price</TableHead>
-                          <TableHead>Action</TableHead>
+                          {/* <TableHead>Action</TableHead> */}
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -741,7 +741,7 @@ XLSX.writeFile(workbook, data.filename.replace(".csv", ".xlsx"));
                               <TableCell>{formatCurrency(product.cost)}</TableCell>
                               <TableCell>{formatCurrency(product.wholeSalePrice)}</TableCell>
                               <TableCell>{formatCurrency(product.retailPrice)}</TableCell>
-                              <TableCell>
+                              {/* <TableCell>
                                 <div className="flex gap-2">
                                   <Link href={`/sup-admin/warehouses/${wareHouseId}/${product.id}`}>
                                     <Button variant="outline" size="sm" className="gap-1">
@@ -756,7 +756,7 @@ XLSX.writeFile(workbook, data.filename.replace(".csv", ".xlsx"));
                                     </Button>
                                   </Link>
                                 </div>
-                              </TableCell>
+                              </TableCell> */}
                             </TableRow>
                           )
                         })}

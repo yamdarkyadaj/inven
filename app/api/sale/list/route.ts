@@ -55,6 +55,7 @@ export async function POST(req: NextRequest) {
           quantity: item.quantity,
           price: item.selectedPrice,
           total: item.total,
+          profit: item.profit,
           priceType: item.priceType,
         }));
 

@@ -47,7 +47,7 @@ export default function SalesListPage() {
   
   if(!salesData) return <Loading/>
   
-  console.log(salesData)
+  
   
 
   const filteredSales = salesData.filter((sale:any) => {
@@ -59,7 +59,7 @@ export default function SalesListPage() {
 
     const matchesDate = dateFilter === "all" || sale.createdAt === dateFilter
 
-    console.log(sale)
+    
 
     return matchesSearch && matchesStatus && matchesDate
   })
@@ -142,13 +142,22 @@ export default function SalesListPage() {
   }
 
 
+
   const totalSales = filteredSales.reduce((sum:any, sale:any) => sum + sale.total, 0)
+  
   const completedSales = filteredSales.filter((sale:any) => sale.status === "completed").length
   const pendingPayments = filteredSales
     .filter((sale:any) => sale.status === "partial" || sale.status === "pending")
     .reduce((sum:any, sale:any) => sum + sale.balance, 0)
 
+  console.log(salesData)
 
+  let totalProfit = 0
+  salesData.forEach((sale:any) => {
+    sale.items.forEach((item:any) => {
+      totalProfit += item.profit * item.quantity;
+    });
+  });
 
 
   return (
@@ -189,7 +198,17 @@ export default function SalesListPage() {
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{formatCurrency(totalSales.toFixed(2))}</div>
+                <div className="text-2xl font-bold">{formatCurrency(totalSales)}</div>
+                <p className="text-xs text-muted-foreground">{filteredSales.length} transactions</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Total Profit</CardTitle>
+                <DollarSign className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{formatCurrency(totalProfit)}</div>
                 <p className="text-xs text-muted-foreground">{filteredSales.length} transactions</p>
               </CardContent>
             </Card>
@@ -209,7 +228,7 @@ export default function SalesListPage() {
                 <Calendar className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{formatCurrency(pendingPayments.toFixed(2))}</div>
+                <div className="text-2xl font-bold">{formatCurrency(pendingPayments)}</div>
                 <p className="text-xs text-muted-foreground">Outstanding balance</p>
               </CardContent>
             </Card>
@@ -304,10 +323,10 @@ export default function SalesListPage() {
                           {sale.items.length} item{sale.items.length > 1 ? "s" : ""}
                         </div>
                       </TableCell>
-                      <TableCell className="font-medium">{formatCurrency(sale.total.toFixed(2))}</TableCell>
+                      <TableCell className="font-medium">{formatCurrency(sale.total)}</TableCell>
                       <TableCell className="text-green-600">{formatCurrency((sale.total - sale.balance))}</TableCell>
                       <TableCell className={sale.balance > 0 ? "text-red-600" : "text-green-600"}>
-                        {formatCurrency(sale.balance.toFixed(2))}
+                        {formatCurrency(sale.balance)}
                       </TableCell>
                       <TableCell>{getStatusBadge(sale.status)}</TableCell>
                       <TableCell>

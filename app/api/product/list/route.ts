@@ -6,7 +6,13 @@ export async function POST(req:NextRequest){
     const {warehouseId:warehousesId} = await req.json()
     
     try {
-        const products = await offlinePrisma.product.findMany({where:{warehousesId,isDeleted:false}})
+        const products = await offlinePrisma.$queryRaw`
+            SELECT *
+            FROM "Product"
+            WHERE "warehousesId" = ${warehousesId}
+                AND "isDeleted" = false
+            `
+
 
         return NextResponse.json(products,{status:200})
     } catch (error) {

@@ -247,13 +247,21 @@ export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sid
         <NavSection
             title="System"
             items={[
-             
+              {
+                title: "Notifications",
+                url: "/notifications",
+                icon: Bell,
+              },
               {
                 title: "Recpiet",
                 url: `${endpoint}/receipt`,
                 icon: Receipt,
               },
-             
+              {
+                title: "Settings",
+                url: "/settings",
+                icon: Settings,
+              },
             ].filter((item) => item.title !== "Notifications" && item.title !== "Settings")}
           />
 
