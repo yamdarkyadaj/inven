@@ -164,6 +164,11 @@ const [openModalId, setOpenModalId] = useState(null);
     XLSX.writeFile(workbook, "products_export.xlsx");
   }
 
+
+  const totalCost = productsData.reduce((sum:any, products:any) => sum + (products.cost * products.quantity), 0)
+  const totalRetail = productsData.reduce((sum:any, products:any) => sum + (products.retailPrice * products.quantity), 0)
+  const totalWholesale = productsData.reduce((sum:any, products:any) => sum + (products.wholeSalePrice * products.quantity), 0)
+
   return (
     <>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
@@ -218,12 +223,32 @@ const [openModalId, setOpenModalId] = useState(null);
             <div className="grid gap-4 md:grid-cols-3">
                        <Card>
                          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                           <CardTitle className="text-sm font-medium">Total Sales</CardTitle>
+                           <CardTitle className="text-sm font-medium">Total Cost Value</CardTitle>
                            <DollarSign className="h-4 w-4 text-muted-foreground" />
                          </CardHeader>
                          <CardContent>
-                           <div className="text-2xl font-bold">{"2000"}</div>
-                           <p className="text-xs text-muted-foreground">{'1'} transactions</p>
+                           <div className="text-2xl font-bold">{formatCurrency(totalCost)}</div>
+                           
+                         </CardContent>
+                       </Card>
+                       <Card>
+                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                           <CardTitle className="text-sm font-medium">Total Retail Value</CardTitle>
+                           <DollarSign className="h-4 w-4 text-muted-foreground" />
+                         </CardHeader>
+                         <CardContent>
+                           <div className="text-2xl font-bold">{formatCurrency(totalRetail)}</div>
+                           
+                         </CardContent>
+                       </Card>
+                       <Card>
+                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                           <CardTitle className="text-sm font-medium">Total Retail WholeSale</CardTitle>
+                           <DollarSign className="h-4 w-4 text-muted-foreground" />
+                         </CardHeader>
+                         <CardContent>
+                           <div className="text-2xl font-bold">{formatCurrency(totalWholesale)}</div>
+                           
                          </CardContent>
                        </Card>
                       

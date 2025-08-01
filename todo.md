@@ -5,9 +5,9 @@ wholesale price in total / retail
 
 customer balance and payment addition
 
-daily profit in calender format
+daily profit in calender format -- done
 
 profit tabs
 
-A4 reciepte
+A4 reciepte -- done
 

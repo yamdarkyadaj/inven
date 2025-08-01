@@ -280,7 +280,7 @@ export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sid
           </SidebarMenuItem>
         </SidebarMenu>
 
-        <Button onClick={()=>signOut()} style={{display:"none"}} className="bg-red-500 m-2">Logout</Button>
+        <Button onClick={()=>signOut()} style={{display:"none"}} className="bg-red-500">Logout</Button>
 
       </SidebarContent>
       <SidebarRail />

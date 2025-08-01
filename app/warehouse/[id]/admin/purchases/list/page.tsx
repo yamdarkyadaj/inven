@@ -516,18 +516,12 @@ export default function ViewPurchasesPage() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                              <DropdownMenuItem onClick={() => router.push(`${endPoint}/purchases/${purchase.id}`)}>
-                                <Eye className="mr-2 h-4 w-4" />
-                                View Details
-                              </DropdownMenuItem>
+                              
                               <DropdownMenuItem onClick={() => handlePrint(purchase)}>
                                 <Download className="mr-2 h-4 w-4" />
                                 Print Order
                               </DropdownMenuItem>
-                              <DropdownMenuItem>
-                                <Edit className="mr-2 h-4 w-4" />
-                                Edit Purchase
-                              </DropdownMenuItem>
+                              
                               <DropdownMenuSeparator />
                               <DropdownMenuItem className="text-red-600" onClick={() => handleDelete(purchase.referenceNo)}>
                                 <Trash2 className="mr-2 h-4 w-4" />
