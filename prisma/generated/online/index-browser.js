@@ -378,6 +378,22 @@ exports.Prisma.ReceiptSettings_onlineScalarFieldEnum = {
   isDeleted: 'isDeleted'
 };
 
+exports.Prisma.BalancePayment_onlineScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  saleId: 'saleId',
+  amount: 'amount',
+  paymentMethod: 'paymentMethod',
+  receiptNo: 'receiptNo',
+  notes: 'notes',
+  warehousesId: 'warehousesId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  sync: 'sync',
+  syncedAt: 'syncedAt',
+  isDeleted: 'isDeleted'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -423,7 +439,8 @@ exports.Prisma.ModelName = {
   Supplier_online: 'Supplier_online',
   Product_online: 'Product_online',
   PaymentMethod_online: 'PaymentMethod_online',
-  ReceiptSettings_online: 'ReceiptSettings_online'
+  ReceiptSettings_online: 'ReceiptSettings_online',
+  BalancePayment_online: 'BalancePayment_online'
 };
 
 /**

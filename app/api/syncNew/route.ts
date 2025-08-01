@@ -65,17 +65,17 @@ export async function POST() {
     console.log(`Synced ${users.length} users`);
 
     // ReceiptSettings
-    console.log("Starting receipt settings sync...");
-    const receiptSettings = await offlinePrisma.receiptSettings.findMany();
-    await pMap(receiptSettings, async (data) => {
-      const { warehousesId: warehouses_onlineId, ...rest } = data;
-      await onlinePrisma.receiptSettings_online.upsert({
-        where: { warehouses_onlineId: data.warehousesId },
-        update: { ...rest, warehouses_onlineId, syncedAt: new Date() },
-        create: { ...rest, warehouses_onlineId, syncedAt: new Date() },
-      });
-    }, { concurrency: 3 });
-    console.log(`Synced ${receiptSettings.length} receipt settings`);
+    // console.log("Starting receipt settings sync...");
+    // const receiptSettings = await offlinePrisma.receiptSettings.findMany();
+    // await pMap(receiptSettings, async (data) => {
+    //   const { warehousesId: warehouses_onlineId, ...rest } = data;
+    //   await onlinePrisma.receiptSettings_online.upsert({
+    //     where: { warehouses_onlineId: data.warehousesId },
+    //     update: { ...rest, warehouses_onlineId, syncedAt: new Date() },
+    //     create: { ...rest, warehouses_onlineId, syncedAt: new Date() },
+    //   });
+    // }, { concurrency: 3 });
+    // console.log(`Synced ${receiptSettings.length} receipt settings`);
 
     // Products
     console.log("Starting products sync...");
@@ -217,6 +217,19 @@ export async function POST() {
       data:{sync:true}
     })
     console.log(`Synced ${paymentMethods.length} payment methods`);
+
+
+    console.log("Starting balance payment sync...");
+    const balancePayment = await offlinePrisma.balancePayment.findMany({where:{sync:false}});
+    await pMap(balancePayment, async (data) => {
+      //const { warehousesId: warehouses_onlineId, ...rest } = data;
+      await onlinePrisma.balancePayment_online.upsert({
+        where: {id: data.id },
+        update: { ...data, syncedAt: new Date() },
+        create: { ...data, syncedAt: new Date() },
+      });
+    }, { concurrency: 3 });
+    console.log(`Synced ${balancePayment.length} receipt settings`);
 
     console.log("Sync completed successfully");
     return NextResponse.json({ status: 200, message: "Sync completed successfully." });

@@ -377,6 +377,22 @@ exports.Prisma.ReceiptSettingsScalarFieldEnum = {
   isDeleted: 'isDeleted'
 };
 
+exports.Prisma.BalancePaymentScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  saleId: 'saleId',
+  amount: 'amount',
+  paymentMethod: 'paymentMethod',
+  receiptNo: 'receiptNo',
+  notes: 'notes',
+  warehousesId: 'warehousesId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  sync: 'sync',
+  syncedAt: 'syncedAt',
+  isDeleted: 'isDeleted'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -422,7 +438,8 @@ exports.Prisma.ModelName = {
   Supplier: 'Supplier',
   Product: 'Product',
   PaymentMethod: 'PaymentMethod',
-  ReceiptSettings: 'ReceiptSettings'
+  ReceiptSettings: 'ReceiptSettings',
+  BalancePayment: 'BalancePayment'
 };
 
 /**

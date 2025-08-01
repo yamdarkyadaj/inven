@@ -111,16 +111,17 @@ model Warehouses {
   purchaseItem    PurchaseItem[]
   supplier        Supplier[]
   receiptSettings ReceiptSettings[]
+  balancePayment  BalancePayment[]
   sync            Boolean           @default(false) // Sync field
   syncedAt        DateTime? // When last synced
   isDeleted       Boolean           @default(false)
 }
 
 model Sale {
-  id                 String          @id @default(cuid())
+  id                 String           @id @default(cuid())
   saleItems          SaleItem[]
   selectedCustomerId String? // reference to Customer
-  selectedCustomer   Customer?       @relation(fields: [selectedCustomerId], references: [id])
+  selectedCustomer   Customer?        @relation(fields: [selectedCustomerId], references: [id])
   taxRate            Float
   subTotal           Float
   notes              String?
@@ -128,15 +129,16 @@ model Sale {
   grandTotal         Float
   paidAmount         Float
   balance            Float
-  createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @updatedAt
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
   warehousesId       String?
-  warehouses         Warehouses?     @relation(fields: [warehousesId], references: [warehouseCode])
-  invoiceNo          String          @unique
+  warehouses         Warehouses?      @relation(fields: [warehousesId], references: [warehouseCode])
+  invoiceNo          String           @unique
   paymentMethod      PaymentMethod[]
-  sync               Boolean         @default(false) // Sync field
+  balancePayment     BalancePayment[]
+  sync               Boolean          @default(false) // Sync field
   syncedAt           DateTime? // When last synced
-  isDeleted          Boolean         @default(false)
+  isDeleted          Boolean          @default(false)
 }
 
 model SaleItem {
@@ -211,22 +213,23 @@ model PurchaseItem {
 }
 
 model Customer {
-  id           String      @id @default(uuid())
-  name         String
-  type         String
-  companyName  String?
-  email        String?
-  address      String?
-  phone        String
-  Warehouses   Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
-  warehousesId String
-  Sale         Sale[]
-  saleItem     SaleItem[]
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  sync         Boolean     @default(false) // Sync field
-  syncedAt     DateTime? // When last synced
-  isDeleted    Boolean     @default(false)
+  id             String           @id @default(uuid())
+  name           String
+  type           String
+  companyName    String?
+  email          String?
+  address        String?
+  phone          String
+  Warehouses     Warehouses?      @relation(fields: [warehousesId], references: [warehouseCode])
+  warehousesId   String
+  Sale           Sale[]
+  saleItem       SaleItem[]
+  balancePayment BalancePayment[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  sync           Boolean          @default(false) // Sync field
+  syncedAt       DateTime? // When last synced
+  isDeleted      Boolean          @default(false)
 }
 
 model Supplier {
@@ -346,4 +349,23 @@ model ReceiptSettings {
   sync         Boolean     @default(false) // Sync field
   syncedAt     DateTime? // When last synced
   isDeleted    Boolean     @default(false)
+}
+
+model BalancePayment {
+  id            String      @id @default(uuid())
+  customerId    String
+  customer      Customer    @relation(fields: [customerId], references: [id])
+  saleId        String?
+  sale          Sale?       @relation(fields: [saleId], references: [invoiceNo])
+  amount        Float
+  paymentMethod String
+  receiptNo     String      @unique
+  notes         String?
+  warehousesId  String?
+  warehouses    Warehouses? @relation(fields: [warehousesId], references: [warehouseCode])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  sync          Boolean     @default(false) // Sync field
+  syncedAt      DateTime? // When last synced
+  isDeleted     Boolean     @default(false)
 }

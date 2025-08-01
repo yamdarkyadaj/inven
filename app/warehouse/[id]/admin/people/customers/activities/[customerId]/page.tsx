@@ -17,6 +17,7 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { 
   UserCheck, 
   ArrowLeft, 
@@ -28,7 +29,9 @@ import {
   Eye,
   CreditCard,
   AlertCircle,
-  TrendingUp
+  TrendingUp,
+  RefreshCw,
+  Printer
 } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { getWareHouseId } from "@/hooks/get-werehouseId"
@@ -43,6 +46,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { BalancePaymentDialog } from "@/components/balance-payment-dialog"
+import { BalancePaymentReceipt } from "@/components/balance-payment-receipt"
 
 interface CustomerActivity {
   id: string
@@ -63,6 +68,18 @@ interface CustomerActivity {
     method: string
     amount: number
   }>
+}
+
+interface BalancePayment {
+  id: string
+  receiptNo: string
+  amount: number
+  paymentMethod: string
+  notes?: string
+  createdAt: string
+  sale?: {
+    invoiceNo: string
+  }
 }
 
 interface CustomerData {
@@ -94,34 +111,200 @@ export default function CustomerActivitiesPage() {
   const customerId = params.customerId as string
 
   const [data, setData] = useState<ActivityData | null>(null)
+  const [balancePayments, setBalancePayments] = useState<BalancePayment[]>([])
   const [loading, setLoading] = useState(true)
+  const [loadingPayments, setLoadingPayments] = useState(false)
   const [selectedActivity, setSelectedActivity] = useState<CustomerActivity | null>(null)
+  const [paymentDialogOpen, setPaymentDialogOpen] = useState(false)
+  const [selectedPaymentActivity, setSelectedPaymentActivity] = useState<CustomerActivity | null>(null)
+  const [selectedPaymentForReceipt, setSelectedPaymentForReceipt] = useState<BalancePayment | null>(null)
   const [endPoint, setEndPoint] = useState("")
 
   useEffect(() => {
     setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
   }, [session, warehouseId])
 
+  const fetchActivities = async () => {
+    try {
+      const response = await fetch(`/api/customer/${customerId}/activities`)
+      if (!response.ok) {
+        throw new Error('Failed to fetch customer activities')
+      }
+      const activityData = await response.json()
+      setData(activityData)
+    } catch (error) {
+      console.error('Error fetching activities:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchBalancePayments = async () => {
+    setLoadingPayments(true)
+    try {
+      const response = await fetch(`/api/balance-payment?customerId=${customerId}`)
+      if (!response.ok) {
+        throw new Error('Failed to fetch balance payments')
+      }
+      const paymentData = await response.json()
+      setBalancePayments(paymentData.balancePayments || [])
+    } catch (error) {
+      console.error('Error fetching balance payments:', error)
+    } finally {
+      setLoadingPayments(false)
+    }
+  }
+
   useEffect(() => {
-    const fetchActivities = async () => {
-      try {
-        const response = await fetch(`/api/customer/${customerId}/activities`)
-        if (!response.ok) {
-          throw new Error('Failed to fetch customer activities')
-        }
-        const activityData = await response.json()
-        setData(activityData)
-      } catch (error) {
-        console.error('Error fetching activities:', error)
-      } finally {
-        setLoading(false)
+    if (customerId) {
+      fetchActivities()
+      fetchBalancePayments()
+    }
+  }, [customerId])
+
+  const handlePaymentSuccess = () => {
+    fetchActivities()
+    fetchBalancePayments()
+  }
+
+  const openPaymentDialog = (activity: CustomerActivity) => {
+    setSelectedPaymentActivity(activity)
+    setPaymentDialogOpen(true)
+  }
+
+  const handlePrintReceipt = (payment: BalancePayment) => {
+    // Create a receipt with full customer data
+    const receiptData = {
+      ...payment,
+      customer: data?.customer || {
+        name: "Unknown Customer",
+        phone: "N/A",
+        email:""
       }
     }
 
-    if (customerId) {
-      fetchActivities()
+    // Create a temporary element for printing
+    const printWindow = window.open('', '_blank')
+    if (printWindow) {
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Balance Payment Receipt</title>
+            <style>
+              body { 
+                margin: 0; 
+                padding: 20px; 
+                font-family: Arial, sans-serif;
+                max-width: 400px;
+                margin: 0 auto;
+              }
+              .text-center { text-align: center; }
+              .border-b { border-bottom: 1px solid #ddd; padding-bottom: 1rem; margin-bottom: 1rem; }
+              .flex { display: flex; justify-content: space-between; }
+              .font-bold { font-weight: bold; }
+              .text-lg { font-size: 1.125rem; }
+              .text-xl { font-size: 1.25rem; }
+              .mb-2 { margin-bottom: 0.5rem; }
+              .mb-4 { margin-bottom: 1rem; }
+              .space-y-1 > * + * { margin-top: 0.25rem; }
+              .space-y-2 > * + * { margin-top: 0.5rem; }
+              .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+              .border-t { border-top: 1px solid #ddd; padding-top: 1rem; }
+              .text-xs { font-size: 0.75rem; }
+              .text-gray-600 { color: #666; }
+              .text-gray-700 { color: #555; }
+              @media print { 
+                body { margin: 0; padding: 0; } 
+                .no-print { display: none; }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="text-center border-b">
+              <h1 class="text-xl font-bold">Your Company Name</h1>
+              <p class="text-gray-600">Company Address</p>
+              <p class="text-gray-600">Tel: Company Phone</p>
+              <p class="text-gray-600">Email: company@email.com</p>
+            </div>
+            
+            <div class="text-center mb-4">
+              <h2 class="text-lg font-bold">BALANCE PAYMENT RECEIPT</h2>
+              <p class="text-gray-600">Receipt No: ${payment.receiptNo}</p>
+            </div>
+            
+            <div class="space-y-2 mb-4">
+              <div class="flex">
+                <span class="font-bold">Date:</span>
+                <span>${new Date(payment.createdAt).toLocaleDateString()}</span>
+              </div>
+              <div class="flex">
+                <span class="font-bold">Time:</span>
+                <span>${new Date(payment.createdAt).toLocaleTimeString()}</span>
+              </div>
+            </div>
+            
+            <div class="border-t border-b py-3 mb-4">
+              <h3 class="font-bold mb-2">Customer Information</h3>
+              <div class="space-y-1">
+                <div class="flex">
+                  <span class="font-bold">Name:</span>
+                  <span>${receiptData.customer.name}</span>
+                </div>
+                <div class="flex">
+                  <span class="font-bold">Phone:</span>
+                  <span>${receiptData.customer.phone}</span>
+                </div>
+                ${receiptData.customer?.email ? `
+                <div class="flex">
+                  <span class="font-bold">Email:</span>
+                  <span>${receiptData.customer?.email}</span>
+                </div>
+                ` : ''}
+              </div>
+            </div>
+            
+            <div class="space-y-2 mb-4">
+              <h3 class="font-bold">Payment Details</h3>
+              ${payment.sale ? `
+              <div class="flex">
+                <span class="font-bold">Invoice No:</span>
+                <span>${payment.sale.invoiceNo}</span>
+              </div>
+              ` : ''}
+              <div class="flex">
+                <span class="font-bold">Payment Method:</span>
+                <span style="text-transform: capitalize;">${payment.paymentMethod.replace('_', ' ')}</span>
+              </div>
+              <div class="flex text-lg font-bold">
+                <span>Amount Paid:</span>
+                <span>${formatCurrency(payment.amount)}</span>
+              </div>
+            </div>
+            
+            ${payment.notes ? `
+            <div class="mb-4">
+              <h3 class="font-bold mb-2">Notes</h3>
+              <p class="text-gray-700">${payment.notes}</p>
+            </div>
+            ` : ''}
+            
+            <div class="border-t text-center text-gray-600">
+              <p class="mb-2">Thank you for your payment!</p>
+              <p class="text-xs">
+                This is a computer generated receipt and does not require signature.
+              </p>
+              <p class="text-xs mb-2">
+                For any queries, please contact us at Company Phone
+              </p>
+            </div>
+          </body>
+        </html>
+      `)
+      printWindow.document.close()
+      printWindow.print()
+      printWindow.close()
     }
-  }, [customerId])
+  }
 
   const getActivityBadge = (type: string) => {
     switch (type) {
@@ -191,7 +374,7 @@ export default function CustomerActivitiesPage() {
         </header>
 
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <Button
                 onClick={() => router.back()}
@@ -202,8 +385,19 @@ export default function CustomerActivitiesPage() {
                 Back
               </Button>
               <Activity className="h-5 w-5 text-blue-600" />
-              <h1 className="text-2xl font-semibold text-blue-600">Customer Activities</h1>
+              <h1 className="text-xl sm:text-2xl font-semibold text-blue-600">Customer Activities</h1>
             </div>
+            <Button
+              onClick={() => {
+                fetchActivities()
+                fetchBalancePayments()
+              }}
+              variant="outline"
+              size="sm"
+            >
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Refresh
+            </Button>
           </div>
 
           {/* Customer Information */}
@@ -215,7 +409,7 @@ export default function CustomerActivitiesPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div>
                   <label className="text-sm font-medium text-gray-500">Name</label>
                   <p className="font-medium">{data.customer.name}</p>
@@ -241,7 +435,7 @@ export default function CustomerActivitiesPage() {
                   </div>
                 )}
                 {data.customer.address && (
-                  <div>
+                  <div className="sm:col-span-2 lg:col-span-3">
                     <label className="text-sm font-medium text-gray-500">Address</label>
                     <p className="text-sm">{data.customer.address}</p>
                   </div>
@@ -251,14 +445,14 @@ export default function CustomerActivitiesPage() {
           </Card>
 
           {/* Summary Cards */}
-          <div className="grid gap-4 md:grid-cols-4">
+          <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Total Sales</CardTitle>
                 <Receipt className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{data.summary.totalSales}</div>
+                <div className="text-xl sm:text-2xl font-bold">{data.summary.totalSales}</div>
                 <p className="text-xs text-muted-foreground">Total transactions</p>
               </CardContent>
             </Card>
@@ -268,7 +462,7 @@ export default function CustomerActivitiesPage() {
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{formatCurrency(data.summary.totalAmount)}</div>
+                <div className="text-xl sm:text-2xl font-bold">{formatCurrency(data.summary.totalAmount)}</div>
                 <p className="text-xs text-muted-foreground">Total sales value</p>
               </CardContent>
             </Card>
@@ -278,7 +472,7 @@ export default function CustomerActivitiesPage() {
                 <CreditCard className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">
+                <div className="text-xl sm:text-2xl font-bold text-green-600">
                   {formatCurrency(data.summary.totalPaid)}
                 </div>
                 <p className="text-xs text-muted-foreground">Amount received</p>
@@ -290,7 +484,7 @@ export default function CustomerActivitiesPage() {
                 <TrendingUp className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className={`text-2xl font-bold ${getBalanceColor(data.summary.totalBalance)}`}>
+                <div className={`text-xl sm:text-2xl font-bold ${getBalanceColor(data.summary.totalBalance)}`}>
                   {formatCurrency(data.summary.totalBalance)}
                 </div>
                 <p className="text-xs text-muted-foreground">Amount due</p>
@@ -298,162 +492,279 @@ export default function CustomerActivitiesPage() {
             </Card>
           </div>
 
-          {/* Activities Table */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Transaction History</CardTitle>
-              <CardDescription>
-                Showing {data.activities.length} transaction(s)
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {data.activities.length === 0 ? (
-                <div className="text-center py-8">
-                  <ShoppingCart className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-medium mb-2">No activities found</h3>
-                  <p className="text-muted-foreground">
-                    This customer hasn't made any purchases yet.
-                  </p>
-                </div>
-              ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Invoice No.</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Description</TableHead>
-                      <TableHead className="text-right">Amount</TableHead>
-                      <TableHead className="text-right">Paid</TableHead>
-                      <TableHead className="text-right">Balance</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {data.activities.map((activity) => (
-                      <TableRow key={activity.id}>
-                        <TableCell>
-                          <div className="flex items-center gap-1">
-                            <Calendar className="h-4 w-4 text-muted-foreground" />
-                            {formatDate(activity.date)}
-                          </div>
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          {activity.invoiceNo}
-                        </TableCell>
-                        <TableCell>
-                          {getActivityBadge(activity.type)}
-                        </TableCell>
-                        <TableCell>{activity.description}</TableCell>
-                        <TableCell className="text-right font-medium">
-                          {formatCurrency(activity.amount)}
-                        </TableCell>
-                        <TableCell className="text-right text-green-600">
-                          {formatCurrency(activity.paidAmount)}
-                        </TableCell>
-                        <TableCell className={`text-right font-medium ${getBalanceColor(activity.balance)}`}>
-                          {formatCurrency(activity.balance)}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex gap-2 justify-end">
-                            <Dialog>
-                              <DialogTrigger asChild>
-                                <Button 
-                                  variant="outline" 
-                                  size="sm"
-                                  onClick={() => setSelectedActivity(activity)}
-                                >
-                                  <Eye className="h-4 w-4" />
-                                </Button>
-                              </DialogTrigger>
-                              <DialogContent className="max-w-2xl">
-                                <DialogHeader>
-                                  <DialogTitle>Transaction Details - {activity.invoiceNo}</DialogTitle>
-                                  <DialogDescription>
-                                    View detailed information about this transaction
-                                  </DialogDescription>
-                                </DialogHeader>
-                                {selectedActivity && (
-                                  <div className="space-y-4">
-                                    <div className="grid grid-cols-2 gap-4">
-                                      <div>
-                                        <label className="text-sm font-medium text-gray-500">Date</label>
-                                        <p>{formatDate(selectedActivity.date)}</p>
-                                      </div>
-                                      <div>
-                                        <label className="text-sm font-medium text-gray-500">Invoice No.</label>
-                                        <p>{selectedActivity.invoiceNo}</p>
-                                      </div>
-                                      <div>
-                                        <label className="text-sm font-medium text-gray-500">Total Amount</label>
-                                        <p className="font-medium">{formatCurrency(selectedActivity.amount)}</p>
-                                      </div>
-                                      <div>
-                                        <label className="text-sm font-medium text-gray-500">Balance</label>
-                                        <p className={getBalanceColor(selectedActivity.balance)}>
-                                          {formatCurrency(selectedActivity.balance)}
-                                        </p>
-                                      </div>
-                                    </div>
-                                    
-                                    <div>
-                                      <label className="text-sm font-medium text-gray-500 mb-2 block">Items</label>
-                                      <div className="border rounded-lg overflow-hidden">
-                                        <Table>
-                                          <TableHeader>
-                                            <TableRow>
-                                              <TableHead>Product</TableHead>
-                                              <TableHead>Qty</TableHead>
-                                              <TableHead>Price</TableHead>
-                                              <TableHead>Total</TableHead>
-                                            </TableRow>
-                                          </TableHeader>
-                                          <TableBody>
-                                            {selectedActivity.items.map((item, index) => (
-                                              <TableRow key={index}>
-                                                <TableCell>{item.productName}</TableCell>
-                                                <TableCell>{item.quantity}</TableCell>
-                                                <TableCell>{formatCurrency(item.price)}</TableCell>
-                                                <TableCell>{formatCurrency(item.total)}</TableCell>
-                                              </TableRow>
-                                            ))}
-                                          </TableBody>
-                                        </Table>
-                                      </div>
-                                    </div>
+          {/* Tabs for Activities and Balance Payments */}
+          <Tabs defaultValue="activities" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 max-w-[400px]">
+              <TabsTrigger value="activities">Transaction History</TabsTrigger>
+              <TabsTrigger value="balance-payments">Balance Paid</TabsTrigger>
+            </TabsList>
 
-                                    {selectedActivity.paymentMethods.length > 0 && (
-                                      <div>
-                                        <label className="text-sm font-medium text-gray-500 mb-2 block">Payment Methods</label>
-                                        <div className="space-y-2">
-                                          {selectedActivity.paymentMethods.map((payment, index) => (
-                                            <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                                              <span className="capitalize">{payment.method}</span>
-                                              <span className="font-medium">{formatCurrency(payment.amount)}</span>
+            {/* Transaction History Tab */}
+            <TabsContent value="activities">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Transaction History</CardTitle>
+                  <CardDescription>
+                    Showing {data.activities.length} transaction(s)
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {data.activities.length === 0 ? (
+                    <div className="text-center py-8">
+                      <ShoppingCart className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                      <h3 className="text-lg font-medium mb-2">No activities found</h3>
+                      <p className="text-muted-foreground">
+                        This customer hasn't made any purchases yet.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Date</TableHead>
+                            <TableHead>Invoice No.</TableHead>
+                            <TableHead className="hidden sm:table-cell">Type</TableHead>
+                            <TableHead className="hidden md:table-cell">Description</TableHead>
+                            <TableHead className="text-right">Amount</TableHead>
+                            <TableHead className="text-right hidden sm:table-cell">Paid</TableHead>
+                            <TableHead className="text-right">Balance</TableHead>
+                            <TableHead className="text-right">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {data.activities.map((activity) => (
+                            <TableRow key={activity.id}>
+                              <TableCell>
+                                <div className="flex items-center gap-1">
+                                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                                  <span className="text-sm">{formatDate(activity.date)}</span>
+                                </div>
+                              </TableCell>
+                              <TableCell className="font-medium">
+                                {activity.invoiceNo}
+                              </TableCell>
+                              <TableCell className="hidden sm:table-cell">
+                                {getActivityBadge(activity.type)}
+                              </TableCell>
+                              <TableCell className="hidden md:table-cell">{activity.description}</TableCell>
+                              <TableCell className="text-right font-medium">
+                                {formatCurrency(activity.amount)}
+                              </TableCell>
+                              <TableCell className="text-right text-green-600 hidden sm:table-cell">
+                                {formatCurrency(activity.paidAmount)}
+                              </TableCell>
+                              <TableCell className={`text-right font-medium ${getBalanceColor(activity.balance)}`}>
+                                {formatCurrency(activity.balance)}
+                              </TableCell>
+                              <TableCell className="text-right">
+                                <div className="flex gap-1 justify-end">
+                                  <Dialog>
+                                    <DialogTrigger asChild>
+                                      <Button 
+                                        variant="outline" 
+                                        size="sm"
+                                        onClick={() => setSelectedActivity(activity)}
+                                      >
+                                        <Eye className="h-4 w-4" />
+                                      </Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                                      <DialogHeader>
+                                        <DialogTitle>Transaction Details - {activity.invoiceNo}</DialogTitle>
+                                        <DialogDescription>
+                                          View detailed information about this transaction
+                                        </DialogDescription>
+                                      </DialogHeader>
+                                      {selectedActivity && (
+                                        <div className="space-y-4">
+                                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div>
+                                              <label className="text-sm font-medium text-gray-500">Date</label>
+                                              <p>{formatDate(selectedActivity.date)}</p>
                                             </div>
-                                          ))}
+                                            <div>
+                                              <label className="text-sm font-medium text-gray-500">Invoice No.</label>
+                                              <p>{selectedActivity.invoiceNo}</p>
+                                            </div>
+                                            <div>
+                                              <label className="text-sm font-medium text-gray-500">Total Amount</label>
+                                              <p className="font-medium">{formatCurrency(selectedActivity.amount)}</p>
+                                            </div>
+                                            <div>
+                                              <label className="text-sm font-medium text-gray-500">Balance</label>
+                                              <p className={getBalanceColor(selectedActivity.balance)}>
+                                                {formatCurrency(selectedActivity.balance)}
+                                              </p>
+                                            </div>
+                                          </div>
+                                          
+                                          <div>
+                                            <label className="text-sm font-medium text-gray-500 mb-2 block">Items</label>
+                                            <div className="border rounded-lg overflow-hidden">
+                                              <div className="overflow-x-auto">
+                                                <Table>
+                                                  <TableHeader>
+                                                    <TableRow>
+                                                      <TableHead>Product</TableHead>
+                                                      <TableHead>Qty</TableHead>
+                                                      <TableHead>Price</TableHead>
+                                                      <TableHead>Total</TableHead>
+                                                    </TableRow>
+                                                  </TableHeader>
+                                                  <TableBody>
+                                                    {selectedActivity.items.map((item, index) => (
+                                                      <TableRow key={index}>
+                                                        <TableCell>{item.productName}</TableCell>
+                                                        <TableCell>{item.quantity}</TableCell>
+                                                        <TableCell>{formatCurrency(item.price)}</TableCell>
+                                                        <TableCell>{formatCurrency(item.total)}</TableCell>
+                                                      </TableRow>
+                                                    ))}
+                                                  </TableBody>
+                                                </Table>
+                                              </div>
+                                            </div>
+                                          </div>
+
+                                          {selectedActivity.paymentMethods.length > 0 && (
+                                            <div>
+                                              <label className="text-sm font-medium text-gray-500 mb-2 block">Payment Methods</label>
+                                              <div className="space-y-2">
+                                                {selectedActivity.paymentMethods.map((payment, index) => (
+                                                  <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                                    <span className="capitalize">{payment.method}</span>
+                                                    <span className="font-medium">{formatCurrency(payment.amount)}</span>
+                                                  </div>
+                                                ))}
+                                              </div>
+                                            </div>
+                                          )}
                                         </div>
-                                      </div>
-                                    )}
-                                  </div>
-                                )}
-                              </DialogContent>
-                            </Dialog>
-                            <Button variant="outline" size="sm" asChild>
-                              <Link href={`${endPoint}/sales/${activity.invoiceNo}`}>
-                                <Receipt className="h-4 w-4" />
-                              </Link>
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              )}
-            </CardContent>
-          </Card>
+                                      )}
+                                    </DialogContent>
+                                  </Dialog>
+                                  
+                                  {activity.balance > 0 && (
+                                    <Button 
+                                      variant="outline" 
+                                      size="sm"
+                                      onClick={() => openPaymentDialog(activity)}
+                                    >
+                                      <CreditCard className="h-4 w-4" />
+                                    </Button>
+                                  )}
+                                  
+                                  <Button variant="outline" size="sm" asChild>
+                                    <Link href={`${endPoint}/sales/${activity.invoiceNo}`}>
+                                      <Receipt className="h-4 w-4" />
+                                    </Link>
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Balance Payments Tab */}
+            <TabsContent value="balance-payments">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Balance Payments</CardTitle>
+                  <CardDescription>
+                    Showing {balancePayments.length} balance payment(s)
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {loadingPayments ? (
+                    <div className="text-center py-8">
+                      <Loading />
+                    </div>
+                  ) : balancePayments.length === 0 ? (
+                    <div className="text-center py-8">
+                      <CreditCard className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                      <h3 className="text-lg font-medium mb-2">No balance payments found</h3>
+                      <p className="text-muted-foreground">
+                        No balance payments have been made for this customer yet.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Date</TableHead>
+                            <TableHead>Receipt No.</TableHead>
+                            <TableHead className="hidden sm:table-cell">Invoice No.</TableHead>
+                            <TableHead className="text-right">Amount</TableHead>
+                            <TableHead className="hidden md:table-cell">Payment Method</TableHead>
+                            <TableHead className="hidden lg:table-cell">Notes</TableHead>
+                            <TableHead className="text-right">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {balancePayments.map((payment) => (
+                            <TableRow key={payment.id}>
+                              <TableCell>
+                                <div className="flex items-center gap-1">
+                                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                                  <span className="text-sm">{formatDate(payment.createdAt)}</span>
+                                </div>
+                              </TableCell>
+                              <TableCell className="font-medium">
+                                {payment.receiptNo}
+                              </TableCell>
+                              <TableCell className="hidden sm:table-cell">
+                                {payment.sale?.invoiceNo || "General Payment"}
+                              </TableCell>
+                              <TableCell className="text-right font-medium text-green-600">
+                                {formatCurrency(payment.amount)}
+                              </TableCell>
+                              <TableCell className="hidden md:table-cell capitalize">
+                                {payment.paymentMethod.replace('_', ' ')}
+                              </TableCell>
+                              <TableCell className="hidden lg:table-cell">
+                                {payment.notes || "-"}
+                              </TableCell>
+                              <TableCell className="text-right">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handlePrintReceipt(payment)}
+                                >
+                                  <Printer className="h-4 w-4" />
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
+
+        {/* Balance Payment Dialog */}
+        <BalancePaymentDialog
+          open={paymentDialogOpen}
+          onOpenChange={setPaymentDialogOpen}
+          customerId={customerId}
+          saleId={selectedPaymentActivity?.invoiceNo}
+          invoiceNo={selectedPaymentActivity?.invoiceNo}
+          outstandingBalance={selectedPaymentActivity?.balance}
+          customerName={data.customer.name}
+          warehousesId={warehouseId}
+          onPaymentSuccess={handlePaymentSuccess}
+        />
      </>
   )
 }
