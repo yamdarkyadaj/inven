@@ -64,14 +64,7 @@ export default function Home() {
         >
           Sup Admin
         </Link>
-        <Link
-          isExternal
-          className={buttonStyles({ variant: "bordered", radius: "full" })}
-          href={"/user/login"}
-        >
-          
-          user
-        </Link>
+       
       </div>
 
       
