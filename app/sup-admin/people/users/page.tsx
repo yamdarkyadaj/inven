@@ -41,7 +41,7 @@ export default function UsersPage() {
   const [roleFilter, setRoleFilter] = useState("all")
   const [statusFilter, setStatusFilter] = useState("all")
 
-  const {data:usersData,loading,error} = fetchData("/api/users")
+  const {data:usersData,loading,error} = fetchData("/api/users/online")
 
   if (loading) return <Loading/>
   if (error) return <h1 className="text-red-500">Error loading warehouses.</h1>
