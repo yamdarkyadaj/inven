@@ -102,28 +102,29 @@ export async function POST(req:NextRequest) {
       }),
       
       // Sales by month for the last 6 months
-      await prisma.$queryRaw`
+      // await prisma.$queryRaw`
+      //   SELECT 
+      //     TO_CHAR(DATE_TRUNC('month', "createdAt"), 'Mon') as month,
+      //     COUNT(*)::int as sales,
+      //     SUM("grandTotal")::float as revenue
+      //   FROM "Sale" 
+      //   WHERE "warehousesId" = ${warehouseId} AND "isDeleted" = ${false}
+      //     AND "createdAt" >= NOW() - INTERVAL '6 months'
+      //   GROUP BY DATE_TRUNC('month', "createdAt")
+      //   ORDER BY DATE_TRUNC('month', "createdAt")
+      // `
+    
+    await prisma.$queryRawUnsafe(`
         SELECT 
-          TO_CHAR(DATE_TRUNC('month', "createdAt"), 'Mon') as month,
-          COUNT(*)::int as sales,
-          SUM("grandTotal")::float as revenue
-        FROM "Sale" 
-        WHERE "warehousesId" = ${warehouseId} AND "isDeleted" = ${false}
-          AND "createdAt" >= NOW() - INTERVAL '6 months'
-        GROUP BY DATE_TRUNC('month', "createdAt")
-        ORDER BY DATE_TRUNC('month', "createdAt")
-      `
-    // await prisma.$queryRawUnsafe(`
-    //     SELECT 
-    //       strftime('%Y-%m', "createdAt") AS month,
-    //       COUNT(*) AS sales,
-    //       SUM("grandTotal") AS revenue
-    //     FROM "Sale"
-    //     WHERE "warehousesId" = ?
-    //       AND "createdAt" >= datetime('now', '-6 months')
-    //     GROUP BY strftime('%Y-%m', "createdAt")
-    //     ORDER BY strftime('%Y-%m', "createdAt")
-    //   `, warehouseId)
+          strftime('%Y-%m', "createdAt") AS month,
+          COUNT(*) AS sales,
+          SUM("grandTotal") AS revenue
+        FROM "Sale"
+        WHERE "warehousesId" = ?
+          AND "createdAt" >= datetime('now', '-6 months')
+        GROUP BY strftime('%Y-%m', "createdAt")
+        ORDER BY strftime('%Y-%m', "createdAt")
+      `, warehouseId)
 
 
     ];

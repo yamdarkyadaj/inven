@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   try {
     const created = await offlinePrisma.product.createMany({
       data: products,
-      skipDuplicates: true, // In case barcode is unique
+    // In case barcode is unique
     });
 
     return NextResponse.json({ success: true, created });
