@@ -252,7 +252,7 @@ export default function AddProductPage() {
             <Button disabled={
               !productName || 
               !productCode || 
-              !productDescription || 
+              
               !productQuantity || 
               !productTaxRate || 
               !productUnit || 

@@ -308,7 +308,7 @@ export default function EditProductPage() {
 
             {/* Right Side - Additional Options */}
             <div className="space-y-6">
-              {/* <Card>
+              <Card>
                 <CardHeader>
                   <CardTitle>Warehouse Quantity</CardTitle>
                 </CardHeader>
@@ -324,7 +324,7 @@ export default function EditProductPage() {
                     />
                   </div>
                 </CardContent>
-              </Card> */}
+              </Card>
 
               <Card>
                 <CardHeader>

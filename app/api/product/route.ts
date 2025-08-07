@@ -6,12 +6,7 @@ export async function GET(req:NextRequest){
     const warehouseId = await req.json()
     
     try {
-        const products = await offlinePrisma.$queryRaw`
-            SELECT *
-            FROM "Product"
-            WHERE "isDeleted" = false
-        `
-
+        const products = await offlinePrisma.product.findMany({where:{isDeleted:false}})
 
         return NextResponse.json(products,{status:200})
     } catch (error) {
@@ -45,7 +40,7 @@ export async function POST(req:NextRequest){
                 taxRate:parseInt(taxRate),
                 unit,
                 quantity:parseInt(quantity),
-                description,
+                description:"product",
                 warehousesId:warehouseId,
                 sync: false, // New products should be marked as unsynced
                 syncedAt: null

@@ -118,7 +118,7 @@ export default function AddSalePage() {
   const [saleItems, setSaleItems] = useState<SaleItem[]>([])
   const [selectedCustomer, setSelectedCustomer] = useState("")
   const [selectedProductId, setSelectedProductId] = useState("")
-  const [quantity, setQuantity] = useState(1)
+  const [quantity, setQuantity] = useState<any>("")
   const [discount, setDiscount] = useState(0)
   const [priceType, setPriceType] = useState<"wholesale" | "retail">("retail")
   const [taxRate, setTaxRate] = useState(0)
@@ -218,7 +218,7 @@ export default function AddSalePage() {
 
     // Reset form
     setSelectedProductId("")
-    setQuantity(1)
+    setQuantity("")
     setDiscount(0)
   }
 
@@ -630,7 +630,7 @@ export default function AddSalePage() {
                         <Input
                           id="quantity"
                           type="number"
-                          min="1"
+                          
                           // max={selectedProduct.quantity}
                           value={quantity}
                           onChange={(e) => setQuantity(Number.parseInt(e.target.value) || 1)}
