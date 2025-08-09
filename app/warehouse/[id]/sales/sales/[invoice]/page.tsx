@@ -114,6 +114,8 @@ export default function SaleInvoiceViewPage() {
   const {data:saleData,loading,error} = fetchWareHouseData("/api/sale/invoice",{invoiceNo})
 
   if(!saleData) return ""
+
+  console.log(saleData)
  
 
   const handlePrint = () => {
@@ -243,7 +245,7 @@ export default function SaleInvoiceViewPage() {
           </Breadcrumb>
         </header>
 
-        <div className="flex flex-1 flex-col gap-4 p-4">
+        <div className="flex flex-1 bg-black-500 flex-col gap-4 p-4">
           {/* Header Actions */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -406,7 +408,7 @@ export default function SaleInvoiceViewPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Product</TableHead>
-                    <TableHead>Category</TableHead>
+                   
                     <TableHead className="text-right">Qty</TableHead>
                     <TableHead className="text-right">Unit Price</TableHead>
                     <TableHead className="text-right">Discount</TableHead>
@@ -426,9 +428,7 @@ export default function SaleInvoiceViewPage() {
                           )}
                         </div>
                       </TableCell>
-                      <TableCell>
-                        N/A
-                      </TableCell>
+                      
                       <TableCell className="text-right">
                         {item.quantity} {item.product?.unit || "pcs"}
                       </TableCell>

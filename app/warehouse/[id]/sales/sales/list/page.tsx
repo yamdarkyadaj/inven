@@ -18,7 +18,7 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { ShoppingCart, Plus, Search, Edit, Eye, Printer, Calendar, DollarSign, User } from "lucide-react"
+import { ShoppingCart, Plus, Search, Edit, Eye, Printer, Calendar, DollarSign, User, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { usePrintReceipt } from "@/hooks/use-print-receipt"
@@ -44,9 +44,10 @@ export default function SalesListPage() {
   useEffect(()=>{
     setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
   },[session,warehouseId])
+  
   if(!salesData) return <Loading/>
   
-  console.log(salesData)
+  
   
 
   const filteredSales = salesData.filter((sale:any) => {
@@ -57,6 +58,8 @@ export default function SalesListPage() {
     const matchesStatus = statusFilter === "all" || sale.status === statusFilter
 
     const matchesDate = dateFilter === "all" || sale.createdAt === dateFilter
+
+    
 
     return matchesSearch && matchesStatus && matchesDate
   })
@@ -82,7 +85,7 @@ export default function SalesListPage() {
     router.push(`${endpoint}/sales/${saleId}`)
   }
 
-  const handlePrintReceipt = (id:string,paperWidth: "57mm" | "80mm") => {
+  const handlePrintReceipt = (id:string,paperWidth: "57mm" | "80mm" | "A4") => {
 
     const completedSale = salesData.find((x:any)=>x.id == id)
         if (!completedSale) return
@@ -111,14 +114,50 @@ export default function SalesListPage() {
         printReceipt(receiptData, paperWidth)
       }
 
+  const handleDelete = async (invoiceNo: string) => {
+    if (!confirm("Are you sure you want to delete this sale? This will return the products back to stock.")) {
+      return
+    }
+
+    try {
+      const response = await fetch("/api/sale/delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ invoiceNo }),
+      })
+
+      if (response.ok) {
+        alert("Sale deleted successfully and products returned to stock!")
+        window.location.reload()
+      } else {
+        const error = await response.json()
+        alert(`Error: ${error.error}`)
+      }
+    } catch (error) {
+      alert("Error deleting sale")
+      console.error(error)
+    }
+  }
+
+
 
   const totalSales = filteredSales.reduce((sum:any, sale:any) => sum + sale.total, 0)
+  
   const completedSales = filteredSales.filter((sale:any) => sale.status === "completed").length
   const pendingPayments = filteredSales
     .filter((sale:any) => sale.status === "partial" || sale.status === "pending")
     .reduce((sum:any, sale:any) => sum + sale.balance, 0)
 
+  console.log(salesData)
 
+  let totalProfit = 0
+  salesData.forEach((sale:any) => {
+    sale.items.forEach((item:any) => {
+      totalProfit += item.profit * item.quantity;
+    });
+  });
 
 
   return (
@@ -130,7 +169,7 @@ export default function SalesListPage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
+                  <BreadcrumbLink href={`${endpoint}/dashboard`}>Home</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
@@ -159,7 +198,17 @@ export default function SalesListPage() {
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{formatCurrency(totalSales.toFixed(2))}</div>
+                <div className="text-2xl font-bold">{formatCurrency(totalSales)}</div>
+                <p className="text-xs text-muted-foreground">{filteredSales.length} transactions</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Total Profit</CardTitle>
+                <DollarSign className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{formatCurrency(totalProfit)}</div>
                 <p className="text-xs text-muted-foreground">{filteredSales.length} transactions</p>
               </CardContent>
             </Card>
@@ -179,7 +228,7 @@ export default function SalesListPage() {
                 <Calendar className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{formatCurrency(pendingPayments.toFixed(2))}</div>
+                <div className="text-2xl font-bold">{formatCurrency(pendingPayments)}</div>
                 <p className="text-xs text-muted-foreground">Outstanding balance</p>
               </CardContent>
             </Card>
@@ -274,10 +323,10 @@ export default function SalesListPage() {
                           {sale.items.length} item{sale.items.length > 1 ? "s" : ""}
                         </div>
                       </TableCell>
-                      <TableCell className="font-medium">{formatCurrency(sale.total.toFixed(2))}</TableCell>
+                      <TableCell className="font-medium">{formatCurrency(sale.total)}</TableCell>
                       <TableCell className="text-green-600">{formatCurrency((sale.total - sale.balance))}</TableCell>
                       <TableCell className={sale.balance > 0 ? "text-red-600" : "text-green-600"}>
-                        {formatCurrency(sale.balance.toFixed(2))}
+                        {formatCurrency(sale.balance)}
                       </TableCell>
                       <TableCell>{getStatusBadge(sale.status)}</TableCell>
                       <TableCell>
@@ -285,8 +334,11 @@ export default function SalesListPage() {
                           <Button variant="ghost" size="sm" onClick={() => handleView(sale.invoiceNo)}>
                             <Eye className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" onClick={() => handleEdit(sale.invoiceNo)}>
+                          {/* <Button variant="ghost" size="sm" onClick={() => handleEdit(sale.invoiceNo)}>
                             <Edit className="h-4 w-4" />
+                          </Button> */}
+                          <Button variant="ghost" size="sm" onClick={() => handleDelete(sale.invoiceNo)} className="text-red-600 hover:text-red-700">
+                            <Trash2 className="h-4 w-4" />
                           </Button>
                           <div className="flex gap-2">
                                 <DropdownMenu>
@@ -297,8 +349,9 @@ export default function SalesListPage() {
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
-                                    <DropdownMenuItem onClick={() => handlePrintReceipt(sale.id,"57mm")}>Print 57mm (2¼")</DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => handlePrintReceipt(sale.id,"80mm")}>Print 80mm (3⅛")</DropdownMenuItem>
+                                                        <DropdownMenuItem onClick={() => handlePrintReceipt(sale.id,"57mm")}>Print 57mm (2¼")</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handlePrintReceipt(sale.id,"80mm")}>Print 80mm (3⅛")</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handlePrintReceipt(sale.id,"A4")}>Print A4 (Full Page)</DropdownMenuItem>
                                 </DropdownMenuContent>
                                 </DropdownMenu>
                             </div>

@@ -322,6 +322,7 @@ export default function WarehouseDetailsPage() {
                 </p>
               </CardContent>
             </Card>
+            
           </div>
 
           {/* Low Stock Alert */}

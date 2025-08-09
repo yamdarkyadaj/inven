@@ -173,6 +173,7 @@ export default function DashboardPage() {
               description="all-time revenue"
               icon={DollarSign}
             />
+            
           </div>
 
           {/* Warehouse Analytics Section */}

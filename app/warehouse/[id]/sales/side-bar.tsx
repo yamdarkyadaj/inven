@@ -152,7 +152,7 @@ export function WarehouseAppSidebar({ ...props }: React.ComponentProps<typeof Si
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{data?.companyName}</span>
-                  <span className="truncate text-xs">Super Admin Management System</span>
+                  <span className="truncate text-xs">Sales Management System</span>
                   {/* {isOnline ? "online" : "ofline"} */}
                 </div>
               </a>
@@ -188,8 +188,25 @@ export function WarehouseAppSidebar({ ...props }: React.ComponentProps<typeof Si
     },
    
   ]} />
-     
-        <Button onClick={()=>signOut()} className="bg-red-500 m-2">Logout</Button>
+       
+
+        
+
+        <SidebarMenu>
+          <SidebarMenuItem>
+          <SidebarMenuButton
+              tooltip="Logout"
+              onClick={() => signOut()}
+              className="bg-red-500 text-white hover:bg-red-600 transition"
+            >
+              <ArrowLeftRight className="mr-2 h-4 w-4" />
+              <span>Logout</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+
+        <Button onClick={()=>signOut()} style={{display:"none"}} className="bg-red-500">Logout</Button>
+
       </SidebarContent>
       <SidebarRail />
     </Sidebar>

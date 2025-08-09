@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -66,6 +66,7 @@ interface SaleItem {
   total: number
   unit: string
   taxRate: number
+  limit:number
 }
 
 interface PaymentMethod {
@@ -117,7 +118,7 @@ export default function AddSalePage() {
   const [saleItems, setSaleItems] = useState<SaleItem[]>([])
   const [selectedCustomer, setSelectedCustomer] = useState("")
   const [selectedProductId, setSelectedProductId] = useState("")
-  const [quantity, setQuantity] = useState(1)
+  const [quantity, setQuantity] = useState<any>("")
   const [discount, setDiscount] = useState(0)
   const [priceType, setPriceType] = useState<"wholesale" | "retail">("retail")
   const [taxRate, setTaxRate] = useState(0)
@@ -126,6 +127,7 @@ export default function AddSalePage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [completedSale, setCompletedSale] = useState<CompletedSale | null>(null)
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
+  const [endPoint, setEndPoint] = useState("")
 
   
   // Multiple payment methods state
@@ -141,14 +143,21 @@ export default function AddSalePage() {
   const router = useRouter()
   const { printReceipt } = usePrintReceipt()
   const warehouseId = getWareHouseId()
+
         
         const {data:products,loading,error} = fetchWareHouseData("/api/product/list",{warehouseId})
         const {data:customers,loading:loadingCustomers,error:errorCustomers} = fetchWareHouseData("/api/customer/list",{warehouseId})
+
+        useEffect(()=>{
+          setEndPoint(`/warehouse/${warehouseId}/${session?.user?.role}`)
+        },[session,warehouseId])
+
 
          if(!products && !customers) return (
           <Loading/>
          )
 
+         
          console.log(customers)
   const selectedProduct = products?.find((p:any) => p.id === selectedProductId)
   const selectedCustomerData = customers?.find((c:any) => c.id === selectedCustomer)
@@ -202,13 +211,14 @@ export default function AddSalePage() {
         total: itemTotal,
         unit: selectedProduct.unit,
         taxRate: selectedProduct.taxRate,
+        limit:selectedProduct.quantity
       }
       setSaleItems([...saleItems, newItem])
     }
 
     // Reset form
     setSelectedProductId("")
-    setQuantity(1)
+    setQuantity("")
     setDiscount(0)
   }
 
@@ -310,6 +320,8 @@ export default function AddSalePage() {
   const balance = grandTotal - totalPaid
 
   // Form submission handler
+
+  console.log(saleItems)
   const handleFormSubmit = async () => {
     if (saleItems?.length === 0 || !selectedCustomer) {
       alert("Please complete all required fields")
@@ -407,7 +419,7 @@ export default function AddSalePage() {
     }
   }
 
-  const handlePrintReceipt = (paperWidth: "57mm" | "80mm") => {
+  const handlePrintReceipt = (paperWidth: "57mm" | "80mm" | "A4") => {
     if (!completedSale) return
 
     const receiptData = {
@@ -445,7 +457,7 @@ export default function AddSalePage() {
 
   const handleViewSales = () => {
     handleCloseSuccessDialog()
-    router.push("/sales/list")
+    router.push(`${endPoint}/sales/list`)
   }
 
   return (
@@ -457,11 +469,11 @@ export default function AddSalePage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
+                  <BreadcrumbLink href={`${endPoint}/dashboard`}>Home</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/sales/list">Sales</BreadcrumbLink>
+                  <BreadcrumbLink href={`${endPoint}/sales/list`}>Sales</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
@@ -618,8 +630,8 @@ export default function AddSalePage() {
                         <Input
                           id="quantity"
                           type="number"
-                          min="1"
-                          max={selectedProduct.quantity}
+                          
+                          // max={selectedProduct.quantity}
                           value={quantity}
                           onChange={(e) => setQuantity(Number.parseInt(e.target.value) || 1)}
                         />
@@ -638,7 +650,7 @@ export default function AddSalePage() {
                         <Button
                           onClick={addProductToSale}
                           className="w-full"
-                          disabled={selectedProduct.quantity === 0 || quantity > selectedProduct.quantity}
+                          // disabled={selectedProduct.quantity === 0 || quantity > selectedProduct.quantity}
                         >
                           <Plus className="mr-2 h-4 w-4" />
                           Add
@@ -715,13 +727,15 @@ export default function AddSalePage() {
                                   type="number"
                                   min="1"
                                   value={item.quantity}
+                                  // max={item.limit}
+                                 
                                   onChange={(e) => updateItemQuantity(item.id, Number.parseInt(e.target.value) || 1)}
                                   className="w-16"
                                 />
                                 <span className="text-xs text-muted-foreground">{item.unit}</span>
                               </div>
                             </TableCell>
-                            <TableCell className="font-medium">${item.total.toFixed(2)}</TableCell>
+                            <TableCell className="font-medium">{formatCurrency(item.total)}</TableCell>
                             <TableCell>
                               <Button
                                 variant="ghost"
@@ -868,7 +882,7 @@ export default function AddSalePage() {
                               {getPaymentMethodIcon(payment.method)}
                               <div>
                                 <div className="font-medium">
-                                  {getPaymentMethodLabel(payment.method)} - ${payment.amount.toFixed(2)}
+                                  {getPaymentMethodLabel(payment.method)} - {formatCurrency(payment.amount)}
                                 </div>
                                 {payment.reference && (
                                   <div className="text-sm text-muted-foreground">Ref: {payment.reference}</div>
@@ -920,7 +934,6 @@ export default function AddSalePage() {
 
           {/* Action Buttons */}
           <div className="flex justify-end gap-4">
-            <Button variant="outline">Save Draft</Button>
 
             <Button
               onClick={handleFormSubmit}
@@ -982,6 +995,7 @@ export default function AddSalePage() {
                   <DropdownMenuContent>
                     <DropdownMenuItem onClick={() => handlePrintReceipt("57mm")}>Print 57mm (2¼")</DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handlePrintReceipt("80mm")}>Print 80mm (3⅛")</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handlePrintReceipt("A4")}>Print A4 (Full Page)</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
