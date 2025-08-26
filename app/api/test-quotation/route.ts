@@ -7,10 +7,32 @@ export async function GET(req: NextRequest) {
 
         // Check if we can access the quotation table
         const allQuotations = await offlinePrisma.quotation.findMany({
-            take: 5
+            take: 5,
+            include: {
+                selectedCustomer: true,
+                quotationItems: true
+            }
         });
 
         console.log("All quotations:", allQuotations);
+        
+        // Test the same query as the list API
+        const testWarehouse = await offlinePrisma.warehouses.findFirst();
+        console.log("Test warehouse:", testWarehouse);
+        
+        if (testWarehouse) {
+            const warehouseQuotations = await offlinePrisma.quotation.findMany({
+                where: { 
+                    warehousesId: testWarehouse.warehouseCode,
+                    isDeleted: false 
+                },
+                include: {
+                    selectedCustomer: true,
+                    quotationItems: true
+                }
+            });
+            console.log("Warehouse quotations:", warehouseQuotations);
+        }
 
         // Check if we can access customers
         const customers = await offlinePrisma.customer.findMany({

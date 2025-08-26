@@ -94,17 +94,61 @@ export async function GET(req: NextRequest) {
         } catch (includeError) {
             console.error("Error with includes, trying basic query:", includeError);
             
-            // Fallback to basic query without includes
-            quotations = await offlinePrisma.quotation.findMany({
-                where: whereClause,
-                orderBy: { createdAt: 'desc' },
-                skip,
-                take: limit
-            });
+            try {
+                // Fallback to basic query without includes
+                quotations = await offlinePrisma.quotation.findMany({
+                    where: whereClause,
+                    orderBy: { createdAt: 'desc' },
+                    skip,
+                    take: limit
+                });
 
-            totalCount = await offlinePrisma.quotation.count({
-                where: whereClause
-            });
+                totalCount = await offlinePrisma.quotation.count({
+                    where: whereClause
+                });
+                
+                console.log("Basic query successful, found:", quotations.length);
+                
+                // Try to manually add customer and items data
+                for (let i = 0; i < quotations.length; i++) {
+                    try {
+                        if (quotations[i].selectedCustomerId) {
+                            const customer = await offlinePrisma.customer.findUnique({
+                                where: { id: quotations[i].selectedCustomerId },
+                                select: {
+                                    id: true,
+                                    name: true,
+                                    email: true,
+                                    phone: true
+                                }
+                            });
+                            quotations[i].selectedCustomer = customer;
+                        }
+                        
+                        const items = await offlinePrisma.quotationItem.findMany({
+                            where: { 
+                                quotationId: quotations[i].quotationNo,
+                                isDeleted: false 
+                            },
+                            select: {
+                                id: true,
+                                productName: true,
+                                quantity: true,
+                                selectedPrice: true,
+                                total: true
+                            }
+                        });
+                        quotations[i].quotationItems = items;
+                    } catch (itemError) {
+                        console.error("Error adding related data for quotation:", quotations[i].id, itemError);
+                        quotations[i].selectedCustomer = null;
+                        quotations[i].quotationItems = [];
+                    }
+                }
+            } catch (basicError) {
+                console.error("Even basic query failed:", basicError);
+                throw basicError;
+            }
         }
 
         console.log("Found quotations:", quotations.length, "Total count:", totalCount)

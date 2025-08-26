@@ -36,6 +36,7 @@ import { Loading } from "@/components/loading"
 import { formatCurrency } from "@/lib/utils"
 import { useSession } from "next-auth/react"
 import axios from "axios"
+import { QuotationPrint } from "@/components/quotation-print"
 
 interface QuotationDetails {
   id: string
@@ -209,10 +210,6 @@ export default function ViewQuotationPage() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={handlePrint}>
-            <Printer className="h-4 w-4 mr-2" />
-            Print
-          </Button>
           {quotation.status !== "converted" && (
             <>
               <Link href={`${endPoint}/quotations/${quotation.quotationNo}/edit`}>
@@ -400,6 +397,16 @@ export default function ViewQuotationPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Print Component */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Print Quotation</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <QuotationPrint quotation={quotation} />
+        </CardContent>
+      </Card>
 
       {/* Convert to Sale Dialog */}
       <Dialog open={convertDialogOpen} onOpenChange={setConvertDialogOpen}>

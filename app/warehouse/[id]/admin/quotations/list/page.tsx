@@ -343,9 +343,11 @@ export default function QuotationsListPage() {
                       </TableCell>
                       <TableCell>
                         <div>
-                          <div className="font-medium">{quotation.selectedCustomer?.name}</div>
+                          <div className="font-medium">
+                            {quotation.selectedCustomer?.name || "Unknown Customer"}
+                          </div>
                           <div className="text-sm text-muted-foreground">
-                            {quotation.selectedCustomer?.phone}
+                            {quotation.selectedCustomer?.phone || "No phone"}
                           </div>
                         </div>
                       </TableCell>
@@ -408,7 +410,10 @@ export default function QuotationsListPage() {
                               </>
                             )}
                             <DropdownMenuItem
-                              onClick={() => window.print()}
+                              onClick={() => {
+                                // Open quotation in new tab for printing
+                                window.open(`${endPoint}/quotations/${quotation.quotationNo}`, '_blank')
+                              }}
                             >
                               <Printer className="h-4 w-4 mr-2" />
                               Print

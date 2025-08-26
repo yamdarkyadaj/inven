@@ -350,7 +350,14 @@ export default function AddQuotationPage() {
                                     selectedProductId === product.id ? "opacity-100" : "opacity-0"
                                   )}
                                 />
-                                {product.name} - {formatCurrency(product.retailPrice)}
+                                <div className="flex flex-col">
+                                  <span className="font-medium">{product.name}</span>
+                                  <span className="text-sm text-muted-foreground">
+                                    Retail: {formatCurrency(product.retailPrice)} | 
+                                    Wholesale: {formatCurrency(product.wholeSalePrice)} | 
+                                    Stock: {product.quantity}
+                                  </span>
+                                </div>
                               </CommandItem>
                             ))}
                           </CommandGroup>
@@ -358,6 +365,45 @@ export default function AddQuotationPage() {
                       </Command>
                     </PopoverContent>
                   </Popover>
+                  
+                  {/* Price Preview */}
+                  {selectedProductId && (
+                    <div className="mt-2 p-2 bg-muted rounded-md text-sm">
+                      {(() => {
+                        const product = products?.find((p: any) => p.id === selectedProductId)
+                        if (!product) return null
+                        const selectedPrice = priceType === "wholesale" ? product.wholeSalePrice : product.retailPrice
+                        const total = quantity ? (selectedPrice * parseInt(quantity)) - discount : selectedPrice
+                        return (
+                          <div className="space-y-1">
+                            <div className="flex justify-between">
+                              <span>Selected Price ({priceType}):</span>
+                              <span className="font-medium">{formatCurrency(selectedPrice)}</span>
+                            </div>
+                            {quantity && (
+                              <div className="flex justify-between">
+                                <span>Quantity:</span>
+                                <span>{quantity}</span>
+                              </div>
+                            )}
+                            {discount > 0 && (
+                              <div className="flex justify-between">
+                                <span>Discount:</span>
+                                <span className="text-red-600">-{formatCurrency(discount)}</span>
+                              </div>
+                            )}
+                            <div className="flex justify-between border-t pt-1">
+                              <span>Total:</span>
+                              <span className="font-bold">{formatCurrency(total)}</span>
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              Available Stock: {product.quantity} {product.unit}
+                            </div>
+                          </div>
+                        )
+                      })()}
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-2">
