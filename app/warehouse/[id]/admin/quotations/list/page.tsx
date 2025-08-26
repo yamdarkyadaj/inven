@@ -27,8 +27,12 @@ import {
   ShoppingCart,
   Printer,
   RefreshCw,
+  ArrowUpDown,
+  Calendar,
+  Download,
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import Link from "next/link"
@@ -66,6 +70,9 @@ export default function QuotationsListPage() {
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("")
+  const [dateFilter, setDateFilter] = useState("")
+  const [sortBy, setSortBy] = useState("createdAt")
+  const [sortOrder, setSortOrder] = useState("desc")
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [endPoint, setEndPoint] = useState("")
@@ -73,6 +80,8 @@ export default function QuotationsListPage() {
   const [quotationToDelete, setQuotationToDelete] = useState<string | null>(null)
   const [convertDialogOpen, setConvertDialogOpen] = useState(false)
   const [quotationToConvert, setQuotationToConvert] = useState<Quotation | null>(null)
+  const [selectedQuotations, setSelectedQuotations] = useState<string[]>([])
+  const [showBulkActions, setShowBulkActions] = useState(false)
 
   const { data: session } = useSession()
   const router = useRouter()
@@ -90,7 +99,10 @@ export default function QuotationsListPage() {
         page: currentPage.toString(),
         limit: "10",
         ...(searchTerm && { search: searchTerm }),
-        ...(statusFilter && { status: statusFilter })
+        ...(statusFilter && { status: statusFilter }),
+        ...(dateFilter && { dateFilter }),
+        sortBy,
+        sortOrder
       })
 
       const response = await axios.get(`/api/quotation/list?${params}`)
@@ -107,7 +119,7 @@ export default function QuotationsListPage() {
     if (warehouseId) {
       fetchQuotations()
     }
-  }, [warehouseId, currentPage, searchTerm, statusFilter])
+  }, [warehouseId, currentPage, searchTerm, statusFilter, dateFilter, sortBy, sortOrder])
 
   const handleDelete = async (quotationNo: string) => {
     try {
@@ -160,6 +172,37 @@ export default function QuotationsListPage() {
     return new Date(validUntil) < new Date()
   }
 
+  const handleBulkPrint = () => {
+    if (selectedQuotations.length === 0) {
+      alert("Please select quotations to print")
+      return
+    }
+    
+    // Open each selected quotation in a new tab for printing
+    selectedQuotations.forEach(quotationNo => {
+      const printUrl = `${endPoint}/quotations/${quotationNo}?print=true`
+      window.open(printUrl, '_blank')
+    })
+    
+    setSelectedQuotations([])
+  }
+
+  const toggleQuotationSelection = (quotationNo: string) => {
+    setSelectedQuotations(prev => 
+      prev.includes(quotationNo) 
+        ? prev.filter(id => id !== quotationNo)
+        : [...prev, quotationNo]
+    )
+  }
+
+  const selectAllQuotations = () => {
+    setSelectedQuotations(
+      selectedQuotations.length === quotations.length 
+        ? [] 
+        : quotations.map(q => q.quotationNo)
+    )
+  }
+
   if (loading) return <Loading />
 
   return (
@@ -191,49 +234,164 @@ export default function QuotationsListPage() {
                 Manage your sales quotations
               </CardDescription>
             </div>
-            <div className="flex gap-2">
-              <Button onClick={fetchQuotations} variant="outline" size="sm">
-                <RefreshCw className="h-4 w-4 mr-2" />
-                Refresh
-              </Button>
-              <Link href={`${endPoint}/quotations/add`}>
-                <Button>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Quotation
+            <div className="flex flex-col sm:flex-row gap-2">
+              {selectedQuotations.length > 0 && (
+                <div className="flex gap-2">
+                  <Button onClick={handleBulkPrint} variant="outline" size="sm">
+                    <Printer className="h-4 w-4 mr-2" />
+                    Print Selected ({selectedQuotations.length})
+                  </Button>
+                  <Button 
+                    onClick={() => setSelectedQuotations([])} 
+                    variant="ghost" 
+                    size="sm"
+                  >
+                    Clear Selection
+                  </Button>
+                </div>
+              )}
+              <div className="flex gap-2">
+                <Button onClick={fetchQuotations} variant="outline" size="sm">
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                  Refresh
                 </Button>
-              </Link>
+                <Link href={`${endPoint}/quotations/add`}>
+                  <Button>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Quotation
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col sm:flex-row gap-4 mb-6">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search quotations..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
+          <div className="space-y-4 mb-6">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search quotations by number, customer name, or phone..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              <Button variant="outline" size="sm" className="whitespace-nowrap">
+                <Filter className="h-4 w-4 mr-2" />
+                Advanced Filters
+              </Button>
             </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder="Filter by status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">All Status</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="accepted">Accepted</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
-                <SelectItem value="converted">Converted</SelectItem>
-              </SelectContent>
-            </Select>
+            
+            <div className="flex flex-wrap gap-3">
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">All Status</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="accepted">Accepted</SelectItem>
+                  <SelectItem value="rejected">Rejected</SelectItem>
+                  <SelectItem value="converted">Converted</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Select value={dateFilter} onValueChange={setDateFilter}>
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Date Range" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">All Time</SelectItem>
+                  <SelectItem value="today">Today</SelectItem>
+                  <SelectItem value="yesterday">Yesterday</SelectItem>
+                  <SelectItem value="thisWeek">This Week</SelectItem>
+                  <SelectItem value="lastWeek">Last Week</SelectItem>
+                  <SelectItem value="thisMonth">This Month</SelectItem>
+                  <SelectItem value="lastMonth">Last Month</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Select value={`${sortBy}-${sortOrder}`} onValueChange={(value) => {
+                const [field, order] = value.split('-')
+                setSortBy(field)
+                setSortOrder(order)
+              }}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="createdAt-desc">Newest First</SelectItem>
+                  <SelectItem value="createdAt-asc">Oldest First</SelectItem>
+                  <SelectItem value="grandTotal-desc">Highest Value</SelectItem>
+                  <SelectItem value="grandTotal-asc">Lowest Value</SelectItem>
+                  <SelectItem value="quotationNo-asc">Quotation No A-Z</SelectItem>
+                  <SelectItem value="quotationNo-desc">Quotation No Z-A</SelectItem>
+                </SelectContent>
+              </Select>
+
+              {(searchTerm || statusFilter || dateFilter) && (
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => {
+                    setSearchTerm("")
+                    setStatusFilter("")
+                    setDateFilter("")
+                  }}
+                >
+                  Clear Filters
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* Summary Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <Card>
+              <CardContent className="p-4">
+                <div className="text-2xl font-bold text-blue-600">
+                  {quotations.filter(q => q.status === 'pending').length}
+                </div>
+                <p className="text-sm text-muted-foreground">Pending</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-4">
+                <div className="text-2xl font-bold text-green-600">
+                  {quotations.filter(q => q.status === 'accepted').length}
+                </div>
+                <p className="text-sm text-muted-foreground">Accepted</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-4">
+                <div className="text-2xl font-bold text-purple-600">
+                  {quotations.filter(q => q.status === 'converted').length}
+                </div>
+                <p className="text-sm text-muted-foreground">Converted</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-4">
+                <div className="text-2xl font-bold text-gray-600">
+                  {formatCurrency(quotations.reduce((sum, q) => sum + q.grandTotal, 0))}
+                </div>
+                <p className="text-sm text-muted-foreground">Total Value</p>
+              </CardContent>
+            </Card>
           </div>
 
           <div className="rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-12">
+                    <Checkbox
+                      checked={selectedQuotations.length === quotations.length && quotations.length > 0}
+                      onCheckedChange={selectAllQuotations}
+                    />
+                  </TableHead>
                   <TableHead>Quotation No</TableHead>
                   <TableHead>Customer</TableHead>
                   <TableHead>Items</TableHead>
@@ -247,7 +405,7 @@ export default function QuotationsListPage() {
               <TableBody>
                 {quotations.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-8">
+                    <TableCell colSpan={9} className="text-center py-8">
                       <div className="text-muted-foreground">
                         <Quote className="h-8 w-8 mx-auto mb-2 opacity-50" />
                         <p>No quotations found</p>
@@ -262,21 +420,42 @@ export default function QuotationsListPage() {
                 ) : (
                   quotations.map((quotation) => (
                     <TableRow key={quotation.id}>
-                      <TableCell className="font-medium">
-                        {quotation.quotationNo}
-                      </TableCell>
                       <TableCell>
+                        <Checkbox
+                          checked={selectedQuotations.includes(quotation.quotationNo)}
+                          onCheckedChange={() => toggleQuotationSelection(quotation.quotationNo)}
+                        />
+                      </TableCell>
+                      <TableCell className="font-medium">
                         <div>
-                          <div className="font-medium">{quotation.selectedCustomer?.name}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {quotation.selectedCustomer?.phone}
+                          <div className="font-semibold">{quotation.quotationNo}</div>
+                          <div className="text-xs text-muted-foreground">
+                            {new Date(quotation.createdAt).toLocaleTimeString()}
                           </div>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline">
-                          {quotation.quotationItems?.length || 0} items
-                        </Badge>
+                        <div className="space-y-1">
+                          <div className="font-medium">{quotation.selectedCustomer?.name}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {quotation.selectedCustomer?.phone}
+                          </div>
+                          {quotation.selectedCustomer?.email && (
+                            <div className="text-xs text-muted-foreground">
+                              {quotation.selectedCustomer.email}
+                            </div>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="space-y-1">
+                          <Badge variant="outline">
+                            {quotation.quotationItems?.length || 0} items
+                          </Badge>
+                          <div className="text-xs text-muted-foreground">
+                            Total Qty: {quotation.quotationItems?.reduce((sum, item) => sum + item.quantity, 0) || 0}
+                          </div>
+                        </div>
                       </TableCell>
                       <TableCell>{formatCurrency(quotation.grandTotal)}</TableCell>
                       <TableCell>
