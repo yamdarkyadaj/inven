@@ -272,7 +272,7 @@ export function SupAdminAppSidebar({ ...props }: React.ComponentProps<typeof Sid
           <SidebarMenuButton
               tooltip="Logout"
               onClick={() => signOut()}
-              className="bg-red-500 text-white m-3 hover:bg-red-600 transition"
+              className="bg-red-500 text-white hover:bg-red-600 transition"
             >
               <ArrowLeftRight className="mr-2 h-4 w-4" />
               <span>Logout</span>
