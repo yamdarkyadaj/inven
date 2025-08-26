@@ -64,6 +64,7 @@ interface Quotation {
 export default function QuotationsListPage() {
   const [quotations, setQuotations] = useState<Quotation[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
@@ -85,6 +86,9 @@ export default function QuotationsListPage() {
   const fetchQuotations = async () => {
     try {
       setLoading(true)
+      setError(null)
+      console.log("Fetching quotations with warehouseId:", warehouseId)
+      
       const params = new URLSearchParams({
         warehouseId,
         page: currentPage.toString(),
@@ -93,11 +97,17 @@ export default function QuotationsListPage() {
         ...(statusFilter && { status: statusFilter })
       })
 
+      console.log("API URL:", `/api/quotation/list?${params}`)
+      
       const response = await axios.get(`/api/quotation/list?${params}`)
-      setQuotations(response.data.quotations)
-      setTotalPages(response.data.pagination.totalPages)
+      console.log("API Response:", response.data)
+      
+      setQuotations(response.data.quotations || [])
+      setTotalPages(response.data.pagination?.totalPages || 1)
     } catch (error) {
       console.error("Error fetching quotations:", error)
+      console.error("Error details:", error.response?.data)
+      setError(`Failed to fetch quotations: ${error.response?.data || error.message}`)
     } finally {
       setLoading(false)
     }
@@ -162,6 +172,39 @@ export default function QuotationsListPage() {
 
   if (loading) return <Loading />
 
+  if (error) {
+    return (
+      <div className="p-6 space-y-6">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center text-red-600">
+              <h3 className="text-lg font-semibold mb-2">Error Loading Quotations</h3>
+              <p className="mb-4">{error}</p>
+              <div className="flex gap-2 justify-center">
+                <Button onClick={fetchQuotations}>Try Again</Button>
+                <Button 
+                  variant="outline"
+                  onClick={async () => {
+                    try {
+                      const response = await axios.get("/api/test-quotation");
+                      console.log("Test API response:", response.data);
+                      alert(`Test API works! Found ${response.data.quotationsCount} quotations`);
+                    } catch (error) {
+                      console.error("Test API error:", error);
+                      alert("Test API failed - check console");
+                    }
+                  }}
+                >
+                  Test API
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center gap-4">
@@ -192,6 +235,39 @@ export default function QuotationsListPage() {
               </CardDescription>
             </div>
             <div className="flex gap-2">
+              <Button 
+                onClick={async () => {
+                  try {
+                    const response = await axios.get("/api/test-quotation");
+                    console.log("Test API response:", response.data);
+                    alert(`Test API works! Found ${response.data.quotationsCount} quotations`);
+                  } catch (error) {
+                    console.error("Test API error:", error);
+                    alert("Test API failed - check console");
+                  }
+                }} 
+                variant="outline" 
+                size="sm"
+              >
+                Test API
+              </Button>
+              <Button 
+                onClick={async () => {
+                  try {
+                    const response = await axios.post("/api/test-quotation", { warehouseId });
+                    console.log("Test create response:", response.data);
+                    alert("Test quotation created! Refreshing list...");
+                    fetchQuotations();
+                  } catch (error) {
+                    console.error("Test create error:", error);
+                    alert("Test create failed - check console");
+                  }
+                }} 
+                variant="outline" 
+                size="sm"
+              >
+                Create Test
+              </Button>
               <Button onClick={fetchQuotations} variant="outline" size="sm">
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Refresh
