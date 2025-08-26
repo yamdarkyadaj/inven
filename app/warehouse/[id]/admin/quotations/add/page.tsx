@@ -44,6 +44,7 @@ import axios from "axios"
 import { SystemStatus } from "@/components/system-status"
 import { useSession } from "next-auth/react"
 import { DatePickerWithRange } from "@/components/ui/date-range-picker"
+import { toast } from "@/hooks/use-toast"
 
 interface QuotationItem {
   id: string
@@ -130,27 +131,59 @@ export default function AddQuotationPage() {
     if (!product) return
 
     const selectedPrice = priceType === "wholesale" ? product.wholeSalePrice : product.retailPrice
-    const itemTotal = (selectedPrice * quantity) - discount
+    
+    // Check if product already exists in quotation items
+    const existingItemIndex = quotationItems.findIndex(item => 
+      item.productId === selectedProductId && item.priceType === priceType
+    )
 
-    const newItem: QuotationItem = {
-      id: Date.now().toString(),
-      productId: product.id,
-      productName: product.name,
-      productBarcode: product.barcode,
-      cost: product.cost,
-      wholeSalePrice: product.wholeSalePrice,
-      retailPrice: product.retailPrice,
-      selectedPrice,
-      priceType,
-      quantity: parseInt(quantity),
-      discount,
-      total: itemTotal,
-      unit: product.unit,
-      taxRate: product.taxRate,
-      limit: product.quantity
+    if (existingItemIndex !== -1) {
+      // Update existing item
+      const updatedItems = [...quotationItems]
+      const existingItem = updatedItems[existingItemIndex]
+      const newQuantity = existingItem.quantity + parseInt(quantity)
+      const newDiscount = existingItem.discount + discount
+      const itemTotal = (selectedPrice * newQuantity) - newDiscount
+
+      updatedItems[existingItemIndex] = {
+        ...existingItem,
+        quantity: newQuantity,
+        discount: newDiscount,
+        total: itemTotal
+      }
+
+      setQuotationItems(updatedItems)
+      
+      // Show notification that item was updated
+      toast({
+        title: "Product Updated",
+        description: `Updated existing ${product.name} (${priceType}). New quantity: ${newQuantity}`,
+      })
+    } else {
+      // Add new item
+      const itemTotal = (selectedPrice * quantity) - discount
+
+      const newItem: QuotationItem = {
+        id: Date.now().toString(),
+        productId: product.id,
+        productName: product.name,
+        productBarcode: product.barcode,
+        cost: product.cost,
+        wholeSalePrice: product.wholeSalePrice,
+        retailPrice: product.retailPrice,
+        selectedPrice,
+        priceType,
+        quantity: parseInt(quantity),
+        discount,
+        total: itemTotal,
+        unit: product.unit,
+        taxRate: product.taxRate,
+        limit: product.quantity
+      }
+
+      setQuotationItems([...quotationItems, newItem])
     }
 
-    setQuotationItems([...quotationItems, newItem])
     setSelectedProductId("")
     setQuantity("")
     setDiscount(0)

@@ -36,6 +36,7 @@ import { Loading } from "@/components/loading"
 import { formatCurrency } from "@/lib/utils"
 import { useSession } from "next-auth/react"
 import axios from "axios"
+import { QuotationPrintTemplate } from "@/components/quotation-print-template"
 
 interface QuotationDetails {
   id: string
@@ -431,6 +432,9 @@ export default function ViewQuotationPage() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Print Template */}
+      {quotation && <QuotationPrintTemplate quotation={quotation} />}
     </div>
   )
 }
