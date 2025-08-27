@@ -147,7 +147,8 @@ export default function AddPurchasePage() {
       const existingItem = updatedItems[existingItemIndex]
       existingItem.quantity += quantity
       existingItem.discount += discount
-      existingItem.total = existingItem.selectedPrice * existingItem.quantity - existingItem.discount
+      const unitCost = existingItem.customCost !== undefined ? existingItem.customCost : existingItem.cost
+      existingItem.total = unitCost * existingItem.quantity - existingItem.discount
       setPurchaseItems(updatedItems)
     }else{
       const effectiveRetailPrice = enableCustomPrices && customRetailPrice !== undefined ? customRetailPrice : selectedProduct.retailPrice
@@ -155,7 +156,8 @@ export default function AddPurchasePage() {
       
       const selectedPrice = priceType === "wholesale" ? effectiveWholesalePrice : effectiveRetailPrice
   
-      const itemTotal = customCost ? customCost : selectedProduct.cost * quantity - discount
+      const unitCost = enableCustomPrices && customCost !== undefined ? customCost : selectedProduct.cost
+      const itemTotal = unitCost * quantity - discount
       const newItem: PurchaseItem = {
         id: `ITEM-${Date.now()}`,
           productId: selectedProduct.id,
